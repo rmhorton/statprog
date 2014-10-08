@@ -1,0 +1,909 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Statistical Computing</title>
+<style type="text/css">
+    li { list-style: none;  margin: 0; }
+    p { margin: 0; }
+    span.foldopened { color: white; font-size: xx-small;
+    border-width: 1; font-family: monospace; padding: 0em 0.25em 0em 0.25em; background: #e0e0e0;
+    VISIBILITY: visible;
+    cursor:pointer; }
+
+
+    span.foldclosed { color: #666666; font-size: xx-small;
+    border-width: 1; font-family: monospace; padding: 0em 0.25em 0em 0.25em; background: #e0e0e0;
+    VISIBILITY: hidden;
+    cursor:pointer; }
+
+    span.foldspecial { color: #666666; font-size: xx-small; border-style: none solid solid none;
+    border-color: #CCCCCC; border-width: 1; font-family: sans-serif; padding: 0em 0.1em 0em 0.1em; background: #e0e0e0;
+    cursor:pointer; }
+
+    span.l { color: red; font-weight: bold; }
+
+    a.mapnode:link {text-decoration: none; color: black; }
+    a.mapnode:visited {text-decoration: none; color: black; }
+    a.mapnode:active {text-decoration: none; color: black; }
+    a.mapnode:hover {text-decoration: none; color: black; background: #eeeee0; }
+
+</style>
+<!-- ^ Position is not set to relative / absolute here because of Mozilla -->
+</head>
+<body>
+
+<script type="text/javascript">
+   // Here we implement folding. It works fine with MSIE5.5, MSIE6.0 and
+   // Mozilla 0.9.6.
+
+   if (document.layers) {
+      //Netscape 4 specific code
+      pre = 'document.';
+      post = ''; }
+   if (document.getElementById) {
+      //Netscape 6 specific code
+      pre = 'document.getElementById("';
+      post = '").style'; }
+   if (document.all) {
+      //IE4+ specific code
+      pre = 'document.all.';
+      post = '.style'; }
+
+function layer_exists(layer) {
+   try {
+      eval(pre + layer + post);
+      return true; }
+   catch (error) {
+      return false; }}
+
+function show_layer(layer) {
+   eval(pre + layer + post).position = 'relative'; 
+   eval(pre + layer + post).visibility = 'visible'; }
+
+function hide_layer(layer) {
+   eval(pre + layer + post).visibility = 'hidden';
+   eval(pre + layer + post).position = 'absolute'; }
+
+function hide_folder(folder) {
+    hide_folding_layer(folder)
+    show_layer('show'+folder);
+
+    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+}
+
+function show_folder(folder) {
+    // Precondition: all subfolders are folded
+
+    show_layer('hide'+folder);
+    hide_layer('show'+folder);
+    show_layer('fold'+folder);
+
+    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+
+    var i;
+    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+       show_layer('show'+folder+'_'+i); }
+}
+function show_folder_completely(folder) {
+    // Precondition: all subfolders are folded
+
+    show_layer('hide'+folder);
+    hide_layer('show'+folder);
+    show_layer('fold'+folder);
+
+    scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+
+    var i;
+    for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+       show_folder_completely(folder+'_'+i); }
+}
+
+
+
+function hide_folding_layer(folder) {
+   var i;
+   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+       hide_folding_layer(folder+'_'+i); }
+
+   hide_layer('hide'+folder);
+   hide_layer('show'+folder);
+   hide_layer('fold'+folder);
+
+   scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)
+}
+
+function fold_document() {
+   var i;
+   var folder = '1';
+   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+       hide_folder(folder+'_'+i); }
+}
+
+function unfold_document() {
+   var i;
+   var folder = '1';
+   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {
+       show_folder_completely(folder+'_'+i); }
+}
+
+</script>
+<SPAN class="foldspecial" onclick="fold_document()">All +</SPAN>
+<SPAN class="foldspecial" onclick="unfold_document()">All -</SPAN>
+<p>Statistical Computing
+<ul><li><span id="show1_1" class="foldclosed" onClick="show_folder('1_1')" style="POSITION: absolute">+</span> <span id="hide1_1" class="foldopened" onClick="hide_folder('1_1')">-</span>
+themes
+<ul id="fold1_1" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_1_1" class="foldclosed" onClick="show_folder('1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_1_1" class="foldopened" onClick="hide_folder('1_1_1')">-</span>
+course automation
+<ul id="fold1_1_1" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_1_1_1" class="foldclosed" onClick="show_folder('1_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_1_1_1" class="foldopened" onClick="hide_folder('1_1_1_1')">-</span>
+online component
+<ul id="fold1_1_1_1" style="POSITION: relative; VISIBILITY: visible;"><li>multiple choice quizzes
+
+</li>
+<li>assessment by unit testing
+
+</li>
+<li>supervised practice
+<ul><li>swirl exercises
+
+</li>
+
+</ul>
+</li>
+<li>peer assessment
+
+</li>
+
+</ul>
+</li>
+<li>collect statistics on the course itself
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_2" class="foldclosed" onClick="show_folder('1_1_2')" style="POSITION: absolute">+</span> <span id="hide1_1_2" class="foldopened" onClick="hide_folder('1_1_2')">-</span>
+version control
+<ul id="fold1_1_2" style="POSITION: relative; VISIBILITY: visible;"><li><span style="color: #990033;">git</span>
+<ul><li>github
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_3" class="foldclosed" onClick="show_folder('1_1_3')" style="POSITION: absolute">+</span> <span id="hide1_1_3" class="foldopened" onClick="hide_folder('1_1_3')">-</span>
+reproducibility
+<ul id="fold1_1_3" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_1_3_1" class="foldclosed" onClick="show_folder('1_1_3_1')" style="POSITION: absolute">+</span> <span id="hide1_1_3_1" class="foldopened" onClick="hide_folder('1_1_3_1')">-</span>
+<span style="color: #990033;">RStudio</span>
+<ul id="fold1_1_3_1" style="POSITION: relative; VISIBILITY: visible;"><li>knitr
+<ul><li>knit
+
+</li>
+<li>purl
+
+</li>
+
+</ul>
+</li>
+<li>RMarkdown
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_4" class="foldclosed" onClick="show_folder('1_1_4')" style="POSITION: absolute">+</span> <span id="hide1_1_4" class="foldopened" onClick="hide_folder('1_1_4')">-</span>
+scalability
+<ul id="fold1_1_4" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_1_4_1" class="foldclosed" onClick="show_folder('1_1_4_1')" style="POSITION: absolute">+</span> <span id="hide1_1_4_1" class="foldopened" onClick="hide_folder('1_1_4_1')">-</span>
+<span style="color: #990033;">RStudio Server</span>
+<ul id="fold1_1_4_1" style="POSITION: relative; VISIBILITY: visible;"><li>AWS
+
+</li>
+
+</ul>
+</li>
+<li>dplyr DBI
+
+</li>
+<li><span id="show1_1_4_2" class="foldclosed" onClick="show_folder('1_1_4_2')" style="POSITION: absolute">+</span> <span id="hide1_1_4_2" class="foldopened" onClick="hide_folder('1_1_4_2')">-</span>
+extraction and filtering
+<ul id="fold1_1_4_2" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_1_4_2_1" class="foldclosed" onClick="show_folder('1_1_4_2_1')" style="POSITION: absolute">+</span> <span id="hide1_1_4_2_1" class="foldopened" onClick="hide_folder('1_1_4_2_1')">-</span>
+Linux pipelining
+<ul id="fold1_1_4_2_1" style="POSITION: relative; VISIBILITY: visible;"><li>grep
+
+</li>
+<li>cut
+
+</li>
+<li>perl -pe
+
+</li>
+<li>Python?
+
+</li>
+<li>GNU parallel
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_4_2_2" class="foldclosed" onClick="show_folder('1_1_4_2_2')" style="POSITION: absolute">+</span> <span id="hide1_1_4_2_2" class="foldopened" onClick="hide_folder('1_1_4_2_2')">-</span>
+Pig/Hadoop
+<ul id="fold1_1_4_2_2" style="POSITION: relative; VISIBILITY: visible;"><li>feature selection
+
+</li>
+<li>streaming API
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li>performance profiling
+
+</li>
+<li><span id="show1_1_4_3" class="foldclosed" onClick="show_folder('1_1_4_3')" style="POSITION: absolute">+</span> <span id="hide1_1_4_3" class="foldopened" onClick="hide_folder('1_1_4_3')">-</span>
+native code
+<ul id="fold1_1_4_3" style="POSITION: relative; VISIBILITY: visible;"><li>RCpp
+
+</li>
+<li>inline
+
+</li>
+<li>ODE derivative functions
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_4_4" class="foldclosed" onClick="show_folder('1_1_4_4')" style="POSITION: absolute">+</span> <span id="hide1_1_4_4" class="foldopened" onClick="hide_folder('1_1_4_4')">-</span>
+in-database analytics
+<ul id="fold1_1_4_4" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_1_4_4_1" class="foldclosed" onClick="show_folder('1_1_4_4_1')" style="POSITION: absolute">+</span> <span id="hide1_1_4_4_1" class="foldopened" onClick="hide_folder('1_1_4_4_1')">-</span>
+stored procedures
+<ul id="fold1_1_4_4_1" style="POSITION: relative; VISIBILITY: visible;"><li>PL/R
+
+</li>
+<li>PL/Python
+
+</li>
+<li>PL/pgsql
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_4_4_2" class="foldclosed" onClick="show_folder('1_1_4_4_2')" style="POSITION: absolute">+</span> <span id="hide1_1_4_4_2" class="foldopened" onClick="hide_folder('1_1_4_4_2')">-</span>
+MADlib
+<ul id="fold1_1_4_4_2" style="POSITION: relative; VISIBILITY: visible;"><li>pivotalR
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_4_4_3" class="foldclosed" onClick="show_folder('1_1_4_4_3')" style="POSITION: absolute">+</span> <span id="hide1_1_4_4_3" class="foldopened" onClick="hide_folder('1_1_4_4_3')">-</span>
+database backing
+<ul id="fold1_1_4_4_3" style="POSITION: relative; VISIBILITY: visible;"><li>dplyr
+
+</li>
+<li>sqldf
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_4_4_4" class="foldclosed" onClick="show_folder('1_1_4_4_4')" style="POSITION: absolute">+</span> <span id="hide1_1_4_4_4" class="foldopened" onClick="hide_folder('1_1_4_4_4')">-</span>
+extended SQL
+<ul id="fold1_1_4_4_4" style="POSITION: relative; VISIBILITY: visible;"><li>GIS
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_5" class="foldclosed" onClick="show_folder('1_1_5')" style="POSITION: absolute">+</span> <span id="hide1_1_5" class="foldopened" onClick="hide_folder('1_1_5')">-</span>
+health care data
+<ul id="fold1_1_5" style="POSITION: relative; VISIBILITY: visible;"><li>UCI Machine Learning Repository
+
+</li>
+<li>(simulated) Medicare claims
+
+</li>
+<li>???
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_6" class="foldclosed" onClick="show_folder('1_1_6')" style="POSITION: absolute">+</span> <span id="hide1_1_6" class="foldopened" onClick="hide_folder('1_1_6')">-</span>
+MSAN bootcamp preparation
+<ul id="fold1_1_6" style="POSITION: relative; VISIBILITY: visible;"><li>computational analytics
+
+</li>
+<li>probability and statistics
+
+</li>
+<li>linear algebra
+
+</li>
+<li>exploratory data analysis
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_7" class="foldclosed" onClick="show_folder('1_1_7')" style="POSITION: absolute">+</span> <span id="hide1_1_7" class="foldopened" onClick="hide_folder('1_1_7')">-</span>
+data products
+<ul id="fold1_1_7" style="POSITION: relative; VISIBILITY: visible;"><li>interactive plots
+<ul><li>manipulate
+<ul><li>cost function visualization
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_1_7_1" class="foldclosed" onClick="show_folder('1_1_7_1')" style="POSITION: absolute">+</span> <span id="hide1_1_7_1" class="foldopened" onClick="hide_folder('1_1_7_1')">-</span>
+web deployment
+<ul id="fold1_1_7_1" style="POSITION: relative; VISIBILITY: visible;"><li>shiny
+
+</li>
+<li>Tableau Public
+
+</li>
+<li>plotly ???
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li>R packages
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2" class="foldclosed" onClick="show_folder('1_2')" style="POSITION: absolute">+</span> <span id="hide1_2" class="foldopened" onClick="hide_folder('1_2')">-</span>
+idiomatic R
+<ul id="fold1_2" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_1" class="foldclosed" onClick="show_folder('1_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1" class="foldopened" onClick="hide_folder('1_2_1')">-</span>
+functions
+<ul id="fold1_2_1" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_1_1" class="foldclosed" onClick="show_folder('1_2_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1" class="foldopened" onClick="hide_folder('1_2_1_1')">-</span>
+mathematical
+<ul id="fold1_2_1_1" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_1_1_1" class="foldclosed" onClick="show_folder('1_2_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1_1" class="foldopened" onClick="hide_folder('1_2_1_1_1')">-</span>
+conditional probability
+<ul id="fold1_2_1_1_1" style="POSITION: relative; VISIBILITY: visible;"><li>sensitivity
+
+</li>
+<li>specificity
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_1_1_2" class="foldclosed" onClick="show_folder('1_2_1_1_2')" style="POSITION: absolute">+</span> <span id="hide1_2_1_1_2" class="foldopened" onClick="hide_folder('1_2_1_1_2')">-</span>
+<span style="color: #006600;">How to check your calculus homework</span>
+<ul id="fold1_2_1_1_2" style="POSITION: relative; VISIBILITY: visible;"><li>derivatives
+
+</li>
+<li>integrals
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_1_2" class="foldclosed" onClick="show_folder('1_2_1_2')" style="POSITION: absolute">+</span> <span id="hide1_2_1_2" class="foldopened" onClick="hide_folder('1_2_1_2')">-</span>
+structured programming
+<ul id="fold1_2_1_2" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_1_2_1" class="foldclosed" onClick="show_folder('1_2_1_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_1_2_1" class="foldopened" onClick="hide_folder('1_2_1_2_1')">-</span>
+hierarchy of functions
+<ul id="fold1_2_1_2_1" style="POSITION: relative; VISIBILITY: visible;"><li>abstract away details
+
+</li>
+<li>antidote to "spaghetti code"
+<ul><li><a href="http://stackoverflow.com/questions/46586/goto-still-considered-harmful" target="_blank"><span class=l>~</span>&nbsp;"GOTO statement considered harmful"
+</a>
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_1_2_2" class="foldclosed" onClick="show_folder('1_2_1_2_2')" style="POSITION: absolute">+</span> <span id="hide1_2_1_2_2" class="foldopened" onClick="hide_folder('1_2_1_2_2')">-</span>
+functions vs procedures
+<ul id="fold1_2_1_2_2" style="POSITION: relative; VISIBILITY: visible;"><li>a function returns a value
+
+</li>
+<li>a procedure performs an operation
+<ul><li>"side effects"
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li>mutable vs. immutable data
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_2" class="foldclosed" onClick="show_folder('1_2_2')" style="POSITION: absolute">+</span> <span id="hide1_2_2" class="foldopened" onClick="hide_folder('1_2_2')">-</span>
+vectorization
+<ul id="fold1_2_2" style="POSITION: relative; VISIBILITY: visible;"><li>scalar operations
+
+</li>
+<li>dot products
+
+</li>
+<li><span id="show1_2_2_1" class="foldclosed" onClick="show_folder('1_2_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_2_1" class="foldopened" onClick="hide_folder('1_2_2_1')">-</span>
+multi-dimensional
+<ul id="fold1_2_2_1" style="POSITION: relative; VISIBILITY: visible;"><li>matrixes
+
+</li>
+<li>data cube
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_3" class="foldclosed" onClick="show_folder('1_2_3')" style="POSITION: absolute">+</span> <span id="hide1_2_3" class="foldopened" onClick="hide_folder('1_2_3')">-</span>
+functional programming
+<ul id="fold1_2_3" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_3_1" class="foldclosed" onClick="show_folder('1_2_3_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_1" class="foldopened" onClick="hide_folder('1_2_3_1')">-</span>
+principles
+<ul id="fold1_2_3_1" style="POSITION: relative; VISIBILITY: visible;"><li>immutable data
+
+</li>
+<li><span id="show1_2_3_1_1" class="foldclosed" onClick="show_folder('1_2_3_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_1_1" class="foldopened" onClick="hide_folder('1_2_3_1_1')">-</span>
+functions as first-class objects
+<ul id="fold1_2_3_1_1" style="POSITION: relative; VISIBILITY: visible;"><li>code as parameters
+
+</li>
+<li>chaining
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_3_2" class="foldclosed" onClick="show_folder('1_2_3_2')" style="POSITION: absolute">+</span> <span id="hide1_2_3_2" class="foldopened" onClick="hide_folder('1_2_3_2')">-</span>
+benefits
+<ul id="fold1_2_3_2" style="POSITION: relative; VISIBILITY: visible;"><li>clarity
+
+</li>
+<li><span id="show1_2_3_2_1" class="foldclosed" onClick="show_folder('1_2_3_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_2_1" class="foldopened" onClick="hide_folder('1_2_3_2_1')">-</span>
+parallelization
+<ul id="fold1_2_3_2_1" style="POSITION: relative; VISIBILITY: visible;"><li>mclapply
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_3_3" class="foldclosed" onClick="show_folder('1_2_3_3')" style="POSITION: absolute">+</span> <span id="hide1_2_3_3" class="foldopened" onClick="hide_folder('1_2_3_3')">-</span>
+tools
+<ul id="fold1_2_3_3" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_3_3_1" class="foldclosed" onClick="show_folder('1_2_3_3_1')" style="POSITION: absolute">+</span> <span id="hide1_2_3_3_1" class="foldopened" onClick="hide_folder('1_2_3_3_1')">-</span>
+*apply
+<ul id="fold1_2_3_3_1" style="POSITION: relative; VISIBILITY: visible;"><li>lapply
+<ul><li>mclapply
+
+</li>
+
+</ul>
+</li>
+<li>sapply
+
+</li>
+<li>apply
+
+</li>
+<li>mapply
+
+</li>
+<li>tapply
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_4" class="foldclosed" onClick="show_folder('1_2_4')" style="POSITION: absolute">+</span> <span id="hide1_2_4" class="foldopened" onClick="hide_folder('1_2_4')">-</span>
+formulae
+<ul id="fold1_2_4" style="POSITION: relative; VISIBILITY: visible;"><li>factors are categorical
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_5" class="foldclosed" onClick="show_folder('1_2_5')" style="POSITION: absolute">+</span> <span id="hide1_2_5" class="foldopened" onClick="hide_folder('1_2_5')">-</span>
+modern idioms
+<ul id="fold1_2_5" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_5_1" class="foldclosed" onClick="show_folder('1_2_5_1')" style="POSITION: absolute">+</span> <span id="hide1_2_5_1" class="foldopened" onClick="hide_folder('1_2_5_1')">-</span>
+grammar of graphics
+<ul id="fold1_2_5_1" style="POSITION: relative; VISIBILITY: visible;"><li>ggplot2
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_5_2" class="foldclosed" onClick="show_folder('1_2_5_2')" style="POSITION: absolute">+</span> <span id="hide1_2_5_2" class="foldopened" onClick="hide_folder('1_2_5_2')">-</span>
+grammar of data manipulation
+<ul id="fold1_2_5_2" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_5_2_1" class="foldclosed" onClick="show_folder('1_2_5_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_5_2_1" class="foldopened" onClick="hide_folder('1_2_5_2_1')">-</span>
+dplyr
+<ul id="fold1_2_5_2_1" style="POSITION: relative; VISIBILITY: visible;"><li>chaining
+
+</li>
+
+</ul>
+</li>
+<li>tidyr
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_6" class="foldclosed" onClick="show_folder('1_2_6')" style="POSITION: absolute">+</span> <span id="hide1_2_6" class="foldopened" onClick="hide_folder('1_2_6')">-</span>
+programming exercises to (p)review:
+<ul id="fold1_2_6" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_6_1" class="foldclosed" onClick="show_folder('1_2_6_1')" style="POSITION: absolute">+</span> <span id="hide1_2_6_1" class="foldopened" onClick="hide_folder('1_2_6_1')">-</span>
+basic statistics
+<ul id="fold1_2_6_1" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_6_1_1" class="foldclosed" onClick="show_folder('1_2_6_1_1')" style="POSITION: absolute">+</span> <span id="hide1_2_6_1_1" class="foldopened" onClick="hide_folder('1_2_6_1_1')">-</span>
+pseudorandom numbers
+<ul id="fold1_2_6_1_1" style="POSITION: relative; VISIBILITY: visible;"><li>set seed for deterministic behavior
+
+</li>
+<li><span style="color: #006600;">Randumb package</span>
+<ul><li>bad random number generators
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_6_1_2" class="foldclosed" onClick="show_folder('1_2_6_1_2')" style="POSITION: absolute">+</span> <span id="hide1_2_6_1_2" class="foldopened" onClick="hide_folder('1_2_6_1_2')">-</span>
+probability distributions
+<ul id="fold1_2_6_1_2" style="POSITION: relative; VISIBILITY: visible;"><li>binomial distribution
+<ul><li>sample()
+
+</li>
+<li>rbinom()
+
+</li>
+
+</ul>
+</li>
+<li>Poisson distribution
+
+</li>
+<li><span id="show1_2_6_1_2_1" class="foldclosed" onClick="show_folder('1_2_6_1_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_6_1_2_1" class="foldopened" onClick="hide_folder('1_2_6_1_2_1')">-</span>
+normal distribution
+<ul id="fold1_2_6_1_2_1" style="POSITION: relative; VISIBILITY: visible;"><li>as approximation of binomial
+
+</li>
+<li>as limit of Poisson
+
+</li>
+<li>law of large numbers
+<ul><li>big data makes this work better
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li>Chi-squared distribution
+
+</li>
+<li>t-distribution
+
+</li>
+
+</ul>
+</li>
+<li>hypothesis testing
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_6_2" class="foldclosed" onClick="show_folder('1_2_6_2')" style="POSITION: absolute">+</span> <span id="hide1_2_6_2" class="foldopened" onClick="hide_folder('1_2_6_2')">-</span>
+linear algebra
+<ul id="fold1_2_6_2" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_2_6_2_1" class="foldclosed" onClick="show_folder('1_2_6_2_1')" style="POSITION: absolute">+</span> <span id="hide1_2_6_2_1" class="foldopened" onClick="hide_folder('1_2_6_2_1')">-</span>
+Gaussian elimination
+<ul id="fold1_2_6_2_1" style="POSITION: relative; VISIBILITY: visible;"><li>practice in addressing rows and columns
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_2_6_2_2" class="foldclosed" onClick="show_folder('1_2_6_2_2')" style="POSITION: absolute">+</span> <span id="hide1_2_6_2_2" class="foldopened" onClick="hide_folder('1_2_6_2_2')">-</span>
+linear programming
+<ul id="fold1_2_6_2_2" style="POSITION: relative; VISIBILITY: visible;"><li>dietary requirements
+<ul><li>cheapest
+
+</li>
+<li>lightest
+
+</li>
+<li>fewest calories
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_3" class="foldclosed" onClick="show_folder('1_3')" style="POSITION: absolute">+</span> <span id="hide1_3" class="foldopened" onClick="hide_folder('1_3')">-</span>
+data
+<ul id="fold1_3" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_3_1" class="foldclosed" onClick="show_folder('1_3_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1" class="foldopened" onClick="hide_folder('1_3_1')">-</span>
+loading
+<ul id="fold1_3_1" style="POSITION: relative; VISIBILITY: visible;"><li>CSV and friends
+
+</li>
+<li><span id="show1_3_1_1" class="foldclosed" onClick="show_folder('1_3_1_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1_1" class="foldopened" onClick="hide_folder('1_3_1_1')">-</span>
+XML
+<ul id="fold1_3_1_1" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_3_1_1_1" class="foldclosed" onClick="show_folder('1_3_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_3_1_1_1" class="foldopened" onClick="hide_folder('1_3_1_1_1')">-</span>
+HTML
+<ul id="fold1_3_1_1_1" style="POSITION: relative; VISIBILITY: visible;"><li>web scraping
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_3_2" class="foldclosed" onClick="show_folder('1_3_2')" style="POSITION: absolute">+</span> <span id="hide1_3_2" class="foldopened" onClick="hide_folder('1_3_2')">-</span>
+tidying
+<ul id="fold1_3_2" style="POSITION: relative; VISIBILITY: visible;"><li>"tidy" == "3rd normal form"
+
+</li>
+<li><span id="show1_3_2_1" class="foldclosed" onClick="show_folder('1_3_2_1')" style="POSITION: absolute">+</span> <span id="hide1_3_2_1" class="foldopened" onClick="hide_folder('1_3_2_1')">-</span>
+tools
+<ul id="fold1_3_2_1" style="POSITION: relative; VISIBILITY: visible;"><li>base R
+
+</li>
+<li><span style="color: #990033;">dplyr</span>
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_3_3" class="foldclosed" onClick="show_folder('1_3_3')" style="POSITION: absolute">+</span> <span id="hide1_3_3" class="foldopened" onClick="hide_folder('1_3_3')">-</span>
+merging &amp; aggregating
+<ul id="fold1_3_3" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_3_3_1" class="foldclosed" onClick="show_folder('1_3_3_1')" style="POSITION: absolute">+</span> <span id="hide1_3_3_1" class="foldopened" onClick="hide_folder('1_3_3_1')">-</span>
+<span style="color: #990033;">sqldf</span>
+<ul id="fold1_3_3_1" style="POSITION: relative; VISIBILITY: visible;"><li>use SQL in R
+
+</li>
+
+</ul>
+</li>
+<li>dplyr
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_4" class="foldclosed" onClick="show_folder('1_4')" style="POSITION: absolute">+</span> <span id="hide1_4" class="foldopened" onClick="hide_folder('1_4')">-</span>
+visualization
+<ul id="fold1_4" style="POSITION: relative; VISIBILITY: visible;"><li>heat maps
+
+</li>
+<li><span id="show1_4_1" class="foldclosed" onClick="show_folder('1_4_1')" style="POSITION: absolute">+</span> <span id="hide1_4_1" class="foldopened" onClick="hide_folder('1_4_1')">-</span>
+geography
+<ul id="fold1_4_1" style="POSITION: relative; VISIBILITY: visible;"><li>conditional choropleth maps
+
+</li>
+
+</ul>
+</li>
+<li>Tableau
+
+</li>
+<li><span id="show1_4_2" class="foldclosed" onClick="show_folder('1_4_2')" style="POSITION: absolute">+</span> <span id="hide1_4_2" class="foldopened" onClick="hide_folder('1_4_2')">-</span>
+R graphics systems
+<ul id="fold1_4_2" style="POSITION: relative; VISIBILITY: visible;"><li>base graphics
+
+</li>
+<li><span id="show1_4_2_1" class="foldclosed" onClick="show_folder('1_4_2_1')" style="POSITION: absolute">+</span> <span id="hide1_4_2_1" class="foldopened" onClick="hide_folder('1_4_2_1')">-</span>
+lattice
+<ul id="fold1_4_2_1" style="POSITION: relative; VISIBILITY: visible;"><li>formulae
+
+</li>
+
+</ul>
+</li>
+<li><span style="color: #990033;">ggplot2</span>
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_5" class="foldclosed" onClick="show_folder('1_5')" style="POSITION: absolute">+</span> <span id="hide1_5" class="foldopened" onClick="hide_folder('1_5')">-</span>
+multivariate analysis
+<ul id="fold1_5" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_5_1" class="foldclosed" onClick="show_folder('1_5_1')" style="POSITION: absolute">+</span> <span id="hide1_5_1" class="foldopened" onClick="hide_folder('1_5_1')">-</span>
+regression
+<ul id="fold1_5_1" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_5_1_1" class="foldclosed" onClick="show_folder('1_5_1_1')" style="POSITION: absolute">+</span> <span id="hide1_5_1_1" class="foldopened" onClick="hide_folder('1_5_1_1')">-</span>
+how it works
+<ul id="fold1_5_1_1" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_5_1_1_1" class="foldclosed" onClick="show_folder('1_5_1_1_1')" style="POSITION: absolute">+</span> <span id="hide1_5_1_1_1" class="foldopened" onClick="hide_folder('1_5_1_1_1')">-</span>
+gradient descent
+<ul id="fold1_5_1_1_1" style="POSITION: relative; VISIBILITY: visible;"><li>cost function optimization
+
+</li>
+
+</ul>
+</li>
+<li>normal method
+
+</li>
+<li>regularization
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_5_1_2" class="foldclosed" onClick="show_folder('1_5_1_2')" style="POSITION: absolute">+</span> <span id="hide1_5_1_2" class="foldopened" onClick="hide_folder('1_5_1_2')">-</span>
+variations
+<ul id="fold1_5_1_2" style="POSITION: relative; VISIBILITY: visible;"><li>logistic regression
+
+</li>
+<li>Poisson regression
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_5_1_3" class="foldclosed" onClick="show_folder('1_5_1_3')" style="POSITION: absolute">+</span> <span id="hide1_5_1_3" class="foldopened" onClick="hide_folder('1_5_1_3')">-</span>
+related methods
+<ul id="fold1_5_1_3" style="POSITION: relative; VISIBILITY: visible;"><li>ANNs
+
+</li>
+<li><span id="show1_5_1_3_1" class="foldclosed" onClick="show_folder('1_5_1_3_1')" style="POSITION: absolute">+</span> <span id="hide1_5_1_3_1" class="foldopened" onClick="hide_folder('1_5_1_3_1')">-</span>
+SVMs
+<ul id="fold1_5_1_3_1" style="POSITION: relative; VISIBILITY: visible;"><li>large margin classifier
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_5_1_4" class="foldclosed" onClick="show_folder('1_5_1_4')" style="POSITION: absolute">+</span> <span id="hide1_5_1_4" class="foldopened" onClick="hide_folder('1_5_1_4')">-</span>
+how you do it
+<ul id="fold1_5_1_4" style="POSITION: relative; VISIBILITY: visible;"><li><span id="show1_5_1_4_1" class="foldclosed" onClick="show_folder('1_5_1_4_1')" style="POSITION: absolute">+</span> <span id="hide1_5_1_4_1" class="foldopened" onClick="hide_folder('1_5_1_4_1')">-</span>
+linear regression
+<ul id="fold1_5_1_4_1" style="POSITION: relative; VISIBILITY: visible;"><li>curve fitting
+
+</li>
+
+</ul>
+</li>
+<li>transforming variables
+
+</li>
+<li>logistic (and Poisson?) regression
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_5_1_5" class="foldclosed" onClick="show_folder('1_5_1_5')" style="POSITION: absolute">+</span> <span id="hide1_5_1_5" class="foldopened" onClick="hide_folder('1_5_1_5')">-</span>
+vs. ANOVA
+<ul id="fold1_5_1_5" style="POSITION: relative; VISIBILITY: visible;"><li>numerical interactions can be complicated
+
+</li>
+<li>categorical interactions are simple
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li><span id="show1_5_2" class="foldclosed" onClick="show_folder('1_5_2')" style="POSITION: absolute">+</span> <span id="hide1_5_2" class="foldopened" onClick="hide_folder('1_5_2')">-</span>
+machine learning
+<ul id="fold1_5_2" style="POSITION: relative; VISIBILITY: visible;"><li>decision trees
+
+</li>
+<li><span id="show1_5_2_1" class="foldclosed" onClick="show_folder('1_5_2_1')" style="POSITION: absolute">+</span> <span id="hide1_5_2_1" class="foldopened" onClick="hide_folder('1_5_2_1')">-</span>
+ensemble methods
+<ul id="fold1_5_2_1" style="POSITION: relative; VISIBILITY: visible;"><li>random forests
+
+</li>
+<li>rule ensembles???
+
+</li>
+
+</ul>
+</li>
+<li><span id="show1_5_2_2" class="foldclosed" onClick="show_folder('1_5_2_2')" style="POSITION: absolute">+</span> <span id="hide1_5_2_2" class="foldopened" onClick="hide_folder('1_5_2_2')">-</span>
+clustering
+<ul id="fold1_5_2_2" style="POSITION: relative; VISIBILITY: visible;"><li>k-means
+
+</li>
+<li>hierarchical
+
+</li>
+
+</ul>
+</li>
+
+</ul>
+</li>
+<li>dimension reduction
+
+</li>
+
+</ul>
+</li>
+
+</ul><SCRIPT type="text/javascript">
+fold_document();
+</SCRIPT>
+</body>
+</html>
