@@ -12,7 +12,7 @@ print_as_latex <- function(r_equation){
 }
 ```
 
-Taking derivatives of functions is generally a matter of applying one or more formulas from a table of derivatives, such as those given in the back of a calculus text book. This process can involve complicated algebra, so it is easy to make mistakes. Here we look at a simple way to check your work by graphing it against what the derivative should look like, based on a numerical approximation. If your analytical function for the derivative plots on top of the numerical approximation, that is good evidence that it is correct.
+Taking derivatives of functions is generally a matter of applying one or more formulas from a table of derivatives, such as those given in the back of a calculus textbook. This process can involve complicated algebra, so it is easy to make mistakes. Here we look at a simple way to check your work by graphing it against what the derivative should look like, based on a numerical approximation. If your analytical function for the derivative plots on top of the numerical approximation, that is good evidence that it is correct.
 
 ```{r d_function, echo=FALSE}
 d <- function(FUN, X){
@@ -57,7 +57,7 @@ We can use the approach described above to create a function to compute numerica
 ```{r display_d_function, ref.label='d_function', eval=FALSE, echo=TRUE}
 ```
 
-This function, named "d", takes two arguments: the function ("FUN") for which we want to estimate the derivative, and a vector of X values over which we will produce estimated slopes. The first step is to call the function on the X values; these are stored in the vector Y. Now we can find (x,y) points by looking in these vectors. Say we want the third (x,y) point; we set `i = 3`, then `X[i]` is the third x-value, and `Y[i]` is the third y-value; we can find the point before it with `i = 2` and the point after it with `i = 4`, repsectively. For any point `i`, we will estimate the slope of its tangent by rise over run, or `(Y[i+1]-Y[i-1])/(X[i+1]-X[i-1])`; the local function `numerical_derivative` will simply apply that formula to a set of `i` values. Ther eis one minor issue; the very first and the very last points do not have flanking points, so we can only apply our slope estimating function to the interior points; this is just a sequence of i-values from 2 to one less than the total number of points. Now when we apply our slope function to the indexes of the interior points (using `sapply`), we get a vector of slope values. To make plotting simpler, we add back "not available" values to both ends of this slope vector; this way it will be the same length as the original vector of x values, and this will keep the plot function from complaining that it can't match up the (x,y) pairs for our slope values.
+This function, named "d", takes two arguments: the function ("FUN") for which we want to estimate the derivative, and a vector of X values over which we will produce estimated slopes. The first step is to call the function on the X values; these are stored in the vector Y. Now we can find (x,y) points by looking in these vectors. Say we want the third (x,y) point; we set `i = 3`, then `X[i]` is the third x-value, and `Y[i]` is the third y-value; we can find the point before it with `i = 2` and the point after it with `i = 4`, repsectively. For any point `i`, we will estimate the slope of its tangent by rise over run of a line through its flanking points, or `(Y[i+1]-Y[i-1])/(X[i+1]-X[i-1])`; we will use the local function `numerical_derivative` to apply that formula to a set of `i` values. There is one minor issue; the very first and the very last points do not have flanking points, so we can only apply our slope-estimating function to the interior points; this is just a sequence of i-values from 2 to one less than the total number of points. Now when we apply our slope function to the indexes of the interior points (using `sapply`), we get a vector of slope values. To make plotting simpler, we add back "not available" values to both ends of this slope vector; this way it will be the same length as the original vector of x values, and this will keep the plot function from complaining that it can't match up the (x,y) pairs for our slope values.
 
 # Plotting functions
 
@@ -72,14 +72,14 @@ plotFdF <- function(x, fun, dfun){
 }
 ```
 
-# Some simple examples
+# A simple example
 
 Say we're given the following cubic polynomial function:
 ```{r show_simple1_equation, echo=FALSE, results='asis'}
 print_as_latex("f(x) = -x^3 - 2*x^2 + 200*x")
 ```
 
-We'll code that equation as function `f`, and then use our calculus skills to write it's derivatove as function `df`. We provide some reasonable range of x-values to operate over, then call our plotting code. Note that when we make the sequence of x-values, we need to make them close enough together that our approximation will be reasonable; this spacing is specified in the `by` parameter.
+We'll code that equation as function `f`, and then use our calculus skills to write it's derivatove as function `df`. We provide some reasonable range of x-values to operate over, then call our plotting code. Note that when we make the sequence of x-values, we need to make them close enough together that our approximation will be reasonable; this spacing is specified in the "`by`"" parameter.
 ```{r simple1}
 f <- function(x) -x^3 - 20*x^2 + 20*x
 df <- function(x) -3*x^2 - 40*x + 20
