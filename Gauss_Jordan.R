@@ -8,6 +8,9 @@
 # Generate deterministic pseudo-random matrix based on user ID:
 # This way we can give each student their own problem.
 
+# Sourcing an R script from github
+# http://tonybreyal.wordpress.com/2011/11/24/source_https-sourcing-an-r-script-from-github/
+
 random_invertable_matrix <- function(n, seed=NA){
 	if (!is.na(seed)){
 		if(is.character(seed)){
@@ -67,5 +70,5 @@ A %*% Ainv
 round(A %*% Ainv,12)	# round to 12 decimal places
 
 # Review questions:
-* Why is the inverse of a matrix useful? 
-* Why is the R function to compute the inverse of a matrix named "solve"?
+# * Why is the inverse of a matrix useful? 
+# * Why is the R function to compute the inverse of a matrix named "solve"?
