@@ -19,7 +19,7 @@ d <- function(FUN, X){
   Y <- FUN(X)
   numerical_derivative <- function(i) (Y[i+1]-Y[i-1])/(X[i+1]-X[i-1])
   interiorPoints <- 2:(length(X) - 1)
-  c(NA, sapply(interiorPoints, numerical_derivative), NA)
+  c(NA, vapply(interiorPoints, numerical_derivative, numeric(1)), NA)
 }
 ```
 
@@ -49,7 +49,7 @@ print_as_latex("-x^3 - 2*x^2 + 200*x")
 
 Here the point where we want to estimate the slope is circled in green, and the flankig points are plain red "x"s. The red line is the tangent to the curve at the point of interest; this is what we are trying to estimate. The yellow line passes through the two flanking points. Note that it appears to parallel to the red tangent line quite closely. It is shifted below the red line, but we only care about the slope, so this shift doesn't matter.
 
-This approximation only works if the flanking points are close together. If the flanking points are far apart and the curve has a complicated shape between these points, the the line between the flanking points might not reflect the slope of the tangent at the center point very well at all. But if the flanking points are close enough toghether that the curve between them is almost a straight line, the approximation will be very good.
+This approximation only works if the flanking points are close together. If the flanking points are far apart and the curve has a complicated shape between these points, then the line between the flanking points might not reflect the slope of the tangent at the center point very well at all. But if the flanking points are close enough toghether that the curve between them is almost a straight line, the approximation will be very good.
 
 # Computing numerical derivatives
 
@@ -57,7 +57,7 @@ We can use the approach described above to create a function to compute numerica
 ```{r display_d_function, ref.label='d_function', eval=FALSE, echo=TRUE}
 ```
 
-This function, named "d", takes two arguments: the function ("FUN") for which we want to estimate the derivative, and a vector of X values over which we will produce estimated slopes. The first step is to call the function on the X values; these are stored in the vector Y. Now we can find (x,y) points by looking in these vectors. Say we want the third (x,y) point; we set `i = 3`, then `X[i]` is the third x-value, and `Y[i]` is the third y-value; we can find the point before it with `i = 2` and the point after it with `i = 4`, repsectively. For any point `i`, we will estimate the slope of its tangent by rise over run of a line through its flanking points, or `(Y[i+1]-Y[i-1])/(X[i+1]-X[i-1])`; we will use the local function `numerical_derivative` to apply that formula to a set of `i` values. There is one minor issue; the very first and the very last points do not have flanking points, so we can only apply our slope-estimating function to the interior points; this is just a sequence of i-values from 2 to one less than the total number of points. Now when we apply our slope function to the indexes of the interior points (using `sapply`), we get a vector of slope values. To make plotting simpler, we add back "not available" values to both ends of this slope vector; this way it will be the same length as the original vector of x values, and this will keep the plot function from complaining that it can't match up the (x,y) pairs for our slope values.
+This function, named "d", takes two arguments: the function ("FUN") for which we want to estimate the derivative, and a vector of X values over which we will produce estimated slopes. The first step is to call the function on the X values; these are stored in the vector Y. Now we can find (x,y) points by looking in these vectors. Say we want the third (x,y) point; we set `i = 3`, then `X[i]` is the third x-value, and `Y[i]` is the third y-value; we can find the point before it with `i = 2` and the point after it with `i = 4`, repsectively. For any point `i`, we will estimate the slope of its tangent by rise over run of a line through its flanking points, or `(Y[i+1]-Y[i-1])/(X[i+1]-X[i-1])`; we will use the local function `numerical_derivative` to apply that formula to a set of `i` values. There is one minor issue; the very first and the very last points do not have flanking points, so we can only apply our slope-estimating function to the interior points; this is just a sequence of i-values from 2 to one less than the total number of points. Now when we apply our slope function to the indexes of the interior points (using `vapply`), we get a vector of slope values. To make plotting simpler, we add back "not available" values to both ends of this slope vector; this way it will be the same length as the original vector of x values, and this will keep the plot function from complaining that it can't match up the (x,y) pairs for our slope values.
 
 # Plotting functions
 
@@ -67,8 +67,9 @@ Here is some R code to plot a given function, the approximation of its derivativ
 plotFdF <- function(x, fun, dfun){
   ylim <- range(c(fun(x), d(fun,x), dfun(x)), na.rm=TRUE)
   plot(x, fun(x), type="l", ylim=ylim)  # original function for which we want derivative
-  lines(x, d(fun,x), lwd=3, col="yellow")  # numerical approximation
-  lines(x, dfun(x), lty=2, col="red")  # candidate analytical derivative
+  lines(x, d(fun,x), col="yellow", lwd=4)  # numerical approximation
+  lines(x, dfun(x), col="red", lty=2)  # candidate analytical derivative
+  abline(h=0, lty=3, col="gray")  # gray line showing zero on y-axis
 }
 ```
 
@@ -81,9 +82,9 @@ print_as_latex("f(x) = -x^3 - 2*x^2 + 200*x")
 
 We'll code that equation as function `f`, and then use our calculus skills to write it's derivatove as function `df`. We provide some reasonable range of x-values to operate over, then call our plotting code. Note that when we make the sequence of x-values, we need to make them close enough together that our approximation will be reasonable; this spacing is specified in the "`by`"" parameter.
 ```{r simple1}
-f <- function(x) -x^3 - 20*x^2 + 20*x
-df <- function(x) -3*x^2 - 40*x + 20
-x <- seq(-12, 12, by=0.01)
+f <- function(x) x^3 - 8*x^2 - 99*x + 600
+df <- function(x) 3*x^2 - 16*x - 99
+x <- seq(-10, 15, length=100)
 plotFdF(x, f, df)
 ```
 
