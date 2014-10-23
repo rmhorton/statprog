@@ -18,14 +18,24 @@ The programming exercises will emphasize interaction between R and other computa
 
 ## Objectives
 On completing this course, students will be able to:
-    * take advantage of the large number of software modules available from the R language
-    * merge, filter, and arrange data into formats suitable for regression or machine learning analysis
-    * create sophisticated graphs of functions or data
-    * use linear algebra approaches to find optimal solutions for systems of equations
-    * be able to run advanced SQL queries (including GIS extensions, stored procedures, and in-database analytics)
-    * develop and deploy interactive visualizations and simple data products
-    * use scripting and literate analysis tools to create fully documented and reproducible data analysis workflows
 
+* take advantage of the large number of software modules available from the R language
+* merge, filter, and arrange data into formats suitable for regression or machine learning analysis
+* create sophisticated graphs of functions or data
+* use linear algebra approaches to find optimal solutions for systems of equations
+* be able to run advanced SQL queries (including GIS extensions, stored procedures, and in-database analytics)
+* develop and deploy interactive visualizations and simple data products
+* use scripting and literate analysis tools to create fully documented and reproducible data analysis workflows
+
+## Recommended texts
+* [R in Action](http://www.amazon.com/R-Action-Robert-Kabacoff/dp/1935182390/ref=sr_1_1?s=books&ie=UTF8&qid=1414082542&sr=1-1&keywords=R+in+action): there is a new edition coming out this spring.
+* [An Introduction to R](http://cran.r-project.org/doc/manuals/R-intro.pdf)
+* [Advanced R](http://www.amazon.com/dp/1466586966/ref=cm_sw_su_dp?tag=devtools-20): also available [online](http://adv-r.had.co.nz/)
+
+## Websites
+* [StackOverflow](http://stackoverflow.com/questions/tagged/r)
+* [RSeek](http://rseek.org/): interface to Google that focuses on R.
+* [Reference Card](http://cran.r-project.org/doc/contrib/Short-refcard.pdf)
 
 ## Syllabus
 
