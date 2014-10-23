@@ -15,6 +15,15 @@ system.time({
 	w <- x^2
 })
 
+#####################################################################
+#     Wrap these three approaches in functions, run them with
+# a series of different N values, and collect the results into
+# a data frame.
+#####################################################################
+
+N <- 50000
+
+# Define functions for the three approaches
 dynamic_alloc <- function(N){
 	y <- double()
 	for (i in 1:N)
@@ -31,23 +40,30 @@ pre_allocated <- function(N){
 
 vectorized <- function(N) (1:N)^2
 
+# This is a wrapper that runs system.time on a given function 
+# with a given parameter and returns the elapsed time.
 get_time <- function(param, fun)
 	system.time( fun(param) )['elapsed']
 
+# Define a sequence of N values to try
 vector_length <- 1000 * 2^(0:6)
+
+# Make a data frame where the rows are the N values, and the columns are
+# the times for each function.
 timing_results <- data.frame(
-	N = vector_length,
 	dynamic_alloc = sapply(vector_length, get_time, dynamic_alloc),
 	pre_allocated = sapply(vector_length, get_time, pre_allocated),
-	vectorized    = sapply(vector_length, get_time, vectorized)
+	vectorized    = sapply(vector_length, get_time, vectorized),
+	row.names = vector_length
 )
 
-# plot using base graphics
+# Plot using base graphics
 with(timing_results, {
-	plot(N, dynamic_alloc, type='l', ylab="elapsed time")
-	lines(N, pre_allocated, col="red")
-	lines(N, vectorized, col="blue")
-	legend("topleft", lty=1, col=c("black", "red", "blue"), legend=c("dynamic_alloc", "pre_allocation", "vectorized") )
+	plot(vector_length, dynamic_alloc, type='l', ylab="elapsed time")
+	lines(vector_length, pre_allocated, col="red")
+	lines(vector_length, vectorized, col="blue")
+	legend("topleft", text.col=c("black", "red", "blue"), 
+		bty='n', legend=colnames(timing_results) )
 })
 
 #####################################################################
@@ -77,7 +93,7 @@ squaring_functions <- c(
 vector_length <- 1000 * 2^(0:6)
 
 timing_results <- data.frame( 
-	N = vector_length, 
+	N = vector_length,
 	lapply(squaring_functions, function(f){
 		sapply(vector_length, function(vl)
 			system.time( f(vl) )['elapsed'])
@@ -85,13 +101,15 @@ timing_results <- data.frame(
 )
 
 # Plot the results
-
+# install.packages(c("tidyr", "ggplot2"))
 # reformat the data into keys and values
 library("tidyr")	# instead of reshape2::melt
-mdf <- gather(timing_results, key="method", value="time", -N)
+tidy_tr <- gather(timing_results, key="method", value="time", -N)
 
 library("ggplot2")
-ggplot(data=mdf, aes(x=N, y=time, group=method, colour=method) ) + 
+ggplot(data=tidy_tr, aes(x=N, y=time, group=method, colour=method) ) + 
 	geom_line() + geom_point( size=2, shape=21, fill="white" )
 
 # note that plotting N vs sqrt(time) gives a fairly straight line
+ggplot(data=tidy_tr, aes(x=N, y=sqrt(time), group=method, colour=method) ) + 
+	geom_line() + geom_point( size=2, shape=21, fill="white" )
