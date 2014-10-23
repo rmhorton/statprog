@@ -34,7 +34,7 @@ vectorized <- function(N) (1:N)^2
 get_time <- function(param, fun)
 	system.time( fun(param) )['elapsed']
 
-vector_length <- 1000 * 2^(1:6)
+vector_length <- 1000 * 2^(0:6)
 timing_results <- data.frame(
 	N = vector_length,
 	dynamic_alloc = sapply(vector_length, get_time, dynamic_alloc),
@@ -42,6 +42,7 @@ timing_results <- data.frame(
 	vectorized    = sapply(vector_length, get_time, vectorized)
 )
 
+# plot using base graphics
 with(timing_results, {
 	plot(N, dynamic_alloc, type='l', ylab="elapsed time")
 	lines(N, pre_allocated, col="red")
@@ -49,9 +50,11 @@ with(timing_results, {
 	legend("topleft", lty=1, col=c("black", "red", "blue"), legend=c("dynamic_alloc", "pre_allocation", "vectorized") )
 })
 
+#####################################################################
 
+# Even more functional approach
 
-# Even more functional
+# put the functions in a named vector
 
 squaring_functions <- c(
 	dynamic_alloc = function(N){
@@ -62,7 +65,7 @@ squaring_functions <- c(
 	},
 
 	pre_allocated = function(N){
-		y <- double(N)	# we know how big the output vector needs to be
+		y <- double(N)
 		for (i in 1:N)
 			y[i] <- i^2
 		y
@@ -71,29 +74,24 @@ squaring_functions <- c(
 	vectorized = function(N) (1:N)^2
 )
 
-timing_results2 <- data.frame( 
-	list(	N = vector_length, 
-		lapply(squaring_functions, function(f){
-			sapply(vector_length, get_time, f)
-		})
-	)
+vector_length <- 1000 * 2^(0:6)
+
+timing_results <- data.frame( 
+	N = vector_length, 
+	lapply(squaring_functions, function(f){
+		sapply(vector_length, function(vl)
+			system.time( f(vl) )['elapsed'])
+	})
 )
 
-line_colors <- c("black", "red", "blue")
-with(timing_results2, {
-	plot(N, dynamic_alloc, type='n', ylab="elapsed time")
-	lines(N, dynamic_alloc, col="black")
-	lines(N, pre_allocated, col="red")
-	lines(N, vectorized, col="blue")
-	legend("topleft", lty=1, , legend=names(timing_results)[-1] )
-})
+# Plot the results
 
-# Fitting a curve to the results:
-dyn_alloc_model <- lm( log(dynamic_alloc) ~ N . N^2, data=times)
+# reformat the data into keys and values
+library("tidyr")	# instead of reshape2::melt
+mdf <- gather(timing_results, key="method", value="time", -N)
 
-N_values <- seq(0, max(vector_length), length=10)
+library("ggplot2")
+ggplot(data=mdf, aes(x=N, y=time, group=method, colour=method) ) + 
+	geom_line() + geom_point( size=2, shape=21, fill="white" )
 
-predicted_times <- exp( predict(dyn_alloc_model, list(N = N_values)) )
-
-lines(N_values, predicted_times, col="green", lty=2)
-
+# note that plotting N vs sqrt(time) gives a fairly straight line
