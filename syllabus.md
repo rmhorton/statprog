@@ -28,23 +28,27 @@ On completing this course, students will be able to:
 * use scripting and literate analysis tools to create fully documented and reproducible data analysis workflows
 
 ## Recommended texts
-* [R in Action](http://www.amazon.com/R-Action-Robert-Kabacoff/dp/1935182390/ref=sr_1_1?s=books&ie=UTF8&qid=1414082542&sr=1-1&keywords=R+in+action): This is a good introduction to using the R environment for doing analysis; it does not focus on programming. Note that there will be a new edition coming out this spring.
+* [R in Action](http://www.amazon.com/R-Action-Robert-Kabacoff/dp/1935182390/ref=sr_1_1?s=books&ie=UTF8&qid=1414082542&sr=1-1&keywords=R+in+action): This is a good introduction to using the R environment for doing analysis; it does not focus on programming. Note that there will be a new edition coming out this spring; otherwise I'd say buy it.
 * [An Introduction to R](http://cran.r-project.org/doc/manuals/R-intro.pdf): The "sample session" in Appendix A is a useful tutorial; otherwise, this book is mostly good for reference.
-* [Advanced R](http://www.amazon.com/dp/1466586966/ref=cm_sw_su_dp?tag=devtools-20): also available [online](http://adv-r.had.co.nz/). This is a new text written by the author of many of the packages we will focus on (ggplot2, tidyr, dplyr, etc). It is not an introductory book, but we will probably use a few sections.
+* [Advanced R](http://www.amazon.com/dp/1466586966/ref=cm_sw_su_dp?tag=devtools-20): also available [online](http://adv-r.had.co.nz/). This is a new text written by Hadley Wickham, the author of many of the packages we will focus on (ggplot2, tidyr, dplyr, etc). It is not an introductory book, but we will use selected sections.
 
 ## Websites
-* For asking questions
-    * [StackOverflow](http://stackoverflow.com/questions/tagged/r)
+* Interactive Tutorials
+    * [swirl](http://swirlstats.com/students.html): This is an R package that walks you through various tutorials that you run right inside R itself.
+* Questions
     * [RSeek](http://rseek.org/): interface to Google that focuses on R.
+    * [StackOverflow](http://stackoverflow.com/questions/tagged/r)
 * Reference
     * [Reference Card](http://cran.r-project.org/doc/contrib/Short-refcard.pdf)
-* Getting code
+    * [About R](http://stackoverflow.com/tags/r/info) on StackOverflow
+* Code
     * [CRAN](http://cran.r-project.org/) The Comprehensive R Archive Network is the main repository for R packages.
     * [Bioconductor](http://www.bioconductor.org/) is a separate repository for bioinformatics packages
     * [GitHub](https://github.com), especially the [course repository](https://github.com/rmhorton/statprog) and [Hadley Wickham's site](https://github.com/hadley)
+    
 ## Syllabus
 
-This is a rough draft. It may make more sense to change the order of some lessons; in particular, we may want to go back and forth between visualization and analysis, and tease them with enough analysis to motivate data munging. I'm planing to informally introduce classification examples during the data manipulation section (probably starting with a simple classifier like kNN to minimize the magic). We may also need to move some discussion of analysis earlier in the course to support the students taking the additional project credit. 
+_This is a rough draft. It may make more sense to change the order of some lessons; in particular, we may want to go back and forth between visualization and analysis, and tease them with enough analysis to motivate data munging. I'm planing to informally introduce classification examples during the data manipulation section (probably starting with a simple classifier like kNN to minimize the magic). We may also need to move some discussion of analysis earlier in the course to support the students taking the additional project credit._
 
 ### Section 1: R Programming Idioms
 
