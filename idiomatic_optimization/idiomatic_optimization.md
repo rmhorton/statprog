@@ -1,7 +1,7 @@
 Idiomatic Optimization:  simpler, faster R code 
 ========================================================
-author: Robert Horton, PhD
-date: December 1, 2014
+author: Robert Horton, PhD, MS
+date: December 8, 2014
 
 
 
@@ -15,77 +15,50 @@ This presentation assumes that you:
 * can write code that gives correct answers, even if it is slow
 * want to make your code simpler and faster
 
-Characteristics of R
-========================================================
-* Scripting language
-    - many internals are written in C/C++ or Fortran
-* Built-in data structures
-    - vectors, matrixes, lists, data frames, environments
-    - every variable is at least a vector
-        + the columns of a data frame are vectors
-        + a matrix is a 2D vector
-* Functional
-    - functions can take other functions as parameters
-    - minimize side-effects and mutable data
-    
-Idioms in R
-========================================================
-* Process data by batch, not by item
-    - Be declarative rather than imperative
-    - Use vector (or matrix) operations if possible
-    - Use functional approaches when appropriate
-    - Avoid growing data structures in memory
-* Use available functions
-* Use appropriate data structures
-
-_Idiomatic R should be concise, readable, and fast._
-
 Idiomatic Optimization
 ========================================================
 
-Idiomatic R should be clear and concise because it is declarative and high-level.
+![plot of chunk venn_diagram](idiomatic_optimization-figure/venn_diagram.png) 
+***
+We will look at ways to make your code shorter, easier to understand, and faster, all at the same time.
 
-Improvements in speed are a (sometimes dramatic) side benefit.
+This is not premature optimization; we want to make the code concise and clear anyway.
 
 
-Iteration: loops, maps, and vectors
+Quiz
 ========================================================
 
+Given a function like this:
 
+```r
+f <- function(n) (1 + 1/n)^n
 ```
-dynamic_alloc  <-  function (N){
-    y <- double()
-    for (i in 1:N) y[i] <- i^2
-    y
-} 
+What is the fastest way to run the function on a series of inputs?
+* y <- numeric(); for (i in seq_along(x)) y[i] <- f(x[i])
+* y <- numeric(length(x)); for (i in seq_along(x)) y[i] <- f(x[i])
+* y <- sapply(x, f)
+* y <- vapply(x, f, numeric(1))
 
-pre_allocated  <-  function (N){
-    y <- double(N)
-    for (i in 1:N) y[i] <- i^2
-    y
-} 
 
-vapplied  <-  function (N){
-    vapply(1:N, function(x) x^2, 0.1)
-} 
+Trick Question!  y <- f(x)
+========================================================
 
-vectorized  <-  function (N)(1:N)^2 
-
+```r
+x <- 1:1000
 ```
+![plot of chunk run_microbenchmark](idiomatic_optimization-figure/run_microbenchmark.png) 
+
 
 Performance
 ========================================================
+
 
 ![plot of chunk performance_fig1](idiomatic_optimization-figure/performance_fig1.png) 
-
-Performance
-========================================================
-![plot of chunk performance_fig2](idiomatic_optimization-figure/performance_fig2.png) 
 
 Case Study
 ========================================================
 
-![Machine Learning for Hackers](MLH.jpg)
+[![Machine Learning for Hackers](http://akamaicovers.oreilly.com/images/0636920018483/lrg.jpg)](http://shop.oreilly.com/product/0636920018483.do)
 ***
 * Book organized as a series of case studies presenting increasingly complex machine learning approaches
 * Programming perspective, rather than straight math
@@ -95,7 +68,7 @@ Case Study
 
 Code Breaking as an Optimization Problem
 ========================================================
-* Toy problem: use Metropolis algorithm to solve a substitution cipher
+* Toy problem: use Metropolis algorithm to solve a simple substitution cipher
     - A (secret) permutation of the alphabet has been used to encipher a message
     - Try to find the best permutation to reverse the cipher
 * Uses a large dictionary of English words and their observed probability of occurrence in training text
@@ -103,16 +76,31 @@ Code Breaking as an Optimization Problem
     - score message by product of word probabilities
 * Requires many iterations of testing and modification
 
-Algorithm
+Improvement of Scores Across Iterations
 ========================================================
-* start with a random key, then
-    - propose a small modification to the key
-        + compare modified key to previous one
-        + if modified version is better, use it
-        + otherwise, randomly select old or new key, with probability proportional to score
-    - repeat modify/test/select cycle many, many times
-* not completely greedy
-    - sometimes takes slightly lower scoring permutation to avoid getting trapped in local minimum
+
+
+
+![plot of chunk plot_res](idiomatic_optimization-figure/plot_res.png) 
+***
+* actual message: 
+<div>"here is some sample text"</div>
+* caesar cipher: "bcdefghijklmnopqrstuvwxyza"
+* total iterations: 5 &times; 10<sup>4</sup>
+* final decryption: 
+<div>"were as some simple text"</div>
+
+Time Comparisons
+========================================================
+
+![plot of chunk timing_chart](idiomatic_optimization-figure/timing_chart.png) 
+***
+Total time for 50000 iterations was reduced from 
+43.0 minutes to 
+12.9 seconds
+(a 200-fold improvement).
+
+Length of code was reduced by half.
 
 Profiling run #1
 ========================================================
@@ -132,9 +120,11 @@ Profiling run #1
 one.gram.probability
 ========================================================
 ```
-one.gram.probability <- function(one.gram, lexical.database = list())
+one.gram.probability <- 
+    function(one.gram, lexical.database=list())
 {
-  lexical.probability <- lexical.database[[one.gram]]
+  lexical.probability <- 
+        lexical.database[[one.gram]]
 ...
 ```
 
@@ -143,7 +133,7 @@ one.gram.probability <- function(one.gram, lexical.database = list())
 Solution #1: environment vs. list
 ========================================================
 
-Looking up values by key requires sequential search in a list, and is very slow for long lists. An environment uses hashing to find values by key in constant time, regardless of the number of keys.
+In a list, looking up values by key requires sequential search in a list. An environment uses hashing to find values by key in constant time.
 
 ```
 LEXMAP <- new.env(size=length(lexical.database))
@@ -151,7 +141,7 @@ for (i in seq_along(lexical.database))
     LEXMAP[[ names(lexical.database)[i] ]] <- lexical.database[[i]]
 ```
 
-When copying the dictionary, using an integer index into the original list with double bracket operator was dramatically faster than looking up each word by name.
+When copying the dictionary, using an integer index into the original list with double bracket operator is dramatically faster than looking up each word by name.
 
 Profiling run #2
 ========================================================
@@ -179,7 +169,7 @@ for (iteration in 1:number.of.iterations){
   results <- rbind(results,data.frame...
 ```
   
-Solution #2: `do.call` with `rbind`
+Solution #2: combine all the rows at once
 ========================================================
 
 ```
@@ -223,15 +213,16 @@ apply.cipher.to.string <- function(string, cipher)
 }
 ```
 
-Solution #3: vapply cipher
+Solution #3: vapply the cipher
 ========================================================
-```
-apply.cipher.to.text <- function(text,
-                                cipher){
-    decipher_vec <- function(ch_vec, cipher)
+
+```r
+apply.cipher.to.text <- 
+        function(text, cipher){
+    encipher_vec <- function(ch_vec, cipher)
         paste(cipher[ch_vec], collapse='')
-	vapply(strsplit(text,''),
-        decipher_vec, "foo", cipher)
+	vapply(strsplit(text,''), 
+        encipher_vec, character(1), cipher)
 }
 ```
 
@@ -252,18 +243,22 @@ Profiling run #4
 
 Final Version: multiple changes
 ========================================================
+Representing ciphers as strings instead of named vectors allows fast and simple character translation using `chartr`.
+
 ```
 generate.random.cipher <- function()
-        paste(sample(letters), collapse='')
+    paste(sample(letters), collapse='')
 
 alphabet <- paste(letters, collapse='')
 encipher <- function(string, cipher)
-            chartr(alphabet, cipher, string)
+        chartr(alphabet, cipher, string)
 ```
+
+Collecting the results for each iteration in the corresponding row of a pre-allocated character matrix, then converting to a data frame at the end of the run, is much faster than `rbind` on single-row data frames.
 
 Final Profiling Run
 ========================================================
-(50000 iterations in 11.6 sec)
+(50000 iterations in 12.9 sec)
 ```
                  self.time self.pct
 "chartr"              3.38    29.14
@@ -278,37 +273,18 @@ Final Profiling Run
 "sample"              0.30     2.59
 ```
 
-Time Comparisons
-========================================================
-
-![plot of chunk timing_chart](idiomatic_optimization-figure/timing_chart.png) 
-***
-Total time for 50000 iterations was reduced from 
-47.1 minutes to 
-11.6 seconds
-(a 243-fold improvement).
-
-
-Other Optimization Approaches
-========================================================
-
-* byte-code compiling
-* memoization
-* parallelization
-* native code
-
 Idioms in R
 ========================================================
 * Process data by batch, not by item
-    - Be declarative rather than imperative
-    - Use vector (or matrix) operations if possible
-    - Use functional approaches when appropriate
-        + *map*: `*apply` family of functions
-        + *filter*: subsetting operators, `grep`
-        + *reduce*: `sum`, `do.call`, etc.
+    - <span style="color:#800">Orchestrate computation</span>: declarative, not imperative
+        + Call a solver: `solve(A,b)`, `optim()`, `ode(...)`
+        + Use vector (or matrix) operations: `sqrt(vec)`, `%*%`
     - Avoid growing data structures in memory
-* Use available functions
-* Use appropriate data structures
+* R has a rich vocabulary. Use it.
+    - Use available functions / packages
+    - Use appropriate data structures
+
+_Idiomatic R can be concise, readable, and fast._
 
 Session Info
 ========================================================
@@ -324,11 +300,12 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] ggplot2_1.0.0 knitr_1.6    
+[1] microbenchmark_1.4-2 ggplot2_1.0.0        knitr_1.6           
 
 loaded via a namespace (and not attached):
- [1] colorspace_1.2-4 digest_0.6.4     evaluate_0.5.5   formatR_1.0     
- [5] grid_3.1.1       gtable_0.1.2     labeling_0.3     MASS_7.3-34     
- [9] munsell_0.4.2    plyr_1.8.1       proto_0.3-10     Rcpp_0.11.2     
-[13] reshape2_1.4     scales_0.2.4     stringr_0.6.2    tools_3.1.1     
+ [1] codetools_0.2-9  colorspace_1.2-4 digest_0.6.4     evaluate_0.5.5  
+ [5] formatR_1.0      grid_3.1.1       gtable_0.1.2     labeling_0.3    
+ [9] MASS_7.3-34      munsell_0.4.2    plyr_1.8.1       proto_0.3-10    
+[13] Rcpp_0.11.2      reshape2_1.4     scales_0.2.4     stringr_0.6.2   
+[17] tools_3.1.1     
 ```

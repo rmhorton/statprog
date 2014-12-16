@@ -72,3 +72,41 @@ round(A %*% Ainv,12)	# round to 12 decimal places
 # Review questions:
 # * Why is the inverse of a matrix useful? 
 # * Why is the R function to compute the inverse of a matrix named "solve"?
+
+
+# Elimination Matrixes
+set.seed(1)
+n <- 3
+A <- matrix( sample(0:10, n^2, replace=T), nrow=n)
+A
+#      [,1] [,2] [,3]
+# [1,]    2    9   10
+# [2,]    4    2    7
+# [3,]    6    9    6
+
+I <- diag(n)
+P23 <- I[c(1,3,2),]	# permutation matrix
+P23 %*% A	# swap rows 2 and 3
+A %*% P23	# swap cols 2 and 3
+
+E21 <- I; E21[2,1] <- -A[2,1]/A[1,1]
+E31 <- I; E31[3,1] <- -A[3,1]/A[1,1]
+B <- E21 %*% E31 %*% A	# temporary copy
+E32 <- I; E32[3,2] <- -B[3,2]/B[2,2]
+E12 <- I; E12[1,2] <- -B[1,2]/B[2,2]
+C <- E32 %*% E12 %*% B
+E13 <- I; E13[1,3] <- -C[1,3]/C[3,3]
+E23 <- I; E23[2,3] <- -C[2,3]/C[3,3]
+D <- E13 %*% E23 %*% C
+
+E13 %*% E23 %*% E32 %*% E12 %*% E21 %*% E31 %*% A
+
+E <- E13 %*% E23 %*% E32 %*% E12 %*% E21 %*% E31
+
+round(E %*% A, 6)
+
+N <- diag(1/diag(E%*%A)) # diag either creates a diagonal matrix, or pulls the diagonal from a matrix.
+
+Ainv2 <- N %*% E
+Ainv <- solve(A)
+

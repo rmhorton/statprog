@@ -64,11 +64,11 @@ This function, named "d", takes two arguments: the function ("FUN") for which we
 Here is some R code to plot a given function, the approximation of its derivative, and the user's guess of the derivative function on a single graph. You can use it to check whether your derivative function is close to the true answer.
 
 ```{r plotting_multiple_functions}
-plotFdF <- function(x, fun, dfun){
-  ylim <- range(c(fun(x), d(fun,x), dfun(x)), na.rm=TRUE)
-  plot(x, fun(x), type="l", ylim=ylim)  # original function for which we want derivative
-  lines(x, d(fun,x), col="yellow", lwd=4)  # numerical approximation
-  lines(x, dfun(x), col="red", lty=2)  # candidate analytical derivative
+plotFdF <- function(x, f, df){
+  ylim <- range(c(f(x), d(f,x), df(x)), na.rm=TRUE)
+  plot(x, f(x), type="l", ylim=ylim)  # original function for which we want derivative
+  lines(x, d(f,x), col="yellow", lwd=4)  # numerical approximation
+  lines(x, df(x), col="red", lty=2)  # candidate analytical derivative
   abline(h=0, lty=3, col="gray")  # gray line showing zero on y-axis
 }
 ```
