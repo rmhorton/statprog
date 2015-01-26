@@ -1,7 +1,7 @@
 ---
 title: "HS616 Syllabus"
 author: "Robert Horton"
-date: "October 15, 2014"
+date: "January 25, 2015"
 output: pdf_document
 ---
 
@@ -62,25 +62,18 @@ R is both a programming language and an environment for statistical analysis. It
 			+ iterate: you can't learn it all at once
 		- Resources
 			+ Textbook: _R in Action_
-				- the book presents multiple cycles: Getting Started, Beginning, Intermediate, Advanced
-				- this course is (mostly) organized in one big cycle
-			+ Electronic:
-				- tutorials (swirl)
-				- help system and reference sites
-				- code repositories and installing packages
-				- Coursera
+			+ tutorials (swirl)
+			+ help system and reference sites
+			+ code repositories and installing packages
+			+ Coursera
 	* Lecture 1b: Literate Calculation
 		- Literate calculation
 			+ Introduction to RStudio and "Literate Analysis"
 			+ R as a calculator
 			+ typesetting mathematical equations in LaTeX
 			+ Exercise: Documenting calculations in RStudio
-		- Idioms matter
-			+ How to baffle R: the "loop that allocates memory" ploy
-			+ Hello functional programming
-			+ Simple performance metrics: plotting timing results
-				> vectorization
-		- Set up github accounts
+		- Course projects and deliverables
+        - Set up github accounts
 * Week 2: Statistics
 	* Lecture 2a: Probability
 		- Pseudorandom numbers
@@ -116,6 +109,12 @@ R is both a programming language and an environment for statistical analysis. It
 * Week 4: Code Optimizations
 	* Lecture 4a: Idiomatic Optimization
 	* Lecture 4b: Profiling and debugging
+        - Idioms matter
+			+ How to baffle R: the "loop that allocates memory" ploy
+			+ Hello functional programming
+			+ Simple performance metrics: plotting timing results
+			+ vectorization
+
 
 ### Section 2: Loading and Munging Data
 
