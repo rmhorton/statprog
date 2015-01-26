@@ -1,0 +1,110 @@
+Characteristics of R
+========================================================
+* Scripting language
+    - many internals are written in C/C++ or Fortran
+* Built-in data structures
+    - vectors, matrixes, lists, data frames, environments
+    - every variable is at least a vector
+        + the columns of a data frame are vectors
+        + a matrix is a 2D vector
+* Functional
+    - functions can take other functions as parameters
+    - minimize side-effects and mutable data
+
+Idioms in R
+========================================================
+* Process data by batch, not by item
+    - Use vector (or matrix) operations if possible
+    - Avoid growing data structures in memory
+    - Be declarative rather than imperative
+    - Use functional approaches when appropriate
+        + *map*: `*apply` family of functions
+        + *filter*: subsetting operators, `grep`, etc.
+        + *reduce*: `sum`, `do.call`, etc.
+* R has a large vocabulary. Use it.
+    - Use available functions / packages
+    - Use appropriate data structures
+
+
+
+Vectorizing
+========================================================
+_Question_ - What is the fastest way to run this function on a vector of inputs?
+
+```{r unvectorized_function, eval=FALSE}
+g <- function(n) n^2 + rnorm(1, sd=10)
+```
+
+Vectorizing
+========================================================
+_Answer_ - Fix the function so it works on vector input
+
+```{r set_seed, echo=FALSE}
+set.seed(1)
+```
+```{r vectorize}
+g <- function(n) n^2 + rnorm(length(n), sd=10)
+
+x <- 1:20
+qplot(x, g(x)) + geom_smooth()
+```
+
+Multiple Personalities
+========================================================
+R is:
+* a programming language
+* an interactive environment for statistical analysis
+
+Some interactive features are sub-optimal for programming. For example:
+* <span style="color:#800">sapply</span>: simplifies lists to vectors if possible; convenient, but behavior depends on inputs
+* <span style="color:#800">vapply</span>: more predictable, faster; preferred for programming
+
+For more examples, see [Advanced R](http://adv-r.had.co.nz/Performance.html).
+
+Just like math
+========================================================
+```{r just_like_math, echo=FALSE}
+f <- function(n) (1 + 1/n)^n
+x <- 1:50
+op <- par(cex=1.5)
+plot(x, y=f(x), type="l", col="blue", bty="n")
+abline(h=exp(1), col="red")
+par(op)
+```
+***
+$$ f(x) = (1 + 1/n)^n $$
+
+$$ e = \lim_{x \to \infty} f(x) $$
+
+`plot(x, f(x), ...)`
+
+
+Iteration: loops, maps, and vectors
+========================================================
+
+```{r show_code_cores, echo=FALSE, results="asis"}
+fun2code <- function(fname, f){
+    src <- paste(fname, " <- ", paste(deparse(f), collapse="\n"))
+    gsub("(function \\(N\\)) \\n","\\1", src)
+}
+function_src <- mapply(fun2code, names(time_these_functions), time_these_functions)
+cat("```\n")
+for (fs in function_src) cat(fs, "\n\n")
+cat("```\n")
+```
+
+Performance
+========================================================
+```{r performance_fig2, echo=FALSE, cache=TRUE, fig.width=12, fig.height=8}
+op <- par(cex=2)
+plot_timings(time_these_functions[-1], max_N=1e5)
+par(op)
+```
+
+
+Other Optimization Approaches
+========================================================
+* byte-code compiling
+* memoization
+* parallelization
+* native code

@@ -1,0 +1,140 @@
+---
+title: "Lecture 2a: Probability"
+author: "Robert Horton"
+date: "December 28, 2014"
+output: slidy_presentation
+---
+
+## Shuffling Cards
+```{r car_suites, echo=FALSE, eval=FALSE}
+library(Unicode)
+x <- as.u_char(9824:9827)
+suites <- u_char_inspect(as.u_char(9824:9827))$Char
+```
+```{r shuffling_cards}
+deck <- paste0(c(2:10, "J", "Q", "K", "A"), rep(c("♠", "♡", "♢", "♣"), each=13))
+set.seed(123)
+rbind(sample(deck, 5), sample(deck, 5), sample(deck, 5), sample(deck, 5))  # wrong
+set.seed(123)
+deck <- sample(deck)
+cbind(deck[1:4], deck[5:8], deck[9:12], deck[13:16], deck[17:20])
+```
+
+
+## Conditional Probability
+[Bayes Theorem](http://en.wikipedia.org/wiki/Bayes%27_theorem)
+
+$$
+P(A|B) = \frac{P(B|A) P(A)}{P(B)} 
+$$
+
+Special case for two sets A and B:
+
+$$
+P(A|B)=\frac{P(B|A)P(A)}{P(B|A)P(A)+P(B|\neg A)P(\neg A)}
+$$
+
+## Diagnostic tests: sensitivity and specificity
+    T  = positive test
+    T' = negative test
+    D  = disease
+    D' = no disease
+
+    sensitivity: P(T|D)
+    specificity: P(T'|D')
+    prevalence of disease: P(D)
+    post-test probability: P(D|T)
+        a.k.a "positive predictive value"
+        
+##
+```{r, echo=FALSE}
+# http://en.wikipedia.org/wiki/Positive_and_negative_predictive_values#Relationship
+```
+
+<STYLE type="text/css">    
+table, th, td {
+    border: 1px solid black;
+    font-size: 1.1em;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+tr.alt td {
+    color: #000000;
+    background-color: #EAF2D3;
+}
+</STYLE>
+
+|    | D                | D'                | Prevalence = D/(D+D')   |             |
+|----|------------------|-------------------|-------------------------|-------------|
+| T  | TP               | FP                | precision = PPV = TP/T  | FDR = FP/T  |
+| T' | FN               | TN                | FOR = FN/T'             | NPV = TN/T' |
+|    | sensitivity=TP/D | FPR=FP/D'         | accuracy=(TP+TN)/(D+D') |             |
+|    | FNR=FN/D         | specificity=TN/D' |                         |             |
+
+(From [Wikipedia](http://en.wikipedia.org/wiki/Positive_and_negative_predictive_values#Relationship))
+
+$$ sensitivity = \frac{number~of~true~positives}{number~with~disease} $$
+    
+$$ specificity = \frac{number~of~true~negatives}{number~without~disease} $$
+    
+$$ prevalence = \frac{number~with~disease}{total~population} $$
+
+
+## Exercise
+Given a screening test with 
+
+* sensitivity of 98%, 
+* specificity of 95%, and 
+* disease prevalence of 0.1%, 
+
+what is the probability that a person who tests positive actually has the disease?
+
+## Apply Bayes Theorem
+    P(T|D) = 0.98
+    P(T'|D') = 0.95
+    P(D) = 0.001
+    
+    P(D|T) = P(T|D)*P(D)/P(T)
+    
+    P(T) = P(T|D)*P(D) + P(T|D')P(D')
+    P(T|D')P(D') = (1 - P(T'|D')) * (1 - P(D))
+    
+    P(D|T) = P(T|D)*P(D)/( P(T|D)*P(D) + (1 - P(T'|D')) * (1 - P(D)) )
+
+
+## R Code
+```{r positive_predictive_value}
+post_test_probability <- function(sensitivity, specificity, prevalence)
+	sensitivity*prevalence/(sensitivity*prevalence + (1-specificity)*(1-prevalence))
+
+post_test_probability(sensitivity=0.98, specificity=0.95, prevalence=0.001)
+```
+
+
+## Applications of medical tests
+* [screening](http://en.wikipedia.org/wiki/Type_I_and_type_II_errors#Medical_screening): detect or predict disease in at-risk population.
+* [diagnosis](http://en.wikipedia.org/wiki/Medical_test#Diagnostic): confirm or determine disease in a person suspected of having it.
+* [monitoring](http://en.wikipedia.org/wiki/Monitoring_(medicine)): measurement of conditions over time.
+
+## Permutations: order matters
+
+Permutation with replacement
+$$n^k$$
+
+Permutation without replacement
+$${k!\,(n-k)!}$$
+
+## Combinations: order does not matter
+Combinations (order doesn't matter)
+$$\tbinom nk = \tfrac{n!}{k!\,(n-k)!}$$
+
+```{r permutations}
+choose(n=3, k=1)
+choose(n=3, k=2)
+choose(n=10, k=3)
+choose(52,5)
+```
+
+## Assignment
+* Write a program to estimate the probability of getting two pair in 5-card stud poker. Compare your answer to the probability given in the Wikipedia article listing [poker hands](http://en.wikipedia.org/wiki/List_of_poker_hands).

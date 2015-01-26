@@ -1,0 +1,97 @@
+---
+output: pdf_document
+---
+Human Bi-Directional Promoters
+==============================
+```{r setup, echo=FALSE, message=FALSE, eval=FALSE}
+# R options
+options(width = 120)    # output line wrapping
+# knitr options
+opts_chunk$set(tidy = FALSE, comment='#', message=FALSE)
+```
+_Bob Horton_
+
+Bidirectional promoters are common in the human genome, and we would like to see what we can learn about them by exploring an annotation table listing human genes and their transcription start sites. It is very easy to download this type of data from the UCSC database, since they have made their MySql host available over the Internet. Here is the command I used to grab the entire 'refGene' table from the UCSC hg19 assembly using the stand-alone mysql client:
+
+`mysql --user=genome --host=genome-mysql.cse.ucsc.edu -A -e "SELECT * FROM refGene" hg19 > hg19_refgene.txt`
+
+First we load the table into R, and list the column names to get an idea of what this table can tell us:
+
+```{r loadRefgeneTable}
+library(sqldf)
+hg19_refgene <- read.delim("hg19_refgene.txt", comment.char="#", stringsAsFactors=F)
+colnames(hg19_refgene)
+```
+
+This table contains a lot of information about exons and coding sequences, but we are really only interested in transcription start sites, which is the same as txStart on the '+' strand, and txEnd on the '-' strand. We can therefore simplify the table a bit. Here we do three simplification steps: first, we use SQL to select only certain columns from the big table. In this step, we also change the name of the 'name2' column to 'symbol'. The resulting table is saved as hg19. Second, we add a new column to represent the transcription start site; on the positive strand, that is the left end of the range (txStart), and on the negative strand (any gene not on the top strand) it is the right end (txEnd). After that we can simplify again, since we don't need the txStart and txEnd columns any more. For variety, we use R code this time to specify the columns we want to keep instead of SQL.
+```{r makeTssTable}
+hg19 <- sqldf("SELECT name, chrom, strand, txStart, txEnd, name2 as symbol FROM hg19_refgene")
+hg19$tss <- ifelse(hg19$strand == '+', hg19$txStart, hg19$txEnd)
+hg19 <- hg19[, c("name", "chrom", "strand", "symbol", "tss")]
+
+head(hg19, n=10)
+```
+Note that some of the gene symbols are repeated, with multiple transcript names (isoforms) coming from a single start site. We can use SQL to group them by chromosome, strand, and start site, then rename them by concatenating a group of symbols together into a comma-separated list. The _DISTINCT_ keyword keeps any given symbol from being repeated more than once. This new consolidated table replaces the old hg19 table. To see some examples of TSSs with multiple gene symbols, we can search for symbols with commas (here collected into a new table called _multiSymbols_).
+
+```{r groupByTss}
+hg19 <- sqldf("SELECT group_concat(DISTINCT name) as name, 
+                group_concat(DISTINCT symbol) as symbol, 
+                chrom, strand, tss 
+              FROM hg19 GROUP BY chrom, strand, tss")
+
+multiSymbols <- hg19[grep(',',hg19$symbol),]
+print(head(multiSymbols), row.names=F)
+```
+Only the first few lines are shown above; the _multiSymbols_ table shows a total of `r nrow(multiSymbols)` transcription start sites that are annotated with multiple symbols.
+
+Now we use SQL to find pairs of start sites on opposite strands, within a certain distance of one another. This query uses sub-select statements to pull out the start sites on the positive and negative strands, then looks for sites on one strand within a certain distance of a start site on the other strand. Here we use 1000 bp, which is the distance set in [[Trinklein 2004](#Trinklein2004)].
+```{r findBiDirectionalPromoters}
+bdp <- sqldf(
+    "SELECT pos.chrom as chrom, pos.tss as pos_tss, neg.tss as neg_tss, 
+        pos.symbol as pos_gene, neg.symbol as neg_gene,
+        (pos.tss - neg.tss) as spacing
+    FROM  (SELECT * from hg19 WHERE strand = '+') AS pos,
+          (SELECT * from hg19 WHERE strand = '-') AS neg
+		WHERE pos.chrom = neg.chrom
+		AND   abs(neg.tss - pos.tss) < 1000")
+
+head(bdp)
+```
+
+With this table we can get a general overview of how the start sites are spaced in bidirectional promoters:
+```{r plotTssSpacings}
+hist(bdp$spacing, breaks=21, main="Bidirectional Promoter Spacing in the Human Genome", 
+     xlab="spacing between + and - transcription start sites")
+```
+Note that if a bidirectional promoter is defined as the region between the oppositely oriented promoters, then we can't include pairs with negative spacing.
+
+# Percentage of human promoters that are bidirectional
+```{r bdp_percentage}
+num_bidir <- nrow(bdp[bdp$spacing > 0,])
+total_tss <- nrow(hg19)
+```
+
+According to our criteria, there are `r num_bidir` bidirectional gene pairs in the human genome, accounting for `r 2 * (num_bidir/total_tss) * 100`% of all the promoters in the human genome. The paper by [[Trinklein 2004](#Trinklein2004)] reported 1352 pairs of bidirectional promoters (11% of all genes annotated at that time).
+
+# Exercises:
+* Given a list of gene symbols, use an asterisk to mark the ones with bidirectional promoters.
+* Search the "bdp" table to see if you can find the pairs of bidirectional reporter mentioned in the introduction to [[Adachi 2002](#Adachi2002)]. Have any of the gene symbols changed?
+```{r ex1, eval=F, echo=FALSE}
+adachi <- c("BRCA1","NBR2",  "DNA-PKcs","MCM4",  "ATM","NPAT",  "DHFR","MSH3", 
+            "G6PD","NEMO",  "Ku86","KARP-1","TERP",  "FEN1","C11orf10")
+# Ku86(KARP-1)
+bdp[bdp$pos_gene %in% adachi | bdp$neg_gene %in% adachi,]
+```
+* Use SQL queries on these tables to reproduce some of the promotor-spacing histograms from [[Trinklein 2004](#Trinklein2004)].
+
+* Generate a new bdp table, allowing up to 10 kb between start sites. Generate a histogram of promoter spacing. Filter this new table to show only those promoters with spacing of +/-1kb; is this table the same as the original? Why might pairs with negative spacing be underrepresented?
+
+* Repeat this analysis with the mouse using the refGene table from the mm9 assembly:
+`mysql --user=genome --host=genome-mysql.cse.ucsc.edu -A -e "SELECT * FROM refGene" mm9 > mm9_refgene.txt`
+
+# References
+* <a name="Trinklein2004"></a>Trinklein ND, Aldred SF, Hartman SJ, Schroeder DI, Otillar RP, Myers RM. An abundance of bidirectional promoters in the human genome. Genome Res. 2004 14(1):62-6. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/?term=14707170)
+
+* <a name="Adachi2002"></a>Adachi N, Lieber MR. Bidirectional gene organization: a common architectural feature of the human genome. Cell. 2002 Jun 28;109(7):807-9. [PubMed](http://www.ncbi.nlm.nih.gov/pubmed/?term=12110178).
+
+* [Bidirectional promoters](http://en.wikipedia.org/wiki/Promoter_%28genetics%29#Bidirectional_promoters_.28mammalian.29) in Wikipedia.

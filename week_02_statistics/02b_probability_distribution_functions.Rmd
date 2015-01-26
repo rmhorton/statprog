@@ -1,0 +1,137 @@
+---
+title: 'Lecture 2b: Probability Distribution Functions'
+author: "Robert Horton"
+date: "December 28, 2014"
+output: slidy_presentation
+---
+
+Objectives
+========================================================
+* describe what a probability distribution function represents, and what it can be used for.
+* for the following probability distributions, say whether they are continuous or discrete, and describe the kinds of systems they can be used to model:
+    - binomial
+    - Poisson
+    - normal
+* call an R function to generate a vector of random numbers from a normal distribution with a given mean and standard deviation.
+* describe the conditions under which the Normal distribution closely approximates the binomial or Poisson distributions.
+
+
+The Central Limit Theorem
+========================================================
+
+_I know of scarcely anything so apt to impress the imagination as the wonderful form of cosmic order expressed by the "Law of Frequency of Error". The law would have been personified by the Greeks and deified, if they had known of it._
+                            
+
+--[Sir Francis Galton, 1889](http://en.wikipedia.org/wiki/Central_limit_theorem#History)
+
+
+The Galton Box
+========================================================
+
+![Galton Box](http://upload.wikimedia.org/wikipedia/commons/7/7f/Quincunx_%28Galton_Box%29_-_Galton_1889_diagram.png)
+
+
+Normal Approximation to the Binomial Distribution
+========================================================
+```{r binomial_normal_curve, fig.width=9, fig.height=5}
+n <- 20
+k <- 0:n
+paths <- choose(n,k)
+plot(k, paths/sum(paths))
+p <- 0.5
+lines(k, dbinom(k, n, p), col="blue", lty=3, lwd=2)
+x <- seq(0, n, length=100)
+lines(x, dnorm(x, mean=n * p, sd=sqrt(n * p * (1-p))), col="red")
+```
+
+DeMoivre - Laplace Theorem
+========================================================
+
+[de Moivre, A. _The Doctrine of Chances_, 1738](http://en.wikipedia.org/wiki/De_Moivre%E2%80%93Laplace_theorem)
+
+$${n \choose k}p^kq^{n-k}\simeq \frac{1}{\sqrt{2\pi npq}}e^{-\frac{(k-np)^2}{2npq}}$$
+
+For the biomial distribution:
+
+$$\mu = np$$
+$$\sigma = \sqrt{npq}$$ where q = (1-p)
+
+Bell Curves
+========================================================
+
+```{r bell_curve}
+x <- seq(-3, 3, length=100)
+plot(x, exp(-(x^2)/2))
+```
+
+The Bell Curve as a Probability Distribution Function
+========================================================
+
+```{r}
+integrate(function(x) exp(-(x^2)/2), -Inf, Inf)
+
+sqrt(2 * pi)
+```
+
+The Normal Distribution
+===
+
+$$ \frac{1}{\sigma \sqrt{2 \pi}} e^{\frac{-(x - \mu)^2}{2 \sigma^2}} $$
+
+
+```{r normal_pdf}
+normal_pdf <- function(x, mu=0, sigma=1)
+    1/(sigma * sqrt(2*pi)) * exp(-(x - mu)^2/(2*sigma^2))
+
+integrate(normal_pdf, -Inf, Inf)
+```
+
+
+The Normal distribution
+========================================================
+```{r manipulate_norm_dist, eval=FALSE}
+library(manipulate)
+x <- seq(-20, 20, by=0.1)
+manipulate(plot(x, dnorm(x, mean=m, sd=s), type="l", col="red"), 
+           m = slider(-20.0, 20.0, initial=0),
+           s = slider(0.01, 10, initial=1))
+```
+
+Review Questions
+========================================================
+Name this distribution:
+
+```{r uniform_distribution, echo=FALSE}
+x <- seq(0,1,length=100)
+plot(c(-0.1, 0, x, 1, 1.1), c(0,0,dunif(x),0,0), type='l', ylab="P")
+```
+
+Review Questions
+========================================================
+Name this distribution:
+
+```{r normal_distribution, echo=FALSE}
+x <- seq(-3,3,length=100)
+plot(x, dnorm(x), type='l', ylab="P")
+```
+
+Review Questions
+========================================================
+Which distribution might this be?:
+
+```{r poisson_distribution, echo=FALSE}
+x <- 0:10
+plot(x, dpois(x, lambda=3), type='b', xlab="k", ylab="P(X=k)")
+```
+
+
+Review Questions
+========================================================
+
+* Name two commonly used probability density functions (continuous)
+* Name two commonly used probability mass functions (discrete)
+
+Assignment
+========================================================
+
+

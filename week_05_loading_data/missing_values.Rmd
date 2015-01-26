@@ -1,0 +1,70 @@
+---
+title: "Ignoring Missing Values"
+author: "Robert Horton"
+date: "November 7, 2014"
+output: ioslides_presentation
+---
+
+## Missing Values
+
+By default, many R functions will not give you an answer if there are missing values in the input:
+```{r mean_with_NA}
+measurements <- c(1,3,2,NA,10)
+
+mean(measurements)
+```
+Since it doesn't know what the fourth value should have been, the default result is to not give you an answer.
+
+## Dropping Missing Values
+
+We can specify that we want the function to ignore the missing values, and just operate on the values it has,  by setting the `na.rm` parameter to TRUE.
+
+```{r mean_with_na_rm}
+measurements
+mean(measurements, na.rm=TRUE)
+```
+
+## Applying a Function to a Matrix
+```{r apply_a_function}
+A <- matrix(1:12, nrow=4)
+A
+apply(A, 1, mean)
+```
+The 1 tells apply to use the function on the first dimension of the matrix (the rows). To find the means of the columns, you could use
+`apply(A, 2, mean)`.
+
+## Applying a Function to a Matrix
+Note that R has built-in functions for `rowMeans` and `colMeans`:
+```{r rowMeans}
+apply(A, 1, mean)
+rowMeans(A)
+```
+These functions are faster than using `apply`, which can make a big difference with large data sets.
+
+## Applying a Function to a Matrix
+However, `apply` is more general; you can use it with any vectorized function, including those you write yourself.
+```{r appl_custom_function}
+maxMinusMin <- function(v) max(v) - min(v)
+apply(A, 1, maxMinusMin)
+```
+
+## Missing Values in Matrixes
+What if there are NA values in our data matrix?
+```{r matrix_B}
+B <- A
+B[1,3] <- NA
+B
+apply(B, 1, mean)
+```
+
+How do we tell `mean` to ignore NAs?
+
+## Passing parameters to applied functions
+The elipses construct lets you refer to any parameters not otherwise specified:
+```{r ellipses}
+maxMinusMin <- function(v, ...) max(v, ...) - min(v, ...)
+apply(A, 1, maxMinusMin, na.rm=TRUE)
+```
+Here the three dots (`...`) represent any additional parameters passed to the function; this makes it easy to pass these parameters on to subfunctions. In this case, we will call both `min` and `max` with `na.rm` set to `TRUE`, since that argument was passed to `maxMinusMin`.
+
+Use the help function (e.g., `?mean`) to see the parameters it takes.

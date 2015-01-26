@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<POLL TYPE="anonymous" SHOWTIMER="yes" ALARM="5:0" NOANSWER="yes" SHOWRESPONSE="yes">
+
+<QUESTION TYPE="mcone" TITLE="What&nbsp;is&nbsp;the&nbsp;fastest&nbsp;way&nbsp;to&nbsp;run&nbsp;the&nbsp;function?">
+<ANSWER ISCORRECT="false">y&nbsp;&lt;-&nbsp;numeric();&nbsp;for&nbsp;(i&nbsp;in&nbsp;seq_along(x))&nbsp;y[i]&nbsp;&lt;-&nbsp;f(x[i])</ANSWER>
+<ANSWER ISCORRECT="false">y&nbsp;&lt;-&nbsp;numeric(length(x));&nbsp;for&nbsp;(i&nbsp;in&nbsp;seq_along(x))&nbsp;y[i]&nbsp;&lt;-&nbsp;f(x[i])</ANSWER>
+<ANSWER ISCORRECT="false">y&nbsp;&lt;-&nbsp;sapply(x,&nbsp;f)</ANSWER>
+<ANSWER ISCORRECT="false">y&nbsp;&lt;-&nbsp;vapply(x,&nbsp;f,&nbsp;numeric(1))</ANSWER>
+<ANSWER ISCORRECT="false">None&nbsp;of&nbsp;the&nbsp;above</ANSWER>
+</QUESTION>
+
+</POLL>

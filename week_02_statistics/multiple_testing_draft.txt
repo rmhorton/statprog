@@ -1,0 +1,77 @@
+K <- 20
+play <- function(k=K) mean(sample(1:6, k, replace=T))
+cheat <- function(k=K) mean(sample(c(2:6,6), k, replace=T))
+
+N <- 100000
+fraction_cheaters <- 0.1
+
+num_cheaters <- N * fraction_cheaters
+num_players <- N - num_cheaters
+
+obs <- data.frame(
+	score = c(	vapply( 1:num_players,  function(n) play(),  numeric(1) ),
+				vapply( 1:num_cheaters, function(n) cheat(), numeric(1) ) ),
+	grp_size = c(rep(num_players, num_players), rep(num_cheaters, num_cheaters)),
+	grp = c(rep("P", num_players), rep("C", num_cheaters))
+)
+
+m <- mean(obs[obs$grp=='P',"score"])	# 3.507352
+s <- sd(obs[obs$grp=='P',"score"])	# 0.4939535
+obs$p1 <- 1 - pnorm(obs$score, mean=m, sd=s)
+
+obs$p2 <- pt( (obs$score - m)/s, df=K )
+
+plot(p2 ~ p1, data=obs)
+
+library(ggplot2)
+# g <- ggplot(obs, aes(x=score, col=grp)) + geom_density()
+# g <- g + geom_histogram(position="dodge", binwidth=1/12)
+
+
+ggplot(obs, aes(x=p1, col=grp)) + geom_histogram(position="dodge", binwidth=1/31)
+ggplot(obs, aes(x=p1, col=grp)) + geom_density()
+
+# p-values are more closely spaced near extremes; should use a continuous example for demo
+table(obs$p1)
+
+# There is a hump in the middle of the p-value histogram; I expected it to be flat.
+
+# The players distribution is very close to Normal:
+g <- ggplot() + geom_density(mapping=aes(x=score, col=grp), data=obs)
+g + geom_line(mapping=aes(x=x, y=y), data=data.frame(x=x,y=y), col="orange", linetype=3, size=2)
+
+# x <- seq(0, 6, length=100)
+# g + geom_line(aes(x=x, y=pnorm(x, mean=m, sd=s)))
+
+# http://stackoverflow.com/questions/12624771/scaled-weighted-density-plot-in-r
+# plot(density(dat$Temperature,weights=dat$Number/sum(dat$Number),na.rm=T),type='l',bty='n')
+# dat <- data.frame(Temperature = sort(runif(10)), Number = 1:10)
+# ggplot(dat, aes(Temperature)) + geom_density(aes(weights=Number/sum(Number)))
+
+
+###
+# Continuous example
+N <- 1e6
+means <- c( P=3.5, C=4.5 )
+sds <- c( P=0.5, C=0.5 )
+
+fraction_cheaters <- 0.1
+group <- ifelse( (runif(N) > fraction_cheaters), "P", "C")
+group <- factor(group, levels=c("P","C"))
+
+dat <- data.frame(
+	score = rnorm(N, mean=means[group], sd=sds[group]),
+	grp = group
+)
+m <- mean(dat[dat$grp=='P',"score"])	# 3.499058
+s <- sd(dat[dat$grp=='P',"score"])	# 0.5020852
+dat$p1 <- 1 - pnorm(dat$score, mean=m, sd=s)
+
+library(ggplot2)
+ggplot(dat, aes(x=p1, col=grp)) + geom_histogram(binwidth=1/50)
+
+
+### References
+# http://www.totallab.com/products/samespots/support/faq/pq-values.aspx
+# http://www.stat.cmu.edu/~genovese/talks/hannover1-04.pdf
+# http://en.wikipedia.org/wiki/False_discovery_rate

@@ -1,0 +1,32 @@
+---
+title: 'Tidy Data: pipes'
+author: "Robert Horton"
+date: "January 20, 2015"
+output: slidy_presentation
+---
+
+```{r load_magrittr, echo=FALSE}
+library(magrittr)
+```
+## magrittr package
+
+<table>
+<tr><td>
+!["Ceci n'est pas un pipe](http://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
+</td><td>
+[%>%](http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
+
+</td></tr>
+</table>
+
+##
+Functional Programming in R
+
+* pure
+* predictable
+* pipeable
+
+## Piping packages
+
+* rvest
+https://www.youtube.com/watch?v=R6xKM-H2awE
