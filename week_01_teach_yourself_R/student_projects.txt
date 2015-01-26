@@ -1,0 +1,80 @@
+Patricia;
+
+I just published the course.
+
+I'm going to keep the syllabus and course materials on github, but I guess it make sense to put the calendar and anything worth points on canvas. I listed all the deliverables under Assignments, as well as the midterm and final exam; they should add up to 100 points.
+
+The projects and assignments are all about developing materials for the course itself. I will be preparing the lectures for the first half of the course, and students will pick aspects they want to improve, edit, or expand upon (the Fix-A-Lecture project). Students will each develop a lecture (including slides and handouts) for the second half of the course (Create-A-Lecture). In the Data Simulation project, each student gets to develop a simulated dataset with known signals that we can use for regression or machine learning analysis. They will also need to write a multiple-choice review question for each lecture (two questions per week; that should give us a databank of almost 300 questions for next time).
+
+Please let me know how it looks, and let me know if there is anything else I should do.
+
+-- Bob
+
+===
+
+
+Student projects:
+simulated data -> analysis cycle
+	simulated_data_exercise_01.R
+
+Fix-A-Lecture Project:
+Select one lecture from the weeks 3 through 8 to improve, and complete any missing materials:
+	* slides/notes
+	* objectives
+	* readings
+	* supplemental resources
+	* assignments/exercises
+	* medical examples / applications
+
+Create-A-Lecture Project:
+Pick a topic from the syllabus in weeks 8 to 14, or one of the alternative projects listed below. If you have some other idea you really like, we'll try to fit it in.
+
+Alternative Create-A-Lecture projects:
+	1. Update and extend the _Randumb_ package: This is intended to be a collection of bad random number generators, together with statistical tests for randomness. Currently it only has a few bad random number generating functions, including a rather dated implementation in C of "Algorithm K" from chapter 3 of [TAOCP](http://en.wikipedia.org/wiki/The_Art_of_Computer_Programming).
+		* packaging process
+		* documentation
+		* native code
+			- update big-integer code to use C++ Boost library
+		* pseudorandom numbers
+		* statistical tests for randomness
+
+	2. Database projects
+		* set up PostgreSQL server on Linux for class use
+			- dplyr
+			- PL/r
+			- PostGIS
+			- in-database analytics (MADlib)
+			- json/jsonb (document-type column)
+		* find and load datasets suitable for use in class
+
+	3. Time series (or survival) analysis
+
+	4. ODE model (with a Shiny interface)
+
+Deliverables:
+	(5%) Literate Calculation document: (due week 2)
+	* Make a quantitative argument based on calculations
+	* One-page PDF format, generated in RMarkdown
+	
+	(10%) Fix-A-Lecture Project: due 3/26/15 (at time of midterm)
+	
+	(20%) Data Simulation Project: (story and concept due week 8, progress report due week 10, data set due week 12)
+	* Progress report to the class
+	* Rmd document telling the story of the simulation, and explaining the code
+		- include references to medical research papers that explore similar relationships
+	* simulation code that embeds both signal and noise in the data
+	* simulated tidy data set ready for linear modeling
+	
+	(30%) Create-A-Lecture Project: due second half of course (in lecture slot)
+	* lecture / slides
+		- learning objectives
+	* whitepaper
+	* exercises
+	* exam questions
+
+	(15%) Each class: (due the following Saturday)
+	* one exam question & answer per lecture (one half point each)
+	
+	(10%) Midterm
+	(10%) Final
+points <- c(literate_calculation=5, fix_lecture=10, data_sim=20, create_lecture=30, exam_questions=15, midterm=10, final=10)

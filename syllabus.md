@@ -56,118 +56,150 @@ R is both a programming language and an environment for statistical analysis. It
 ### Section 1: R Programming
 
 * Week 1: Teach yourself R: ___We cannot cover everything you need to know in class___
-    - R == programming + data + graphics + statistics
-        + synergy: the different fields complement each other
-        + iterate: you can't learn it all at once
-	- Resources
-        + Textbook: _R in Action_
-            - the book presents multiple cycles: Getting Started, Beginning, Intermediate, Advanced
-            - this course is (mostly) organized in one big cycle
-        + Electronic:
-            - tutorials (swirl)
-            - help system and reference sites
-            - code repositories and installing packages
-            - Coursera
-    - Literate calculation
-        + Introduction to RStudio and "Literate Analysis"
-        + R as a calculator
-        + typesetting mathematical equations in LaTeX
-        + Exercise: Documenting calculations in RStudio
-    - Idioms matter
-        + How to baffle R: the "loop that allocates memory" ploy
-        + Hello functional programming
-    	+ Simple performance metrics: plotting timing results
-		    > vectorization
-	- Set up github accounts
-* Week 2: Probability
-	- Pseudorandom numbers
-        + deterministic "randomness"
-        + the _Randumb_ package: installing from a zip file
-	- Rolling dice
-		+ simulating the Binomial distribution
-	- Curve fitting
-		+ using lm and formulas to fit a polynomial to a set of points
-		+ parameter scanning to fit bell curve to Binomial simulation results
-	- Sensitivity and specificity exercise
-		+ structuring code with functions
-		+ organizing data into dataframes
-    - Bootstrapping
-        + estimating probability distributions by sampling
-        + parallelization
-        + profiling with lineprof: installing from github
-* Week 3: Calculus and linear algebra review
-	- Checking derivatives
-		+ functions as parameters
-	- Numerical integration
-		+ area under (part of) a bell curve
-	- Matrix manipulation
-        + dot product ("weighted combination") of two vectors
-        + multiplying a matrix by a vector
-		+ Gauss-Jordan elimination
-        + solving systems of equations
-* Week 4: Hypothesis testing
-	- Distributions under null and alternative hypotheses; alpha, beta
-		+ Interactive graphs using "manipulate"
-	- Multiple testing adjustments
-		+ Bonferroni, Benjamini-Hochberg
+	* Lecture 1a: R Learning Resources
+		- R == programming + data + graphics + statistics
+			+ synergy: the different fields complement each other
+			+ iterate: you can't learn it all at once
+		- Resources
+			+ Textbook: _R in Action_
+				- the book presents multiple cycles: Getting Started, Beginning, Intermediate, Advanced
+				- this course is (mostly) organized in one big cycle
+			+ Electronic:
+				- tutorials (swirl)
+				- help system and reference sites
+				- code repositories and installing packages
+				- Coursera
+	* Lecture 1b: Literate Calculation
+		- Literate calculation
+			+ Introduction to RStudio and "Literate Analysis"
+			+ R as a calculator
+			+ typesetting mathematical equations in LaTeX
+			+ Exercise: Documenting calculations in RStudio
+		- Idioms matter
+			+ How to baffle R: the "loop that allocates memory" ploy
+			+ Hello functional programming
+			+ Simple performance metrics: plotting timing results
+				> vectorization
+		- Set up github accounts
+* Week 2: Statistics
+	* Lecture 2a: Probability
+		- Pseudorandom numbers
+			+ deterministic "randomness"
+			+ the _Randumb_ package: installing from a zip file
+		- Rolling dice
+			+ simulating the Binomial distribution
+		- Curve fitting
+			+ using lm and formulas to fit a polynomial to a set of points
+			+ parameter scanning to fit bell curve to Binomial simulation results
+		- Sensitivity and specificity exercise
+			+ structuring code with functions
+			+ organizing data into dataframes
+	* Lecture 2b: Hypothesis testing
+		- Numerical integration
+			+ area under (part of) a bell curve
+		- Distributions under null and alternative hypotheses; alpha, beta
+			+ Interactive graphs using "manipulate"
+		- Multiple testing adjustments
+			+ Bonferroni, Benjamini-Hochberg
+		- Bootstrapping
+			+ estimating probability distributions by sampling
+			+ parallelization
+			+ profiling with lineprof: installing from github
+* Week 3: Linear algebra
+	* Lecture 3a: Vectors and Matrices
+		- Matrix manipulation
+			+ dot product ("weighted combination") of two vectors
+			+ multiplying a matrix by a vector
+	* Lecture 3b: Inverses, Eigenvectors
+			+ solving systems of equations
+			+ Gauss-Jordan elimination
+* Week 4: Code Optimizations
+	* Lecture 4a: Idiomatic Optimization
+	* Lecture 4b: Profiling and debugging
 
 ### Section 2: Loading and Munging Data
 
-* Week 5: Loading and cleaning data
-	- Spreadsheets and data frames
-    - data cleansing
-        + Regular expressions
-        + Un*x pipes
-    - merging and aggregation
-    - key-value lookups
-        + linear scanning, binary search, hash tables
+* Week 5: Loading data
+	* Lecture 5a: Loading and cleaning data
+		- Spreadsheets and data frames
+		- data cleaning
+			+ Regular expressions
+			+ Un*x pipes
+		- merging and aggregation
+		- key-value lookups
+			+ linear scanning, binary search, hash tables
+	* Lecture 5b: Web scraping
 * Week 6: Using SQL from R
-	- sqldf: bidirectional promoters in a mammalian genome
-		+ self-join on a table of transcription start sites.
-	- Direct database access
-    - Sophisticated SQL with Postgres
-* Week 7: Tidy Data: rows are examples (with outcome), columns are attributes
-	- Classification example
-	- dplyr & tidyr
-        + swirl exercise
+	* Lecture 6a: SQL in R
+		- sqldf: bidirectional promoters in a mammalian genome
+			+ self-join on a table of transcription start sites.
+	* Lecture 6b: Interfacing to databases
+		- Direct database access
+		- Sophisticated SQL with Postgres
+* Week 7: Tidy Data:
+	* Lecture 7a: Tidy Data
+		- rows are examples (with outcome), columns are attributes
+		- Classification example
+	* Lecture 7b: aggregating and reshaping
+		- dplyr & tidyr
+			+ swirl exercise
 * Week 8: Dimension reduction
-	- **Midterm Exam**
-    - Singular Value Decomposition
+	* Lecture 8a: PCA
+		- Singular Value Decomposition
+	* Lecture 8b: Midterm
+		- **Midterm Exam**
 
 ### Section 3: Visualization and User Interaction
 
-* Week 9: ggplot2
-    - graphics menagerie
-        + continuous / categorical
-        + univariate / multivariate
-* Week 10: Shiny
-    - Interactive ODE model
-	- Interactive analysis
+* Week 9: Advanced Graphics
+	* Lecture 9a: BARUG Field Trip
+		- Reading: graphics menagerie
+			+ continuous / categorical
+			+ univariate / multivariate
+	* Lecture 9b: The Grammar of Graphics
+		- RiA Ch 19
+* Week 10: Interactive Applications
+	* Lecture 10a: Manipluate and Shiny packages
+		- Interactive ODE model
+		- Interactive analysis
+	* Lecture 10b: Shiny Demo (Nikil)
 * Week 11: Clustering and Graphs
-	- Heat maps
-	- Graphing graphs
+	* Lecture 11a: Clustering
+		- Heat maps
+	* Lecture 11b: Graphs
+		- Graphing graphs
 * Week 12: Visualizing Regression
-	- regression as an optimization problem
-	- interactive visualization of line, data, and cost function in parameter space.
+	* Lecture 12a: Regression as Optimization
+		- fitting the "best" line
+		- interactive visualization of data, line, and cost function in parameter space.
+		- gradient descent
+	* Lecture 12b: Guest Lecture
 
 ### Section 4: Analytics
 
 * Week 13: Linear models
-	- Feature selection
-	- Performance profiling revisited
-	- Generalized linear models
-	- Regularization
-* Week 14: Interactions
-	- Simpson's paradox
-	- Categorical inputs
-	- Dimension reduction
-* Week 15: Diagnostics
-	- Model diagnostics
-	- Prediction diagnostics
-		+ ROC curves: sensitivity/specificity tradeoff
-		+ Learning curves: bias/variance tradeoff
-	- Hypersonic survey of Machine Learning algorithms
-* Week 16: Finals Week
+	* Lecture 13a: Linear regression
+		- Feature selection
+			+ Transformation
+			+ Dimension reduction
+		- Interactions
+			+ Simpson's paradox
+			+ Categorical inputs
+	* Lecture 13b: Logistic regression
+		- Generalized linear models
+		- Regularization
+* Week 14: Diagnostics
+	* Lecture 14a: Residuals, ROC curves
+		- Model diagnostics
+			+ ROC curves: sensitivity/specificity tradeoff
+	* Lecture 14b: Learning curves
+		- Overfitting
+			+ Validation
+			+ Learning curves: bias/variance tradeoff
+* Week 15: Big Data
+	* Lecture 15a: R and Hadoop
+	* Lecture 15b: Revolution R Enterprise
+* Week 16: Finals
     - **Final Exam**
-	- Project presentations
+	- Hypersonic Survey of Machine Learning algorithms
 	
