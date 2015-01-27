@@ -153,7 +153,7 @@ Functions
     - anonymous
     - stored in data structures
     - passed as arguments to other functions
-    _ returned as values from other functions
+    - returned as values from other functions
 
 See examples under `help("function")`
 
