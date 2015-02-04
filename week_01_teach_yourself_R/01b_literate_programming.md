@@ -51,7 +51,7 @@ estimate_pi(100000)
 ```
 
 ```
-[1] 3.139
+[1] 3.141
 ```
 
 Homework Exercise Review
