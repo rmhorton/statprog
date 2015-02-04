@@ -152,6 +152,8 @@ Functions
     - assigned to named variables
     - anonymous
     - stored in data structures
+    - passed as arguments to other functions
+    - returned as values from other functions
 
 See examples under `help("function")`
 
@@ -170,7 +172,7 @@ Ellipses
 plot(sqrt(1:10))
 ```
 
-![plot of chunk plot_sqrt](01a_Teach_Yourself_R-figure/plot_sqrt.png) 
+![plot of chunk plot_sqrt](01a_Teach_Yourself_R-figure/plot_sqrt-1.png) 
 
 ***
 
@@ -179,7 +181,7 @@ plot(sqrt(1:10))
 lplot(sqrt(1:10))
 ```
 
-![plot of chunk lplot_sqrt](01a_Teach_Yourself_R-figure/lplot_sqrt.png) 
+![plot of chunk lplot_sqrt](01a_Teach_Yourself_R-figure/lplot_sqrt-1.png) 
 
 Flow control
 ========================================================
@@ -394,7 +396,7 @@ Vectorized functions
 plot(choose(20,0:20))
 ```
 
-![plot of chunk binomial_bell_curve](01a_Teach_Yourself_R-figure/binomial_bell_curve.png) 
+![plot of chunk binomial_bell_curve](01a_Teach_Yourself_R-figure/binomial_bell_curve-1.png) 
 
 Functional paradigm
 ========================================================
