@@ -63,10 +63,11 @@ sliderInput("s2", "Std dev 2:", min = 0.1, max = 5, value = 2)
 ```{r echo=FALSE}
 renderPlot({
     x <- seq(-10, 10, by=0.1)
-    plot(x, dnorm(x, mean=as.numeric(input$m1), sd=as.numeric(input$s1)), 
-                    type="l", lwd=2, col="blue", ylab="density")
-    lines(x, dnorm(x, mean=as.numeric(input$m2), sd=as.numeric(input$s2)),
-                    lwd=2, col="green", ylab="density")
+    y1 <- dnorm(x, mean=as.numeric(input$m1), sd=as.numeric(input$s1))
+    y2 <- dnorm(x, mean=as.numeric(input$m2), sd=as.numeric(input$s2))
+    plot(x, pmax(y1, y2), type="n")
+    lines(x, y1, lwd=2, col="blue", ylab="density")
+    lines(x, y2, lwd=2, col="green", ylab="density")
     p1x <- x[x >= input$crit_val]
     p1y <- dnorm(p1x, mean=as.numeric(input$m1), sd=as.numeric(input$s1))
     p2x <- x[x <= input$crit_val]
