@@ -31,5 +31,5 @@ x <- (M['e300','b'] - M['e300','y']*y)/M['e300','x']
 x
 y
 
-x <- solve(A, b)
-A %*% x
+xy <- solve(A, b)
+A %*% xy

@@ -11,7 +11,7 @@
 # Sourcing an R script from github
 # http://tonybreyal.wordpress.com/2011/11/24/source_https-sourcing-an-r-script-from-github/
 
-random_invertable_matrix <- function(n, seed=NA){
+random_invertible_matrix <- function(n, seed=NA){
 	if (!is.na(seed)){
 		if(is.character(seed)){
 			require(digest)
@@ -27,13 +27,13 @@ random_invertable_matrix <- function(n, seed=NA){
 	A
 }
 
-random_invertable_matrix(5, "bob")
-random_invertable_matrix(3, "patricia")
+random_invertible_matrix(5, "bob")
+random_invertible_matrix(3, "patricia")
 
 
 n <- 3
 
-A <- random_invertable_matrix(n, "bob")
+A <- random_invertible_matrix(n, "bob")
 A
 #      [,1] [,2] [,3]
 # [1,]   72   49   93

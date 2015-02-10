@@ -1,0 +1,683 @@
+set.seed(1)#
+N <- 500#
+sex <- sample(c("M","F"), N, replace=T)#
+mean_height <- c(M=69.1, F=63.7)	# inches#
+sd_height <- c(M=2.9, F=2.7)#
+beers_per_week <- c(M=6, F=3)#
+football_hours_per_week <- c(M=8, F=4)#
+#
+main_colors <- grep("(\\d|light|dark|medium)", colors(), invert=T, value=T)#
+main_colors <- main_colors[nchar(main_colors) < 6]#
+favorite_color <- list(#
+	F=grep("[pyam]", main_colors, value=T),#
+	M=grep("[dbwg]", main_colors, value=T)#
+)#
+#
+intersect(favorite_color[['M']], favorite_color[['F']])#
+setdiff(favorite_color[['M']], favorite_color[['F']]) #
+setdiff(favorite_color[['F']], favorite_color[['M']]) #
+#
+pay_data <- data.frame(#
+	sex = sex,#
+	height = round(rnorm(N, mean=mean_height[sex], sd=sd_height[sex]),1),#
+	beers = rpois(N, lambda=beers_per_week[sex]),#
+	football = rpois(N, lambda=football_hours_per_week[sex]),#
+	favorite_color = sapply(sex, function(g) sample(favorite_color[[g]], 1))#
+)#
+#
+# add outcome#
+base_pay <- c(M=15, F=65)#
+pay_height_coeff <- c(M=1, F=0.25)#
+#
+library(dplyr)#
+pd2 <- pay_data %>% mutate(pay = round(base_pay[as.character(sex)] + pay_height_coeff[as.character(sex)] * height + rnorm(N, sd=1),1))
+install.packages("dplyr")
+head(pd2)
+ls()
+library(dplyr)#
+pd2 <- pay_data %>% mutate(pay = round(base_pay[as.character(sex)] + pay_height_coeff[as.character(sex)] * height + rnorm(N, sd=1),1))
+head(pd2)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+# Use the lm() function to fit a polynomial curve to a set of data points#
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)#
+#
+fit <- lm(y ~ poly(x,N-1))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="red", lwd=3, lty=2)#
+#
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)x
+x
+y
+plot(y ~ x)
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+fit2
+my_poly(N)
+poly(N)
+fit3 <- lm(y ~ x^5 + x^4 + x^3 + x^2 + x)
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="green", lwd=4, lty=1)
+fit3
+str(fit3)
+fit4 <- lm(y ~ I(x^5) + I(x^4) + I(x^3) + I(x^2) + x)
+fit4
+fit4 <- lm(y ~ I(x^5) + I(x^4) + I(x^3) + I(x^2) + I(x))
+fit4
+N <- 5#
+x <- sort(sample(1:100, N))#
+y <- sample(1:100, N)#
+plot(y ~ x)
+fit4 <- lm(y ~ I(x^5) + I(x^4) + I(x^3) + I(x^2) + I(x))
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+fit4
+df <- data.frame(y, x, x2=x^2, x3=x^3, x4=x^4, x5=x^5)
+df
+fit5 <- lm( y ~ x5 + x4 + x3 + x2 + x)
+fit5 <- lm( y ~ x5 + x4 + x3 + x2 + x, data=df)
+fit5
+fit5 <- lm( y ~ x5 + x4 + x3 + x2 + x + 1, data=df)
+fit5
+fit5 <- lm( y ~ x5 + x4 + x3 + x2 + x - 1, data=df)
+fit5
+coef(fit5)
+fit5 <- lm( y ~ x5 + x4 + x3 + x2 + x - 1, data=df)	# we do not want an intercept#
+pcurve <- function(x){#
+	coef(fit5) %*% x^(5:1)#
+}#
+pcurve(x)
+fit5 <- lm( y ~ x5 + x4 + x3 + x2 + x - 1, data=df)	# we do not want an intercept#
+pcurve <- function(x){#
+	coef(fit5) %*% x^(5:1)#
+}#
+x
+pcurve <- function(v)#
+	vapply(v, function(i) coef(fit5) %*% i^(5:1), 1)
+lines(newx, pcurve(newx), col="green")
+lines(newx, pcurve(newx), col="green")
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x - 1"))#
+fit2 <- lm(my_poly(N))
+fit2
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x - 1"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+plot(y ~ x)
+my_poly <- function(N)#
+	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x - 1"))#
+fit2 <- lm(my_poly(N))#
+newx <- seq(min(x), max(x), len=100)#
+lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+my_poly(N)
+df <- data.frame(y, x, x2=x^2, x3=x^3, x4=x^4, x5=x^5)#
+#
+fit5 <- lm( y ~ x5 + x4 + x3 + x2 + x - 1, data=df)	# we do not want an intercept#
+pcurve <- function(v)#
+	vapply(v, function(i) coef(fit5) %*% i^(5:1), 1)#
+#
+lines(newx, pcurve(newx), col="green")
+x <- c(13, 36, 57, 91, 97)
+y <- c(71, 96, 88, 35, 50)
+plot(y ~ x)
+df <- data.frame(y, x, x2=x^2, x3=x^3, x4=x^4, x5=x^5)#
+#
+fit5 <- lm( y ~ x5 + x4 + x3 + x2 + x - 1, data=df)	# we do not want an intercept
+pcurve <- function(v)#
+	vapply(v, function(i) coef(fit5) %*% i^(5:1), 1)#
+#
+lines(newx, pcurve(newx), col="green")
+x <- c(13, 36, 57, 91, 97)#
+y <- c(71, 96, 88, 35, 50)#
+plot(y ~ x)#
+#
+df <- data.frame(y, x, x2=x^2, x3=x^3, x4=x^4, x5=x^5)#
+newx <- seq(min(x), max(x), len=100)#
+#
+fit5 <- lm( y ~ x5 + x4 + x3 + x2 + x - 1, data=df)	# we do not want an intercept#
+pcurve <- function(v)#
+	vapply(v, function(i) coef(fit5) %*% i^(5:1), 1)#
+#
+lines(newx, pcurve(newx), col="green")
+polynomialize_column <- function(df, col, degree){#
+	ex <- 2:degree#
+	df2 <- do.call("cbind", df, lapply(ex, function(pow) df[[col]] ^ pow))#
+	colnames(df2) <- c(colnames(df), paste0(col, ex))#
+	df2#
+}
+myData <- data.frame(letters, x <- 1:26)
+myData <- data.frame(letters, x = 1:26)
+polynomialize_column(myData, 'x')
+polynomialize_column(myData, 'x', 3)
+trace(polynomialize_column, browser)
+polynomialize_column(myData, 'x', 3)
+df
+col
+degree
+n
+ex
+ex
+n
+ex
+lapply(ex, function(pow) df[[col]]^pow)
+n
+df2
+df
+rm (df)
+df <- data.frame(letters, x = 1:26)
+col <- 'x'
+degree <- 3
+ex <- 2:degree
+ex
+lapply(ex, function(pow) df[[col]] ^ pow)
+df
+do.call("cbind", lapply(ex, function(pow) df[[col]] ^ pow))
+newcols <- do.call("cbind", lapply(ex, function(pow) df[[col]] ^ pow))#
+	colnames(newcols) <- paste0(col, ex)
+newcols
+ex <- 2:degree#
+	newcols <- do.call("cbind", lapply(ex, function(pow) df[[col]] ^ pow))#
+	colnames(newcols) <- paste0(col, ex)#
+	cbind(df, newcols)#
+}
+polynomialize_column <- function(df, col, degree){#
+	ex <- 2:degree#
+	newcols <- do.call("cbind", lapply(ex, function(pow) df[[col]] ^ pow))#
+	colnames(newcols) <- paste0(col, ex)#
+	cbind(df, newcols)#
+}
+df
+polynomialize_column(df, 'x',4)
+x <- c(13, 36, 57, 91, 97)#
+y <- c(71, 96, 88, 35, 50)
+df <- polynomialize_column( data.frame(y, x), 'x', 5 )
+df
+poly_formula <- function(ycol, xcol, degree)#
+	as.formula(paste(ycol, "~", #
+		paste(xcol, N:2, sep="^", collapse=" + "), #
+		"+", xcol, "- 1"))
+poly_formula('y', 'x', 5)
+my_data <- data.frame(#
+	y=c(71, 96, 88, 35, 50), #
+	x=c(13, 36, 57, 91, 97)#
+)#
+#
+my_data <- polynomialize_column( my_data, 'x', 5 )#
+#
+my_formula <- poly_formula('y', 'x', 5)#
+#
+my_fit <- lm(my_formula, my_data)
+plot(y ~ x, data=my_data)
+newx <- 10:100
+lines(newx, predict(my_fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+my_formula
+my_data
+my_fit <- lm(my_formula, my_data)
+plot(newx, predict(my_fit, newdata=data.frame(x=newx))
+)
+predict(my_fit, newdata=data.frame(x=newx))
+my_fit
+my_formula
+my_data
+fitZ <- lm(y ~ x^5 + x^4 + x^3 + x^2 + x - 1, my_data)
+fitZ
+poly_formula <- function(ycol, xcol, degree)#
+	as.formula(paste(ycol, "~", #
+		paste(xcol, N:2, sep="", collapse=" + "), #
+		"+", xcol, "- 1"))#
+#
+}#
+#
+my_data <- data.frame(#
+	y=c(71, 96, 88, 35, 50), #
+	x=c(13, 36, 57, 91, 97)#
+)#
+#
+my_data <- polynomialize_column( my_data, 'x', 5 )#
+#
+my_formula <- poly_formula('y', 'x', 5)#
+#
+my_fit <- lm(my_formula, my_data)#
+#
+plot(y ~ x, data=my_data)#
+newx <- 10:100#
+lines(newx, predict(my_fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+plot(y ~ x, data=my_data)#
+newdata <- data.frame(x=10:100)#
+newdata <- polynomialize_column(newdata, "x", 5)#
+lines(newx, predict(my_fit, newdata=newdata, col="yellow", lwd=4, lty=1)
+)
+lines(newx, predict(my_fit, newdata=newdata), col="yellow", lwd=4, lty=1)
+my_fit
+my_fit$coeff
+fitting_function_factory <- function(fittedModel){#
+	beta <- coef(fittedModel)#
+	function(x) beta %*% x^(length(beta):1)#
+}#
+#
+f <- fitting_function_factory(my_fit)#
+x <- 10:100#
+curve(f, x)
+plot(x, f(x))
+x
+f(x)
+fittedModel <- my_fit
+beta <- coef(fittedModel)
+beta
+x^(length(beta):1)
+fitting_function_factory <- function(fittedModel){#
+	beta <- coef(fittedModel)#
+	function(x) sapply(x, function(i) beta %*% i^(length(beta):1))#
+}#
+#
+f <- fitting_function_factory(my_fit)#
+x <- 10:100#
+curve(f, x)
+plot(x(f(x)))
+plot(x,f(x))
+?curve
+curve(f, col="yellow")
+curve(f, col="yellow", from=10, to=100)
+coef(my_fit)
+coef2equation <- function(co)#
+	paste(co, names(co), join=' * ', collapse=' + ')
+coef2equation(coef(my_fit))
+coef2equation <- function(co)#
+	paste(co, names(co), sep=' * ', collapse=' + ')
+coef2equation(coef(my_fit))
+co <- coef(my_fit)
+co
+paste(co, paste('x', length(co):1, sep="^", collapse=' +'), sep= "*")
+paste(co, length(co):1, sep="x^", collapse=' +')
+f <- coef2func(coef(my_fit))
+coef2func <- function(co){#
+	fstr <- paste("function(x)", paste(co, length(co):1, sep="x^", collapse=' + '))#
+	eval(parse(fstr))#
+}
+f <- coef2func(coef(my_fit))
+?parse
+coef2func <- function(co){#
+	fstr <- paste("function(x)", paste(co, length(co):1, sep="x^", collapse=' + '))#
+	eval(parse(text=fstr))#
+}
+f <- coef2func(coef(my_fit))
+coef2func <- function(co){#
+	fstr <- paste("function(x)", paste(co, length(co):1, sep="*x^", collapse=' + '))#
+	eval(parse(text=fstr))#
+}
+f <- coef2func(coef(my_fit))
+x <- 0:100
+plot(x, f(x))
+q('no')

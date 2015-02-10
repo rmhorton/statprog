@@ -2,7 +2,7 @@
 title: 'Lecture 2b: Probability Distribution Functions'
 author: "Robert Horton"
 date: "December 28, 2014"
-output: slidy_presentation
+output: beamer_presentation
 ---
 
 Objectives
@@ -87,7 +87,7 @@ integrate(normal_pdf, -Inf, Inf)
 ```
 
 
-The Normal distribution
+The Normal Distribution
 ========================================================
 ```{r manipulate_norm_dist, eval=FALSE}
 library(manipulate)
@@ -97,6 +97,22 @@ manipulate(plot(x, dnorm(x, mean=m, sd=s), type="l", col="red"),
            s = slider(0.01, 10, initial=1))
 ```
 
+The Normal Distribution
+========================================================
+```{r simulate_norm_dist, eval=FALSE}
+x <- rnorm(1e5)
+hist(x)
+```
+
+```{r adjusting_mean_and_sd}
+dfrm <- data.frame( 
+  x=c(x, x * 3 + 10), 
+  distro=rep(c("Normal", "m10sd3"), each=length(x))
+)
+require("ggplot2")
+g <- ggplot(dfrm, aes(x=x, col=distro)) + geom_density()
+g
+```
 Review Questions
 ========================================================
 Name this distribution:

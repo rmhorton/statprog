@@ -1,8 +1,8 @@
 ---
-title: "Lecture 2a: Probability"
+title: 'Lecture 2a: Probability'
 author: "Robert Horton"
 date: "December 28, 2014"
-output: slidy_presentation
+output: ioslides_presentation
 ---
 
 ## Shuffling Cards

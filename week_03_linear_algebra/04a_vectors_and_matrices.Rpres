@@ -3,6 +3,36 @@ Vectors and Matrices
 author: Bob Horton
 date: 1/4/2015
 
+```{r setup, echo=FALSE}
+options(digits=3)
+```
+
+Counting Change
+========================================================
+
+```{r counting_change}
+coin_values <- c(quarter=25, dime=10, nickle=5, penny=1)
+coin_counts <- c(quarter=3, dime=3, nickle=1, penny=7)
+sum(coin_counts * coin_values)
+coin_counts %*% coin_values
+```
+
+Counting Change for the Whole Class
+========================================================
+
+```{r class_coins_def, echo=FALSE}
+class_coins <- matrix(c(
+  5, 2, 0, 3,
+	3, 3, 1, 7,
+	8, 2, 2, 1), byrow=TRUE, nrow=3, 
+	dimnames=list(c("Alice", "Bob", "Carol"), 
+                c("quarters", "dimes", "nickles", "pennies")))
+```
+```{r counting_change_matrix}
+class_coins
+class_coins %*% coin_values
+```
+
 Dot Product of two Vectors: Food Cost
 ========================================================
 ```{r food_cost}
@@ -46,10 +76,11 @@ rownames(N)[c(4,5)] <- c("kCal", "cost")
 N
 ```
 
-Dot Product of two Vectors
+Dot Product of Vectors: calories in a diet
 ===
-Find the calorie content of the given diet.
 ```{r calorie_content}
+servings
+N["kCal",]
 N["kCal",] %*% servings
 ```
 
@@ -62,7 +93,7 @@ servings
 N %*% servings
 ```
 
-Multiplying a Matrix by a Vector
+Multiplying Matrices
 ========================================================
 ```{r set_of_diets_setup, echo=FALSE}
 diets <- matrix( c(7, 2, 2, 4,

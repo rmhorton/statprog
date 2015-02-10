@@ -3,6 +3,58 @@ Vectors and Matrices
 author: Bob Horton
 date: 1/4/2015
 
+
+
+Counting Change
+========================================================
+
+
+```r
+coin_values <- c(quarter=25, dime=10, nickle=5, penny=1)
+coin_counts <- c(quarter=3, dime=3, nickle=1, penny=7)
+sum(coin_counts * coin_values)
+```
+
+```
+[1] 117
+```
+
+```r
+coin_counts %*% coin_values
+```
+
+```
+     [,1]
+[1,]  117
+```
+
+Counting Change for the Whole Class
+========================================================
+
+
+
+```r
+class_coins
+```
+
+```
+      quarters dimes nickles pennies
+Alice        5     2       0       3
+Bob          3     3       1       7
+Carol        8     2       2       1
+```
+
+```r
+class_coins %*% coin_values
+```
+
+```
+      [,1]
+Alice  148
+Bob    117
+Carol  231
+```
+
 Dot Product of two Vectors: Food Cost
 ========================================================
 
@@ -16,7 +68,7 @@ sum(price * servings)
 ```
 
 ```
-[1] 3.804
+[1] 3.8
 ```
 
 ```r
@@ -24,8 +76,8 @@ price %*% servings
 ```
 
 ```
-      [,1]
-[1,] 3.804
+     [,1]
+[1,]  3.8
 ```
 
 Nutrition Information
@@ -35,17 +87,34 @@ A matrix can hold nutrition information for various foods.
 
 
 ```
-           rice      oil   fish    beans
-carb     35.000   0.0000  0.000  23.0000
-fat       0.000  14.0000  1.000   0.0000
-protein   3.000   0.0000 16.000   9.0000
-kCal    155.800 123.2000 74.400 131.2000
-cost      0.108   0.1791  1.008   0.1683
+           rice     oil  fish   beans
+carb     35.000   0.000  0.00  23.000
+fat       0.000  14.000  1.00   0.000
+protein   3.000   0.000 16.00   9.000
+kCal    155.800 123.200 74.40 131.200
+cost      0.108   0.179  1.01   0.168
 ```
 
-Dot Product of two Vectors
+Dot Product of Vectors: calories in a diet
 ===
-Find the calorie content of the given diet.
+
+```r
+servings
+```
+
+```
+ rice   oil  fish beans 
+    7     2     2     4 
+```
+
+```r
+N["kCal",]
+```
+
+```
+ rice   oil  fish beans 
+155.8 123.2  74.4 131.2 
+```
 
 ```r
 N["kCal",] %*% servings
@@ -74,15 +143,15 @@ N %*% servings
 ```
 
 ```
-            [,1]
-carb     337.000
-fat       30.000
-protein   89.000
-kCal    2010.600
-cost       3.804
+          [,1]
+carb     337.0
+fat       30.0
+protein   89.0
+kCal    2010.6
+cost       3.8
 ```
 
-Multiplying a Matrix by a Vector
+Multiplying Matrices
 ========================================================
 
 
@@ -103,12 +172,12 @@ N %*% diets
 ```
 
 ```
-            [,1]     [,2]     [,3]
-carb     337.000  186.000  324.000
-fat       30.000   77.000   42.000
-protein   89.000  142.000   84.000
-kCal    2010.600 2022.400 2042.400
-cost       3.804    8.723    2.316
+          [,1]    [,2]    [,3]
+carb     337.0  186.00  324.00
+fat       30.0   77.00   42.00
+protein   89.0  142.00   84.00
+kCal    2010.6 2022.40 2042.40
+cost       3.8    8.72    2.32
 ```
 
 Behavior of `diag()` depends on input type
