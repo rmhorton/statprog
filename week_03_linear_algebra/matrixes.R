@@ -34,3 +34,19 @@ t(a) %*% b
 sum(a*b)
 # if the dot product is 0, the vectors are orthogonal
 # Plot the vectors
+
+# Eigenvectors of real symmetric matrices are orthogonal
+A <- matrix(sample(1:12), nrow=3)
+B <- A %*% t(A)
+C <- eigen(B)$vectors
+# The eigen function normalizes the eigenvectors
+sum(C[,1]^2)
+sum(C[,2]^2)
+sum(C[,3]^2)
+# Orthogonal matrices have a dot product of zero
+round(C[,1] %*% C[,2],15)
+round(C[,1] %*% C[,3],15)
+# The determinant of an orthonormal matrix is +/- 1
+det(C)
+
+round(C %*% t(C),15)
