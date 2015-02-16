@@ -66,7 +66,7 @@ Ainv
 solve(A)
 
 # check by multiplication to get Identity matrix
-A %*% Ainv
+ 
 round(A %*% Ainv,12)	# round to 12 decimal places
 
 # Review questions:

@@ -1,3 +1,7 @@
+# http://en.wikipedia.org/wiki/Markov_chain
+# http://en.wikipedia.org/wiki/Stochastic_matrix
+
+
 M <- function(matrix_string){
 	rows <- strsplit(matrix_string, ";")[[1]]
 	ch_list <- lapply(strsplit(rows, " "), 

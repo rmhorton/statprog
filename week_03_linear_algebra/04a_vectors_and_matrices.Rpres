@@ -105,27 +105,3 @@ diets <- matrix( c(7, 2, 2, 4,
 diets
 N %*% diets
 ```
-
-Behavior of `diag()` depends on input type
-========================================================
-- matrix -> extracts the diagonal
-- missing, but `nrow` is specified -> identity matrix
-- length-one vector -> identity matrix
-- numeric vector -> a matrix with the given diagonal and zeros elsewhere
-
-
-Behavior of diag() depends on input type
-========================================================
-```{r diag_examples}
-M <- matrix(1:25, 
-        nrow=5)
-diag(M)
-diag(nrow=2)
-```
-
-***
-
-```{r diag_examples_col2}
-diag(2)
-diag(1:2)
-```
