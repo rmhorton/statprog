@@ -18,7 +18,7 @@ This presentation assumes that you:
 Idiomatic Optimization
 ========================================================
 
-![plot of chunk venn_diagram](idiomatic_optimization-figure/venn_diagram.png) 
+![plot of chunk venn_diagram](idiomatic_optimization-figure/venn_diagram-1.png) 
 ***
 We will look at ways to make your code shorter, easier to understand, and faster, all at the same time.
 
@@ -81,7 +81,7 @@ Improvement of Scores Across Iterations
 
 
 
-![plot of chunk plot_res](idiomatic_optimization-figure/plot_res.png) 
+![plot of chunk plot_res](idiomatic_optimization-figure/plot_res-1.png) 
 ***
 * actual message: 
 <div>"here is some sample text"</div>
@@ -93,7 +93,7 @@ Improvement of Scores Across Iterations
 Time Comparisons
 ========================================================
 
-![plot of chunk timing_chart](idiomatic_optimization-figure/timing_chart.png) 
+![plot of chunk timing_chart](idiomatic_optimization-figure/timing_chart-1.png) 
 ***
 Total time for 50000 iterations was reduced from 
 43.0 minutes to 
@@ -290,8 +290,8 @@ Session Info
 ========================================================
 
 ```
-R version 3.1.1 (2014-07-10)
-Platform: x86_64-apple-darwin10.8.0 (64-bit)
+R version 3.1.2 (2014-10-31)
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
 locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -300,12 +300,11 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] microbenchmark_1.4-2 ggplot2_1.0.0        knitr_1.6           
+[1] ggplot2_1.0.0 knitr_1.8    
 
 loaded via a namespace (and not attached):
- [1] codetools_0.2-9  colorspace_1.2-4 digest_0.6.4     evaluate_0.5.5  
- [5] formatR_1.0      grid_3.1.1       gtable_0.1.2     labeling_0.3    
- [9] MASS_7.3-34      munsell_0.4.2    plyr_1.8.1       proto_0.3-10    
-[13] Rcpp_0.11.2      reshape2_1.4     scales_0.2.4     stringr_0.6.2   
-[17] tools_3.1.1     
+ [1] colorspace_1.2-4 digest_0.6.4     evaluate_0.5.5   formatR_1.0     
+ [5] grid_3.1.2       gtable_0.1.2     labeling_0.3     MASS_7.3-35     
+ [9] munsell_0.4.2    plyr_1.8.1       proto_0.3-10     Rcpp_0.11.3     
+[13] reshape2_1.4     scales_0.2.4     stringr_0.6.2    tools_3.1.2     
 ```
