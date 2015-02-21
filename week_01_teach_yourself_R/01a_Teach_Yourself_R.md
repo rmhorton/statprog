@@ -515,9 +515,9 @@ What does this function do?
 
 ```r
 function(N) {
-    x <- runif(N)
-	y <- runif(N)
-	4 * sum( (x^2 + y^2) < 1 )/N
+  x <- runif(N)
+  y <- runif(N)
+  4 * sum( (x^2 + y^2) < 1 )/N
 }
 ```
 
