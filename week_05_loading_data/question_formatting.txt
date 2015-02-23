@@ -1,0 +1,28 @@
+Dear Class;
+
+I have added a page with links to everyone's GitHub sites to the class site on Canvas (and also uploaded recordings of most of the office hours). You should look over other people's questions as preparation for the midterm.
+
+My own questions are here:
+https://raw.githubusercontent.com/rmhorton/hs616/master/quiz_questions.md
+
+You should put your questions in the same format as mine. You can use RMarkdown, but we will be parsing the markdown version, so be sure you set RStudio to preserve the markdown file, and commit it to github. Basically, each question is identified by a line starting with "## Lecture", then there is a blank line, a block of text for the question, another blank line, and a set of lines for the answer, each starting with an asterisk. The correct answer should be listed first.
+
+We will be parsing quiz questions as part of the data loading exercises this week, so if you are behind on your questions, now would be a good time to catch up.
+
+We will use the script below to parse the markdown from your quizzes. You can use it to be sure your questions are formatted correctly (we'll go over this on Tuesday):
+
+library(RCurl)
+library(magrittr)
+
+quizUrl <- "https://raw.githubusercontent.com/rmhorton/hs616/master/quiz_questions.md"
+qlist <- getURL(quizUrl) %>%
+	paste(collapse=NL) %>%
+	(function(txt) strsplit(txt, "## *")[[1]][-1]) %>% 
+	strsplit(paste0(NL,NL)) %>%
+	lapply(function(q){
+		lecture <- sub("^Lecture *(\\d[ab]).*", "\\1", q[1], ignore.case=T, perl=T)
+		question <- q[2]
+		answers <- strsplit(q[3],NL)[[1]] %>% sub("^[*] *", "", .)
+		list(lecture=lecture, question=question, answers=answers)
+	})
+

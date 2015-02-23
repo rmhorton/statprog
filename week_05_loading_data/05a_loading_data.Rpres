@@ -1,0 +1,123 @@
+Loading and Cleaning Data
+========================================================
+author: Bob Horton
+date: 2015-02-22
+
+Tabular Data in Files
+========================================================
+
+The most common data structure for analysis is a rectangular table with observations in rows and attributes in columns.
+
+- spreadsheets
+- relational databases
+- lowest common denominator: CSV
+
+read.table
+========================================================
+Loads a text file into a data frame. Each line goes into its own row, with columns separated by a particular character. Commonly used wrappers:
+
+* read.csv
+  - comma-separated values
+* read.delim
+  - tab-delimited
+
+Reading a CSV File
+========================================================
+
+```{r, echo=TRUE}
+sse <- read.csv("spread_sheet_example.csv")
+fit <- lm(y ~ x, data=sse)
+with(sse, plot(x,y))
+abline(fit, lty=3, lwd=3, col="red")
+title(main=sprintf("y = %f * x + %f", coef(fit)[2], coef(fit)[1]))
+abline(12,3,col="green")
+```
+
+Entering Data (semi-) Manually
+========================================================
+
+data.entry
+edit.data.frame
+
+edit and data.entry require X11
+
+
+Toxic Text
+========================================================
+
+```{r toxic1}
+toxic <- read.csv("toxic_text.csv")
+```
+```{r toxic_kable, echo=FALSE}
+kable(toxic)
+```
+
+Missing Values
+========================================================
+
+toxic <- read.csv("toxic_text.csv")
+
+Missing Values
+========================================================
+```{r read_less_toxic}
+less_toxic <- read.csv("toxic_text.csv", na.strings=c("UNK", "?"))
+```
+```{r, echo=FALSE}
+kable(data.frame(
+  toxic = sapply(toxic, class),
+  less_toxic = sapply(less_toxic, class)
+))
+```
+
+Converting Dates
+========================================================
+
+```{r dates}
+datecols <- which(grepl("date$", colnames(toxic)))
+for (dc in datecols) toxic[[dc]] <- as.Date(toxic[[dc]])
+```
+
+colClasses
+========================================================
+
+```{r cc}
+setClass("yn_flag")
+
+setAs("character","yn_flag", function(from) c(T=TRUE, F=FALSE)[chartr("YN", "TF", from)] )
+
+cc <- c("Date", "numeric", "numeric", "numeric", "character", "logical", "logical", "yn_flag", "logical")
+
+non_toxic <- read.csv("toxic_text.csv", na.strings=c("UNK", "?"), colClasses=cc)
+```
+
+stringsAsFactors
+========================================================
+
+```{r}
+tox4 <- read.csv("toxic_text.csv", stringsAsFactors=FALSE)
+class(tox4$name)
+```
+
+Reading a Hard-coded Block of Text
+========================================================
+
+```{r textConnection_demo}
+emails <- c("name,email
+bob,rmhorton@usfca.edu
+bill, bill@microsoft.com")
+
+read.csv(textConnection(emails))
+```
+
+Fixed-Width Text
+========================================================
+
+```{r fwf}
+line1 <- readLines("fixed_width.txt", 1)
+g <- gregexpr(" +", line1)[[1]]
+widths <- diff(c(1, g + attributes(g)$match.length, nchar(line1)+1))
+colnames <- strsplit(line1, " +")[[1]]
+fwf <- read.fwf("fixed_width.txt", widths=widths, col.names=colnames, skip=1)
+fwf$full_name <- gsub(" +$", "", fwf$full_name)
+fwf
+```
