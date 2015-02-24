@@ -40,11 +40,11 @@ library(magrittr)
 library(rvest)
 cigcancerpage <- html("http://lib.stat.cmu.edu/DASL/Datafiles/cigcancerdat.html")
 txt_con <- cigcancerpage %>% 
-  html_nodes("pre") %>% (function(v) v[2]) %>% 
+  html_nodes("pre") %>% .[2] %>% 
   html_text() %>% textConnection()
-headers <- readLines(txt_con,2) %>% (function(v) v[2]) %>% 
+headers <- readLines(txt_con,2) %>% .[2] %>% 
   gsub("^\\s+", "", .) %>%
-  strsplit("\\s+") %>% (function(v) v[[1]])
+  strsplit("\\s+") %>% .[[1]]
 cigcancer <- read.delim(txt_con, header=F)
 colnames(cigcancer) <- headers
 
