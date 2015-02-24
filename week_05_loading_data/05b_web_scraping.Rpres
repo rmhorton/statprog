@@ -1,0 +1,59 @@
+Web Scraping
+========================================================
+author: Bob Horton
+date: 2015-02-23
+
+Read HTML Table
+========================================================
+```{r life_expectancy}
+site <- "http://en.wikipedia.org/wiki/List_of_countries_by_life_expectancy"
+mydf <- XML::readHTMLTable(site, which=3, stringsAsFactors=F)
+kable(head(mydf))
+```
+
+rvest
+========================================================
+
+magrittr
+========================================================
+
+<table>
+<tr><td>
+!["Ceci n'est pas un pipe](http://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
+</td><td>
+[%>%](http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
+
+</td></tr>
+</table>
+
+selectorGadget
+========================================================
+
+Allows you to interactively click on parts of a web page and use a process of positive nad negative seletcion to generate CSS selectors for targeted information.
+
+rvest
+===
+
+```{r load_lung_cancer}
+devtools::install_github("hadley/rvest")
+library(magrittr)
+library(rvest)
+cigcancerpage <- html("http://lib.stat.cmu.edu/DASL/Datafiles/cigcancerdat.html")
+txt_con <- cigcancerpage %>% 
+  html_nodes("pre") %>% (function(v) v[2]) %>% 
+  html_text() %>% textConnection()
+headers <- readLines(txt_con,2) %>% (function(v) v[2]) %>% 
+  gsub("^\\s+", "", .) %>%
+  strsplit("\\s+") %>% (function(v) v[[1]])
+cigcancer <- read.delim(txt_con, header=F)
+colnames(cigcancer) <- headers
+
+```
+
+Interesting Tables in Wikipedia
+===
+
+http://en.wikipedia.org/wiki/List_of_cancer_mortality_rates_in_the_United_States
+http://en.wikipedia.org/wiki/List_of_countries_by_cancer_rate
+http://en.wikipedia.org/wiki/Prevalence_of_tobacco_consumption
+http://stats.wikimedia.org/EN/TablesWikipediaEN.htm

@@ -111,6 +111,13 @@ read.csv(textConnection(emails))
 
 Fixed-Width Text
 ========================================================
+```{r fixed_with_data, echo=FALSE}
+fwd <- data.frame(LETTERS=LETTERS[1:6], colors=colors()[1:6], numbers=1:6)
+fwd
+```
+
+Fixed-Width Text
+========================================================
 
 ```{r fwf}
 line1 <- readLines("fixed_width.txt", 1)
@@ -121,3 +128,31 @@ fwf <- read.fwf("fixed_width.txt", widths=widths, col.names=colnames, skip=1)
 fwf$full_name <- gsub(" +$", "", fwf$full_name)
 fwf
 ```
+
+Lower Level Details: connections
+========================================================
+
+connection
+
+* file()
+* url()
+* gzfile, bzfile, xzfile, unz
+* pipe
+* fifo
+
+Lower Level Details: scan
+========================================================
+Read data into a vector (or list)
+
+```{r scan_example}
+system("cat ex.data", intern=TRUE)
+pp <- scan("ex.data", skip=1, quiet=TRUE)
+pp
+```
+
+Lower Level Details: readLines
+========================================================
+Read data into a vector (or list)
+
+
+

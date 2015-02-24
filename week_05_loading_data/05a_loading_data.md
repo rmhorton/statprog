@@ -142,6 +142,19 @@ read.csv(textConnection(emails))
 Fixed-Width Text
 ========================================================
 
+```
+  LETTERS        colors numbers
+1       A         white       1
+2       B     aliceblue       2
+3       C  antiquewhite       3
+4       D antiquewhite1       4
+5       E antiquewhite2       5
+6       F antiquewhite3       6
+```
+
+Fixed-Width Text
+========================================================
+
 
 ```r
 line1 <- readLines("fixed_width.txt", 1)
@@ -158,3 +171,43 @@ fwf
 1 Abe Ableson     61    180      130        90
 2   Ben Baker     59    145      120        80
 ```
+
+Lower Level Details: connections
+========================================================
+
+connection
+
+* file()
+* url()
+* gzfile, bzfile, xzfile, unz
+* pipe
+* fifo
+
+Lower Level Details: scan
+========================================================
+Read data into a vector (or list)
+
+
+```r
+system("cat ex.data", intern=TRUE)
+```
+
+```
+[1] "TITLE extra line" "2 3 5 7"          "11 13 17"        
+```
+
+```r
+pp <- scan("ex.data", skip=1, quiet=TRUE)
+pp
+```
+
+```
+[1]  2  3  5  7 11 13 17
+```
+
+Lower Level Details: readLines
+========================================================
+Read data into a vector (or list)
+
+
+
