@@ -36,8 +36,8 @@ abline(12,3,col="green")
 Entering Data (semi-) Manually
 ========================================================
 
-data.entry
-edit.data.frame
+* data.entry
+* edit.data.frame
 
 edit and data.entry require X11
 
@@ -54,27 +54,38 @@ kable(toxic)
 
 Missing Values
 ========================================================
-
+```{r missing_values}
 toxic <- read.csv("toxic_text.csv")
+kable(toxic)
+```
 
 Missing Values
 ========================================================
-```{r read_less_toxic}
+```{r read_less_toxic, echo=FALSE}
 less_toxic <- read.csv("toxic_text.csv", na.strings=c("UNK", "?"))
-```
-```{r, echo=FALSE}
+
 kable(data.frame(
   toxic = sapply(toxic, class),
   less_toxic = sapply(less_toxic, class)
 ))
 ```
 
+***
+
+```
+less_toxic <- read.csv("toxic_text.csv", na.strings=c("UNK", "?"))
+kable(data.frame(
+  toxic = sapply(toxic, class),
+  less_toxic = sapply(less_toxic, class)
+))
+```
 Converting Dates
 ========================================================
 
 ```{r dates}
 datecols <- which(grepl("date$", colnames(toxic)))
 for (dc in datecols) toxic[[dc]] <- as.Date(toxic[[dc]])
+sapply(toxic, class)
 ```
 
 colClasses
@@ -139,6 +150,8 @@ connection
 * gzfile, bzfile, xzfile, unz
 * pipe
 * fifo
+* socket
+
 
 Lower Level Details: scan
 ========================================================
@@ -154,5 +167,8 @@ Lower Level Details: readLines
 ========================================================
 Read data into a vector (or list)
 
-
+```{r readLines}
+lines <- readLines("fixed_width.txt")
+lines
+```
 

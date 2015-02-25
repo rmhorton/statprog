@@ -39,8 +39,8 @@ abline(12,3,col="green")
 Entering Data (semi-) Manually
 ========================================================
 
-data.entry
-edit.data.frame
+* data.entry
+* edit.data.frame
 
 edit and data.entry require X11
 
@@ -64,14 +64,23 @@ toxic <- read.csv("toxic_text.csv")
 Missing Values
 ========================================================
 
+```r
 toxic <- read.csv("toxic_text.csv")
+kable(toxic)
+```
+
+
+
+|open_date  |  n1|  n2|n3  |name |f1    |f2 |f3 |f4    |
+|:----------|---:|---:|:---|:----|:-----|:--|:--|:-----|
+|2000-01-28 | 1.1| 1.1|1.1 |Alan | TRUE |T  |Y  | TRUE |
+|2000-01-29 | 2.1| 2.1|2.1 |Carl |FALSE |F  |N  |FALSE |
+|2000-01-30 | 3.1| 3.1|3.1 |Dora | TRUE |T  |Y  | TRUE |
+|2000-01-31 | 4.1| 4.1|4.1 |Erin |FALSE |F  |N  |FALSE |
+|2000-02-01 | 5.1|  NA|UNK |Fred | TRUE |?  |Y  | TRUE |
 
 Missing Values
 ========================================================
-
-```r
-less_toxic <- read.csv("toxic_text.csv", na.strings=c("UNK", "?"))
-```
 
 |          |toxic   |less_toxic |
 |:---------|:-------|:----------|
@@ -85,6 +94,15 @@ less_toxic <- read.csv("toxic_text.csv", na.strings=c("UNK", "?"))
 |f3        |factor  |factor     |
 |f4        |logical |logical    |
 
+***
+
+```
+less_toxic <- read.csv("toxic_text.csv", na.strings=c("UNK", "?"))
+kable(data.frame(
+  toxic = sapply(toxic, class),
+  less_toxic = sapply(less_toxic, class)
+))
+```
 Converting Dates
 ========================================================
 
@@ -92,6 +110,14 @@ Converting Dates
 ```r
 datecols <- which(grepl("date$", colnames(toxic)))
 for (dc in datecols) toxic[[dc]] <- as.Date(toxic[[dc]])
+sapply(toxic, class)
+```
+
+```
+open_date        n1        n2        n3      name        f1        f2 
+   "Date" "numeric" "numeric"  "factor"  "factor" "logical"  "factor" 
+       f3        f4 
+ "factor" "logical" 
 ```
 
 colClasses
@@ -182,6 +208,8 @@ connection
 * gzfile, bzfile, xzfile, unz
 * pipe
 * fifo
+* socket
+
 
 Lower Level Details: scan
 ========================================================
@@ -210,4 +238,14 @@ Lower Level Details: readLines
 Read data into a vector (or list)
 
 
+```r
+lines <- readLines("fixed_width.txt")
+lines
+```
+
+```
+[1] "full_name    height   weight   systolic diastolic"
+[2] "Abe Ableson      61      180        130        90"
+[3] "Ben Baker        59      145        120        80"
+```
 

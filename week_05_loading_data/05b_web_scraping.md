@@ -44,7 +44,7 @@ selectorGadget
 Allows you to interactively click on parts of a web page and use a process of positive nad negative seletcion to generate CSS selectors for targeted information.
 
 rvest
-===
+========================================================
 
 
 ```r
@@ -62,8 +62,23 @@ cigcancer <- read.delim(txt_con, header=F)
 colnames(cigcancer) <- headers
 ```
 
+rvest
+========================================================
+
+
+|STATE |   CIG| BLAD|  LUNG|  KID| LEUK|
+|:-----|-----:|----:|-----:|----:|----:|
+|AL    | 18.20| 2.90| 17.05| 1.59| 6.15|
+|AZ    | 25.82| 3.52| 19.80| 2.75| 6.61|
+|AR    | 18.24| 2.99| 15.98| 2.02| 6.94|
+|CA    | 28.60| 4.46| 22.07| 2.66| 7.06|
+|CT    | 31.10| 5.11| 22.83| 3.35| 7.20|
+|DE    | 33.60| 4.78| 24.55| 3.36| 6.45|
+
+[Cigarette Cancer Data](http://lib.stat.cmu.edu/DASL/Datafiles/cigcancerdat.html)
+
 Interesting Tables in Wikipedia
-===
+========================================================
 
 http://en.wikipedia.org/wiki/List_of_cancer_mortality_rates_in_the_United_States
 http://en.wikipedia.org/wiki/List_of_countries_by_cancer_rate
