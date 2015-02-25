@@ -14,7 +14,7 @@ We will use the script below to parse the markdown from your quizzes. You can us
 library(RCurl)
 library(magrittr)
 
-quizUrl <- "https://raw.githubusercontent.com/rmhorton/hs616/master/quiz_questions.md"
+quizUrl <- "https://raw.githubusercontent.com/rmhorton/hs616/master/questions.md"
 qlist <- getURL(quizUrl) %>%
 	paste(collapse=NL) %>%
 	(function(txt) strsplit(txt, "## *")[[1]][-1]) %>% 
