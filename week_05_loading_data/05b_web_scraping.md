@@ -25,18 +25,16 @@ kable(head(mydf))
 
 rvest
 ========================================================
+(ha)rvest data from the web.
 
 magrittr
 ========================================================
 
-<table>
-<tr><td>
-!["Ceci n'est pas un pipe](http://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
-</td><td>
-[%>%](http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
+![Ceci n'est pas un pipe](http://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
 
-</td></tr>
-</table>
+***
+
+[%>%](http://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
 
 selectorGadget
 ========================================================
@@ -48,7 +46,7 @@ rvest
 
 
 ```r
-devtools::install_github("hadley/rvest")
+# devtools::install_github("hadley/rvest")
 library(magrittr)
 library(rvest)
 cigcancerpage <- html("http://lib.stat.cmu.edu/DASL/Datafiles/cigcancerdat.html")
