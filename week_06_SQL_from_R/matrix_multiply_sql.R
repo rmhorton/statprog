@@ -42,6 +42,7 @@ sparse2dense <- function(sparse_df, numRows=5, numCols=5){
 }
 
 sparse_multiply <- function(A, B){
+	library("sqldf")
 	sql <- "SELECT A.row_num, B.col_num, SUM(A.value * B.value) AS value \
 		FROM A, B \
 		WHERE A.col_num = B.row_num \
