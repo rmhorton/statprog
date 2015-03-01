@@ -1,0 +1,57 @@
+# negative binomial distribution with size=1
+# x <- 1:100/100
+# y <- sapply(x, function(p) sum(rnbinom(N, prob=p, size=1)==0)/N)
+# plot(x,y)
+# abline(0,1)
+
+# Generate a random matrix with mostly zeros (represented in "dense" matrix format)
+random_sparse_matrix <- function(numRows=5, numCols=5, probZero=0.7, seed=NULL){
+	if(!is.null(seed)) set.seed(seed)
+	matrix( rnbinom(numRows * numCols, prob=probZero, size=1), nrow=numRows )
+}
+
+# convert a matrix into a data frame with one row per value
+dense2sparse <- function(M){
+	num_values <- sum(M != 0)
+	T <- data.frame( 
+		row_num=integer(num_values), 
+		col_num=integer(num_values), 
+		value=numeric(num_values)
+	)
+	next_record <- 1
+	for (i in 1:nrow(M)){
+		for (j in 1:ncol(M)){
+			val <- M[i,j]
+			if (val != 0){
+				T[next_record,] <- c(i,j,val)
+				next_record <- next_record + 1
+			}
+		}
+	}
+	return(T)
+}
+
+# convert a sparse matrix data frame to a matrix
+sparse2dense <- function(sparse_df, numRows=5, numCols=5){
+	dense_m <- matrix(numeric(numRows * numCols), nrow=numRows)
+	for (i in 1:nrow(sparse_df)){
+		r <- sparse_df[i,]
+		dense_m[r[[1]], r[[2]]] <- r[[3]]
+	}
+	dense_m
+}
+
+sparse_multiply <- function(A, B){
+	sql <- "SELECT A.row_num, B.col_num, SUM(A.value * B.value) AS value \
+		FROM A, B \
+		WHERE A.col_num = B.row_num \
+		GROUP BY A.row_num, B.col_num;"
+	sqldf(sql)
+}
+
+A <- random_sparse_matrix(seed=1)
+B <- random_sparse_matrix(seed=2)
+
+C <- sparse2dense( sparse_multiply( dense2sparse(A), dense2sparse(B) ) )
+
+all.equal(C, A %*% B)	# TRUE
