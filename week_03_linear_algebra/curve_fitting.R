@@ -12,28 +12,34 @@ my_poly <- function(N)
 	as.formula(paste("y ~", paste("x", N:2, sep="^", collapse=" + "), "+ x - 1"))
 fit2 <- lm(my_poly(N))
 newx <- seq(min(x), max(x), len=100)
-lines(newx, predict(fit, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
+lines(newx, predict(fit2, newdata=data.frame(x=newx)), col="yellow", lwd=4, lty=1)
 
 
 # x <- c(13, 36, 57, 91, 97)
 # y <- c(71, 96, 88, 35, 50)
 # plot(y ~ x)
 
-# fit4 <- lm(y ~ I(x^5) + I(x^4) + I(x^3) + I(x^2) + I(x))
+# x <- c(58, 68, 79, 84, 95)
+# y <- c(8, 56, 74, 95, 16)
+# fit4 <- lm(y ~ I(x^5) + I(x^4) + I(x^3) + I(x^2) + I(x) - 1)
 
+pcurve <- function(v, coeff)
+	vapply(v, function(i) coeff %*% i^(5:1), 1)
+
+lines(newx, pcurve(newx, coef(fit4)), col="green")
+
+newx <- seq(min(x), max(x), len=100)
 
 x <- c(13, 36, 57, 91, 97)
 y <- c(71, 96, 88, 35, 50)
 plot(y ~ x)
 
 df <- data.frame(y, x, x2=x^2, x3=x^3, x4=x^4, x5=x^5)
-newx <- seq(min(x), max(x), len=100)
+
 
 fit5 <- lm( y ~ x5 + x4 + x3 + x2 + x - 1, data=df)	# we do not want an intercept
-pcurve <- function(v)
-	vapply(v, function(i) coef(fit5) %*% i^(5:1), 1)
 
-lines(newx, pcurve(newx), col="green")
+lines(newx, pcurve(newx, coef(fit5)), lwd=4, lty=3, col="blue")
 
 
 ##############
