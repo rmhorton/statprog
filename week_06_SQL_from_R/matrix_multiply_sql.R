@@ -1,16 +1,19 @@
-# negative binomial distribution with size=1
-# x <- 1:100/100
-# y <- sapply(x, function(p) sum(rnbinom(N, prob=p, size=1)==0)/N)
-# plot(x,y)
-# abline(0,1)
+#     For the negative binomial distribution with size=1, prob
+# corresponds to the probability of getting zero. Here we'll
+# use this to make sparse matrices with approximately a given
+# fraction of zeros.
+# N <- 1000
+# x <- 1:100/100 # prob in 1/100 increments
+# y <- sapply(x, function(p) sum(rnbinom(N, prob=p, size=1)==0)/N) # fraction zeros
+# plot(x,y); abline(0,1)
 
-# Generate a random matrix with mostly zeros (represented in "dense" matrix format)
+# Generate a random matrix with mostly zeros (represented in "dense" matrix format).
 random_sparse_matrix <- function(numRows=5, numCols=5, probZero=0.7, seed=NULL){
 	if(!is.null(seed)) set.seed(seed)
 	matrix( rnbinom(numRows * numCols, prob=probZero, size=1), nrow=numRows )
 }
 
-# convert a matrix into a data frame with one row per value
+# Convert a matrix into a data frame with one row per nonzero value.
 dense2sparse <- function(M){
 	num_values <- sum(M != 0)
 	T <- data.frame( 
@@ -31,7 +34,7 @@ dense2sparse <- function(M){
 	return(T)
 }
 
-# convert a sparse matrix data frame to a matrix
+# Convert a sparse matrix data frame to a matrix.
 sparse2dense <- function(sparse_df, numRows=5, numCols=5){
 	dense_m <- matrix(numeric(numRows * numCols), nrow=numRows)
 	for (i in 1:nrow(sparse_df)){
@@ -41,6 +44,7 @@ sparse2dense <- function(sparse_df, numRows=5, numCols=5){
 	dense_m
 }
 
+# Use SQL to multiply two sparse matrices.
 sparse_multiply <- function(A, B){
 	library("sqldf")
 	sql <- "SELECT A.row_num, B.col_num, SUM(A.value * B.value) AS value \
