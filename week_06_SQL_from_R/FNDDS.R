@@ -1,9 +1,5 @@
 data_dir <- "FNDDS_2011"
 
-# txt_pat <- "\\.txt$"
-# txt_files <- gsub(txt_pat, "", grep(txt_pat, list.files(data_dir), value=TRUE))
-# paste(txt_files, collapse=" ")
-
 fortification <- c(`0`="none", `1`="fortified_product", `2`="contains fortified ingredients")
 
 fndds_tables <- list(
@@ -166,7 +162,7 @@ assign_data_frame <- function(tbl_name){
 	assign(tbl_name, tbl, envir = .GlobalEnv)
 }
 
-for (tbl in c("FNDDSNutVal", "MainFoodDesc", "NutDesc", "FoodWeights", "FoodPortionDesc"))
+for (tbl in c("FNDDSNutVal", "MainFoodDesc", "NutDesc"))
 	assign_data_frame(tbl)
 
 library(dplyr)
@@ -186,31 +182,8 @@ long_food_nutrients <- sqldf("SELECT f.main_food_description, nd.nutrient_descri
 	INNER JOIN NutDesc nd ON nv.nutrient_code = nd.nutrient_code")
 
 
-nutrient_food_df <- spread(long_food_nutrients, main_food_description, nutrient_value, -food_code, fill=0)
-
-long_food_code_nutrients <- sqldf("SELECT f.food_code, nd.nutrient_description, nv.nutrient_value \
-	FROM foods f\
-	INNER JOIN FNDDSNutVal nv ON f.food_code = nv.food_code\
-	INNER JOIN NutDesc nd ON nv.nutrient_code = nd.nutrient_code\
-	INNER JOIN FoodWeights fw ON fw.food_code = f.food.code\
-	INNER JOIN FoodPortionDesc fpd ON fpd.portion_code =")
-
-food_code_df <- long_food_code_nutrients %>% spread(food_code, nutrient_value)
+nutrient_food_df <- spread(long_food_nutrients, main_food_description, nutrient_value, fill=0)
 
 food_nutrient_mat <- t(as.matrix(nutrient_food_df[-1]))
 colnames(food_nutrient_mat) <- nutrient_food_df$nutrient_description
 save(food_nutrient_mat, file="food_nutrient_mat.Rdata")
-
-lfn <- long_food_nutrients[-1]
-lfntbl <- spread(lfn, main_food_description, nutrient_value)
-rownames(lfntbl) <- lfntbl$nutrient_description
-lfntbl <- lfntbl[-1]
-
-t(lfntbl)
-
-
-### 
-long_food_nutrients <- sqldf("SELECT f.main_food_description, nd.nutrient_description, nv.nutrient_value \
-	FROM foods f \
-	INNER JOIN FNDDSNutVal nv ON f.food_code = nv.food_code \
-	INNER JOIN NutDesc nd ON nv.nutrient_code = nd.nutrient_code")
