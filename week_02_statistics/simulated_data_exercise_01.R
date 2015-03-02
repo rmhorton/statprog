@@ -31,33 +31,32 @@ pay_data <- data.frame(
 )
 
 # add outcome
-base_pay <- c(M=15, F=65)
+base_pay <- c(M=15, F=68.2)
 pay_height_coeff <- c(M=1, F=0.25)
 
-library(dplyr)
-pd2 <- pay_data %>% mutate(pay = round(base_pay[as.character(sex)] + pay_height_coeff[as.character(sex)] * height + rnorm(N, sd=1),1))
+pay_data$pay <- with(pay_data, round(base_pay[as.character(sex)] + pay_height_coeff[as.character(sex)] * height + rnorm(N, sd=1),1))
 
 # Examine the simulated data
-summary(pd2[pd2$sex=="M","pay"])
-summary(pd2[pd2$sex=="F","pay"])
+summary(pay_data[pay_data$sex=="M","pay"])
+summary(pay_data[pay_data$sex=="F","pay"])
 
 library(ggplot2)
-ggplot(pd2, aes(x=height, col=sex)) + geom_density()
-ggplot(pd2, aes(x=pay, col=sex)) + geom_density()
+ggplot(pay_data, aes(x=height, col=sex)) + geom_density()
+ggplot(pay_data, aes(x=pay, col=sex)) + geom_density()
 
-plot(pay ~ height, pd2, col=pd2$sex)
+plot(pay ~ height, pay_data, col=pay_data$sex)
 abline(base_pay["M"], pay_height_coeff["M"], lty=2, lwd=3, col="palegreen")
 abline(base_pay["F"], pay_height_coeff["F"], lty=2, lwd=3, col="lightblue")
 
 # Fit a linear regression model
-fit <- lm(pay ~ sex*height, pd2)
+fit <- lm(pay ~ sex*height, pay_data)
 summary(fit)
 # income depends on sex and height
 
 # visualize the predictions
-pd2$predicted <- predict(fit)
-points(predicted ~ height, pd2, col="yellow", pch=4)
-# also try col=c("blue", "green")[pd2$sex]
+pay_data$predicted <- predict(fit)
+points(predicted ~ height, pay_data, col="yellow", pch=4)
+# also try col=c("blue", "green")[pay_data$sex]
 
 # visualize the fitted model
 coeff <- summary(fit)$coeff[,"Estimate"]

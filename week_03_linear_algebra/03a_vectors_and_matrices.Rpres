@@ -1,0 +1,100 @@
+Vectors and Matrices
+========================================================
+author: Bob Horton
+date: 1/4/2015
+
+Dot Product of two Vectors: Food Cost
+========================================================
+```{r food_cost}
+price <- c( rice=2.16/20, oil=12.00/67, 
+            fish=12.10/12, beans=2.02/12)
+servings <- c( rice=7, oil=2, 
+               fish=2, beans=4)
+
+sum(price * servings)
+
+price %*% servings
+```
+
+Nutrition Information
+========================================================
+A matrix can hold nutrition information for various foods.
+
+```{r nutrition_sources, echo=FALSE}
+# rice: Mahatma-Enriched-Extra-Grain-White
+# beans: Goya-Dried-Black-Beans-16
+# oil: Zoe-Extra-Virgin-Olive-33-8
+# fish: Bumble-Bee-Chunk-2-5-Ounce-Pouches
+```
+```{r nutrition_matrix, echo=FALSE}
+
+N <- matrix( 
+        c( 35,  0,  3,
+            0, 14,  0,
+            0,  1, 16,
+           23,  0,  9), 
+        nrow=3, 
+        dimnames=list(
+            c("carb", "fat", "protein"), 
+            c("rice", "oil", "fish", "beans")
+        )
+    )
+calories <- c( carb=4.1, fat=8.8, protein=4.1 )
+N <- rbind(N, calories %*% N, price)
+rownames(N)[c(4,5)] <- c("kCal", "cost")
+
+N
+```
+
+Dot Product of two Vectors
+===
+Find the calorie content of the given diet.
+```{r calorie_content}
+N["kCal",] %*% servings
+```
+
+Multiplying a Matrix by a Vector
+========================================================
+Calculate the nutrition information for a given diet
+```{r one_diet}
+servings
+
+N %*% servings
+```
+
+Multiplying a Matrix by a Vector
+========================================================
+```{r set_of_diets_setup, echo=FALSE}
+diets <- matrix( c(7, 2, 2, 4,
+                   4, 5, 7, 2,
+                   4, 3, 0, 8), nrow=4)
+
+```
+```{r set_of_diets}
+diets
+N %*% diets
+```
+
+Behavior of `diag()` depends on input type
+========================================================
+- matrix -> extracts the diagonal
+- missing, but `nrow` is specified -> identity matrix
+- length-one vector -> identity matrix
+- numeric vector -> a matrix with the given diagonal and zeros elsewhere
+
+
+Behavior of diag() depends on input type
+========================================================
+```{r diag_examples}
+M <- matrix(1:25, 
+        nrow=5)
+diag(M)
+diag(nrow=2)
+```
+
+***
+
+```{r diag_examples_col2}
+diag(2)
+diag(1:2)
+```
