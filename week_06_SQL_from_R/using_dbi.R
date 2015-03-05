@@ -115,3 +115,42 @@ dbGetQuery(con, "select * from a INNER JOIN b on a.a = b.b;")
 dbGetQuery(con, "select a.*,b.*  from a,b where a.a = b.b;")
 dbGetQuery(con, "select * from a LEFT OUTER JOIN b on a.a = b.b;")
 dbDisconnect(con)
+
+
+###
+
+library("RMySQL")
+con <- dbConnect(MySQL(), dbname = "hg19")
+dbConnect(drv, dbname = "hg19", username = "genome",
+password = NULL, host = "genome-mysql.cse.ucsc.edu", unix.socket = NULL, port = 0,
+client.flag = 0, groups = "rs-dbi", default.file = NULL, ...)
+
+
+library("RMySQL")
+
+con <- dbConnect(MySQL(), dbname = "hg19", username = "genome", password = NULL, 
+	host = "genome-mysql.cse.ucsc.edu")
+mysql --user=genome --host=genome-mysql.cse.ucsc.edu -A -e "SELECT * FROM refGene" hg19 >
+hg19_refgene.txt
+
+###
+
+library("RMySQL")
+con <- dbConnect(MySQL(), dbname = "midterm.sqlite")
+source("../week_05_loading_data/quiz_parser.R")
+
+quizUrl <- "https://raw.githubusercontent.com/rmhorton/hs616/master/questions.md"
+qlist <- quizUrl %>% getURL() %>% parse_quiz_text()
+
+for (q in qlist){
+	question_entry <- data.frame(lecture=q[[1]], question=q[[2]])
+	dbWriteTable(con, "question", q, append=TRUE)
+	question_id <- last_insert_rowid()
+	is_correct <- TRUE
+	for (answer in q[[3]]){
+		answer <- data.frame(question_id, answer, is_correct)
+		is_correct <- FALSE
+		dbWriteTable(con, "answer", answer, append=TRUE)
+	}
+}
+

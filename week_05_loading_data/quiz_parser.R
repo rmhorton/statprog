@@ -14,14 +14,14 @@ parse_quiz_text <- function(quiz_text, NL="\n") quiz_text %>%
 	})
 
 
-quizFile <- "../../hs616/questions.md"
-qlist_local <- quizFile %>% 
-				readLines() %>% 
-				paste(collapse="\n") %>% 
-				parse_quiz_text()
-
-
-quizUrl <- "https://raw.githubusercontent.com/rmhorton/hs616/master/questions.md"
-qlist_github <- quizUrl %>% getURL() %>% parse_quiz_text()
+# quizFile <- "../../hs616/questions.md"
+# qlist_local <- quizFile %>% 
+# 				readLines() %>% 
+# 				paste(collapse="\n") %>% 
+# 				parse_quiz_text()
+# 
+# 
+# quizUrl <- "https://raw.githubusercontent.com/rmhorton/hs616/master/questions.md"
+# qlist_github <- quizUrl %>% getURL() %>% parse_quiz_text()
 
 # parse_quiz_text(getURL(quizUrl))

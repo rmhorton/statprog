@@ -1,0 +1,83 @@
+Lecture 06b: Interfacing to databases
+========================================================
+author: Bob Horton
+date: 3/4/2015
+
+Doctors and Patients: many-to-many
+========================================================
+
+```{r dr_pt_tables, echo=FALSE}
+library("sqldf")
+patient <- data.frame(id=1:5,
+    name=c("Alt", "Box", "Cox", "Dew", "Ely"),
+	sex=c("F", "M", "M", "F", "F")
+)
+
+doctor <- data.frame(id=1:4, 
+    md=c("Kane", "Lake", "Mayo", "Nash"),
+	dept=c("GI", "ID", "AI", "OB")
+)
+
+patient_doctor <- data.frame(
+	pt=c(1,1,2,3,4,4), 
+	dr=c(2,4,1,1,4,3)
+)
+```
+```{r dr_pt_table_display1, echo=FALSE, results="asis"}
+cat("<h2>patient</h2>")
+kable(patient)
+cat("<h2>doctor</h2>")
+kable(doctor)
+```
+
+***
+
+```{r dr_pt_table_display2, echo=FALSE, results="asis"}
+cat("<h2>patient-doctor</h2>")
+kable(patient_doctor)
+```
+
+Left Outer Join: SQL
+========================================================
+
+```{r left_outer_join_sql, echo=FALSE}
+sql <- "SELECT p.id, p.name, sex, dr, md, dept 
+    FROM patient p 
+    LEFT OUTER JOIN patient_doctor pd 
+        ON p.id=pd.pt
+    LEFT OUTER JOIN doctor d 
+        ON pd.dr=d.id"
+cat(sql)
+sqldf(sql)
+```
+
+Left Outer Join: R
+========================================================
+```{r left_outer_join_r}
+merge(
+    merge(patient, patient_doctor, 
+          by.x='id', by.y='pt', all.x=TRUE),
+    doctor, by.x='id', by.y='id', all.x=TRUE)
+
+```
+
+Aggregation: SQL
+========================================================
+
+```{r aggregation_sql}
+sql <- "SELECT dr, count(*) as num_patients FROM patient_doctor GROUP BY dr"
+sqldf(sql)
+```
+
+Aggregation: R
+========================================================
+```{r aggregate}
+aggregate(patient_doctor['pt'], by=list(dr=patient_doctor$dr), length)
+```
+
+Aggregation: dplyr
+========================================================
+```{r aggregation_dplyr}
+library('dplyr')
+patient_doctor %>% group_by(dr) %>% summarize(num_patients=n())
+```
