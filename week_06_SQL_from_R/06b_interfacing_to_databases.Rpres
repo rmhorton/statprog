@@ -37,6 +37,35 @@ cat("<h2>patient-doctor</h2>")
 kable(patient_doctor)
 ```
 
+
+Selection: SQL
+========================================================
+```{r selection_sql, echo=FALSE}
+sql <- "SELECT * FROM patient WHERE sex = 'F'"
+cat(sql)
+sqldf(sql)
+```
+
+Selection: R
+========================================================
+```{r selection_r}
+patient[patient$sex=='F',]
+```
+
+Projection: SQL
+========================================================
+```{r projection_sql, echo=FALSE}
+sql <- "SELECT name FROM patient"
+cat(sql)
+sqldf(sql)
+```
+
+Projection: R
+========================================================
+```{r projection_r}
+patient$name
+```
+
 Left Outer Join: SQL
 ========================================================
 
@@ -60,6 +89,7 @@ merge(
     doctor, by.x='id', by.y='id', all.x=TRUE)
 
 ```
+
 
 Aggregation: SQL
 ========================================================

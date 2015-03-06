@@ -39,6 +39,63 @@ Doctors and Patients: many-to-many
 |  4|  4|
 |  4|  3|
 
+
+Selection: SQL
+========================================================
+
+```
+SELECT * FROM patient WHERE sex = 'F'
+```
+
+```
+  id name sex
+1  1  Alt   F
+2  4  Dew   F
+3  5  Ely   F
+```
+
+Selection: R
+========================================================
+
+```r
+patient[patient$sex=='F',]
+```
+
+```
+  id name sex
+1  1  Alt   F
+4  4  Dew   F
+5  5  Ely   F
+```
+
+Projection: SQL
+========================================================
+
+```
+SELECT name FROM patient
+```
+
+```
+  name
+1  Alt
+2  Box
+3  Cox
+4  Dew
+5  Ely
+```
+
+Projection: R
+========================================================
+
+```r
+patient$name
+```
+
+```
+[1] Alt Box Cox Dew Ely
+Levels: Alt Box Cox Dew Ely
+```
+
 Left Outer Join: SQL
 ========================================================
 
@@ -83,6 +140,7 @@ merge(
 6  4  Dew   F  3 Nash   OB
 7  5  Ely   F NA <NA> <NA>
 ```
+
 
 Aggregation: SQL
 ========================================================
