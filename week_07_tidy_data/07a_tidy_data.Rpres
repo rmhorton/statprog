@@ -1,0 +1,161 @@
+Tidy Data
+========================================================
+author: Bob Horton
+date: 2015-03-08
+
+
+Tidy Data
+========================================================
+
+Wickham, H. [Tidy Data](http://www.jstatsoft.org/v59/i10/paper). Journal of Statistical Software 59(10), August 2014. ([data](http://www.jstatsoft.org/v59/i10/supp/4))
+
+```{rsetup}
+library("magrittr")
+library("tidyr")
+library("dplyr")
+```
+
+
+Tidy Data
+========================================================
+* variable == column
+* observation == row
+* One type of observational unit per table
+
+Like 3NF, but focused on single table.
+Good for vectorization.
+
+
+Tidy Data
+========================================================
+```{r medical_bills}
+N <- 100
+set.seed(1)
+medical_bills <- data.frame(
+    sex=sample(c("M", "F"), N, replace=T), 
+	billed=round(runif(N, min=200, max=20000),2),
+	pct_paid = round( 100 * runif(N), 1 )
+)
+head(medical_bills)
+```
+
+
+Relationships Between Variables
+========================================================
+It is easier to describe functional relationships between variables than between rows
+
+```{r amt_paid}
+medical_bills <- medical_bills %>% mutate(amt_paid = (pct_paid / 100 ) * billed)
+head(medical_bills)
+```
+
+
+Comparing Subgroups
+========================================================
+It is easier to make comparisons between groups of observations than between groups of columns.
+
+```{r summarize_medical_bills}
+summary_by_sex <- medical_bills %>% 
+    group_by(sex) %>% 
+    summarize( 
+        avg=mean(amt_paid), 
+        cnt=n(), tot=sum(amt_paid))
+
+kable(summary_by_sex)
+```
+
+
+Table 1
+========================================================
+
+```{r table_1, echo=FALSE}
+# library("knitr")
+table_1 <- data.frame(
+    name = c("John Smith", "Jane Doe", "Mary Johnson"),
+	treatmenta = c(NA, 16, 3),
+	treatmentb = c(2,11,1)
+)
+kable(table_1)
+```
+
+
+Table 2
+========================================================
+
+```{r table_2, echo=FALSE}
+table_2 <- as.data.frame(t(table_1[-1]))
+names(table_2) <- table_1[[1]]
+kable(table_2)
+```
+
+
+Table 3
+========================================================
+
+```{r table_3}
+table_3 <- table_1 %>% 
+    gather(treatment, result, -name)
+table_3
+```
+
+
+Organizing for Human Readability
+========================================================
+
+* Fixed variables
+    - reflect experimental design
+    - are known in advance
+* Measured Variables
+    - measured during study
+
+Sort rows by fixed variables.
+Put columns for fixed variables first
+
+
+Common problems in messy datasets
+========================================================
+* values stored in column headers
+* multiple variables stored in a single column
+* variables stored in both rows and columns
+* multiple types of entities in the same table
+* one entity in multiple tables
+
+Gathering and Spreading
+========================================================
+```{r melting}
+raw <- data.frame(
+    row=LETTERS[1:3],
+    a=1:3,
+    b=4:6,
+    c=7:9
+)
+raw
+```
+
+***
+
+```{r gather_spread}
+gathered <- raw %>% gather(column, value, -row)
+gathered
+spread(gathered, column, value)
+```
+
+
+Fundamental Verbs of Data Manipulation:
+========================================================
+* Filter: subset based on conditions
+* Transform: add or modify variables
+    - single variable: `log()`
+	- multiple variables: `density <- weight / volume`
+* Aggregate:  `sum()`, `mean()`
+* Sort: change the order of observations
+
+Other tasks involved in data cleaning
+========================================================
+* parsing dates and numbers
+* correcting character encodings
+* identifying missing values
+* filling in structural missing values
+* matching similar values (e.g., from typos)
+* verifying experimental design
+* model-based data cleaning to identify suspicious values

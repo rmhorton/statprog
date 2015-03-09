@@ -36,16 +36,16 @@ dbGetRowCount(res)
 dbHasCompleted(res)
 
 
-res <- dbGetPreparedQuery(dsets, "SELECT * FROM USArrests WHERE Murder < ?", data.frame(x = 3))
-dbColumnInfo(res)
+# res <- dbGetPreparedQuery(dsets, "SELECT * FROM USArrests WHERE Murder < ?", data.frame(x = 3))
+# dbColumnInfo(res)
 
-res <- dbSendQuery(con, "SELECT * FROM mtcars WHERE cyl = 4")
+res <- dbSendQuery(dsets, "SELECT * FROM mtcars WHERE cyl = 4")
 while(!dbHasCompleted(res)){
 	chunk <- dbFetch(res, n = 10)
 	print(nrow(chunk))
 }
 
-dbDisconnect(con)
+dbDisconnect(dsets)
 
 sqliteCopyDatabase(dsets, "datasets.sqlite")
 

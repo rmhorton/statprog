@@ -37,6 +37,20 @@ cat("<h2>patient-doctor</h2>")
 kable(patient_doctor)
 ```
 
+Projection: SQL
+========================================================
+```{r projection_sql, echo=FALSE}
+sql <- "SELECT name FROM patient"
+cat(sql)
+sqldf(sql)
+```
+
+Projection: R
+========================================================
+```{r projection_r}
+patient['name']
+patient$name  # patient[['name']]; patient[,'name']
+```
 
 Selection: SQL
 ========================================================
@@ -52,62 +66,44 @@ Selection: R
 patient[patient$sex=='F',]
 ```
 
-Projection: SQL
-========================================================
-```{r projection_sql, echo=FALSE}
-sql <- "SELECT name FROM patient"
-cat(sql)
-sqldf(sql)
-```
-
-Projection: R
-========================================================
-```{r projection_r}
-patient$name
-```
-
 Left Outer Join: SQL
 ========================================================
-
 ```{r left_outer_join_sql, echo=FALSE}
-sql <- "SELECT p.id, p.name, sex, dr, md, dept 
-    FROM patient p 
-    LEFT OUTER JOIN patient_doctor pd 
-        ON p.id=pd.pt
-    LEFT OUTER JOIN doctor d 
-        ON pd.dr=d.id"
+sql <- "SELECT p.id as pt, dr, md, dept, name, sex 
+FROM patient p 
+LEFT OUTER JOIN patient_doctor pd ON p.id=pd.pt
+LEFT OUTER JOIN doctor d ON pd.dr=d.id"
 cat(sql)
 sqldf(sql)
 ```
 
-Left Outer Join: R
+One-sided Outer Join: R
 ========================================================
 ```{r left_outer_join_r}
 merge(
-    merge(patient, patient_doctor, 
-          by.x='id', by.y='pt', all.x=TRUE),
-    doctor, by.x='id', by.y='id', all.x=TRUE)
+    merge(patient_doctor, doctor,
+          by.x='dr', by.y='id', all.x=TRUE),
+    patient, by.x='pt', by.y='id', all.y=TRUE)
 
 ```
-
 
 Aggregation: SQL
 ========================================================
-
 ```{r aggregation_sql}
-sql <- "SELECT dr, count(*) as num_patients FROM patient_doctor GROUP BY dr"
+sql <- "SELECT dr, count(*) as num_pt FROM patient_doctor GROUP BY dr"
 sqldf(sql)
-```
-
-Aggregation: R
-========================================================
-```{r aggregate}
-aggregate(patient_doctor['pt'], by=list(dr=patient_doctor$dr), length)
 ```
 
 Aggregation: dplyr
 ========================================================
 ```{r aggregation_dplyr}
 library('dplyr')
-patient_doctor %>% group_by(dr) %>% summarize(num_patients=n())
+patient_doctor %>% group_by(dr) %>% summarize(num_pt=n()) %>% as.data.frame()
+```
+
+Aggregation: R
+========================================================
+```{r aggregate}
+aggregate(patient_doctor['pt'], by=list(dr=patient_doctor$dr), length)
+table(patient_doctor$dr)
 ```
