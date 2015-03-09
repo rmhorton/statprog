@@ -28,7 +28,6 @@ parse_quiz_text <- function(quiz_text, NL="\n"){
 	})
 }
 
-<<<<<<< HEAD
 # transform the input URL into a raw file URL
 # @param blob_url the github URL for the normal web interface to the file (must include "/blob/" after repo name)
 # https://github.com/sneha-krishna/hs616/blob/working-doc/lecturequestions.txt
@@ -38,17 +37,3 @@ github_raw_url <- function(blob_url){
     user_doc <- strsplit(blob_url, "/blob/")[[1]] 
     sprintf("https://raw.githubusercontent.com/%s/%s", user_doc[1], user_doc[2])
 }
-=======
-
-# quizFile <- "../../hs616/questions.md"
-# qlist_local <- quizFile %>% 
-# 				readLines() %>% 
-# 				paste(collapse="\n") %>% 
-# 				parse_quiz_text()
-# 
-# 
-# quizUrl <- "https://raw.githubusercontent.com/rmhorton/hs616/master/questions.md"
-# qlist_github <- quizUrl %>% getURL() %>% parse_quiz_text()
-
-# parse_quiz_text(getURL(quizUrl))
->>>>>>> 446abbd947df84ee0a7013d1e0ca03f42fab76e8
