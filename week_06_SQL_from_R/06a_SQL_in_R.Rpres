@@ -1,0 +1,75 @@
+Using SQL in R
+========================================================
+author: Bob Horton
+date: 2015-02-27
+
+Relational Algebra
+========================================================
+
+* generic description of operations on tables (relations)
+    - set operations
+    - projection
+    - selection
+    - joins
+    - renaming
+* algebraic properties are used in query optimization
+
+Database Normalization
+========================================================
+* 1NF: atomic attributes
+    - if patients have multiple phone numbers, you need a separate table.
+* 2NF: no partial keys
+    - each non-key attribute relates to the entire key (not just to one column of a multi-column key)
+* 3NF: no non-key dependencies
+
+see Wikipedia for [Third normal form](http://en.wikipedia.org/wiki/Third_normal_form)
+
+Third Normal Form
+========================================================
+Each table represents an entity.
+- rows are instances
+- columns are attributes
+- rows can be uniquely identified by a key comprisine one or more columns.
+- all attributes in a row reflect "the key, the whole key, and nothing but the key, so help me Codd"
+
+Merging Operations
+========================================================
+* inner join
+  - rows are matched by common values in particular columns.
+  - "natural" join uses an obviously similar column for join.
+* (left|right) outer join
+  - keeps all records in first table, and adds information from second table if available.
+
+Merging in R
+========================================================
+
+```{r food_nutrient_merge}
+food_df <- merge(food, food_nutrient, by=food_id)
+head(food_df)
+```
+
+Merging in SQL
+========================================================
+
+```{r food_nutrient_sql_merge}
+library(sqldf)
+food_df <- sqldf("SELECT * FROM food f, food_nutrient fn
+                 WHERE f.food_id = fn.food_id")
+```
+
+The sqldf Package
+========================================================
+
+Use SQL to operate on dataframes as though they were tables in a database
+(the package makes this come true).
+
+sqldf backends
+========================================================
+* SQLite (default)
+* Postgres
+* MySQL
+
+(sparse) matrix multiplication in SQL
+========================================================
+
+

@@ -148,8 +148,6 @@ fndds_tables <- list(
 		)
 )
 
-data_dir <- "FNDDS_2011"
-
 assign_data_frame <- function(tbl_name){
 	tbl <- read.table(
 		file.path(data_dir, paste0(tbl_name, ".txt")), 
@@ -161,6 +159,23 @@ assign_data_frame <- function(tbl_name){
 	names(tbl) <- names(fndds_tables[[tbl_name]][["column_types"]])
 	assign(tbl_name, tbl, envir = .GlobalEnv)
 }
+
+fndds2sqlite <- function(data_dir, table_details, sqlite_filename){
+
+	library("RSQLite")
+	con <- dbConnect(SQLite(), sqlite_filename)
+
+	for (tbl_name in names(table_details)){
+		file_name <- paste0(tbl_name, ".txt")
+		assign_data_frame(tbl_name)
+		tbl <- get(tbl_name)
+		dbWriteTable(con, tbl_name, tbl, row.names = FALSE)
+	}
+	
+	dbDisconnect(con)
+}
+
+# fndds2sqlite("FNDDS_2011", fndds_tables, "fndds.sqlite")
 
 for (tbl in c("FNDDSNutVal", "MainFoodDesc", "NutDesc"))
 	assign_data_frame(tbl)

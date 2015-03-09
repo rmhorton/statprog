@@ -60,3 +60,29 @@ B <- random_sparse_matrix(seed=2)
 C <- sparse2dense( sparse_multiply( dense2sparse(A), dense2sparse(B) ) )
 
 all.equal(C, A %*% B)	# TRUE
+
+
+# Converting from dense to sparse using tidyr
+Adf <- as.data.frame(A)
+colnames(Adf)[1:5] <- 1:5
+Adf$row_num <- row.names(Adf)
+
+library("magrittr")
+library("dplyr")
+library("tidyr")
+
+## `dense2sparse` and `sparse2dense` essentially replicate `gather` and `spread`
+gathered <- gather(Adf, col_num, value, -row_num)
+gathered %>% spread(col_num, value)
+
+## To get back the original matrix A exactly, we need to adjust types and attributes
+gathered %>% spread(col_num, value) %>% 
+	.[-1] %>% data.matrix() %>% (function(.){dimnames(.) <- NULL;.})
+
+## Note that this is not exactly sparse2dense, since we did not drop the zero cells.
+
+## We can reproduce dense2sparse exactly:
+Adf %>% gather(col_num, value, -row_num) %>% filter(value != 0) %>% arrange(row_num)
+
+dense2sparse(A)
+
