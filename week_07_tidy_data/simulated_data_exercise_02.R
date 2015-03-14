@@ -3,13 +3,6 @@
 # the variables are distributed. Based on these plots, I adjusted parameters and added noise
 # until I got the sorts of patterns I want. 
 
-bmi <- function(height, weight) weight/height^2
-
-sbp <- function(sex, salt, bmi, etoh){
-	ifelse (sex == "M",
-		90 + 0.005 * salt + 1.0 * bmi - 0.01 * etoh,
-		80 + 0.005 * salt + 1.5 * bmi - 0.01 * etoh)
-}
 
 generate_dataset <- function(N){
 	HEIGHT_MEAN <- c( F = 1.6, M = 1.8 )
@@ -17,6 +10,14 @@ generate_dataset <- function(N){
 	WEIGHT_MEAN <- c( F = 54, M = 70 )
 	WEIGHT_SD <- 20
 	
+	bmi <- function(height, weight) weight/height^2
+
+	sbp <- function(sex, salt, bmi, etoh){
+		ifelse (sex == "M",
+			90 + 0.005 * salt + 1.0 * bmi - 0.01 * etoh,
+			80 + 0.005 * salt + 1.5 * bmi - 0.01 * etoh)
+	}
+
 	sex <- sample(c("M", "F"), N, replace=TRUE)
 	salt <- rnorm(N, mean=2200, sd=50)
 	height <- rnorm(N, mean=HEIGHT_MEAN[sex], sd=HEIGHT_SD)
@@ -36,30 +37,33 @@ generate_dataset <- function(N){
 	data.frame( sex, salt, height, weight, etoh, car, sign, systolic)
 }
 
-simdat <- generate_dataset(200)
+bpdata <- generate_dataset(200)
 
 
-plot( systolic ~ height, col=sex, data=simdat)
+plot( systolic ~ height, col=sex, data=bpdata)
 
 library(ggplot2)
-g <- ggplot( data=simdat, aes(x=height, y=systolic, col=sex)) + geom_point()
+g <- ggplot( data=bpdata, aes(x=height, y=systolic, col=sex)) + geom_point()
 plot(g)
 
 # height distribution: I fiddled with HEIGHT_SD until this looked ok
-ggplot(simdat, aes(x=height, col=sex)) + geom_density()
+ggplot(bpdata, aes(x=height, col=sex)) + geom_density()
 
-plot( systolic ~ weight, col=sex, data=simdat)
+plot( systolic ~ weight, col=sex, data=bpdata)
 
-simdat <- transform(simdat, bmi = weight/(height^2))
-plot( systolic ~ bmi, col=sex, data=simdat)
+bpdata <- transform(bpdata, bmi = weight/(height^2))
+plot( systolic ~ bmi, col=sex, data=bpdata)
+
+plot( systolic ~ weight:I(height^2), col=sex, data=bpdata)
 
 
-xtabs( ~ sign + car, simdat)
+xtabs( ~ sign + car, bpdata)
 
-plot( systolic ~ sex, data=simdat )
-plot( systolic ~ height, col=sex, data=simdat )
-plot( systolic ~ weight, col=sex, data=simdat )
-plot( bmi ~ sex, data=simdat )
-plot( weight ~ height, col=sex, data=simdat )
+plot( systolic ~ sex, data=bpdata )
 
+plot( bmi ~ sex, data=bpdata )
+plot( weight ~ height, col=sex, data=bpdata )
+
+
+xtabs( ~ sign + car, bpdata)
 
