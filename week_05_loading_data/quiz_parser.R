@@ -23,7 +23,7 @@ parse_quiz_text <- function(quiz_text, NL="\n"){
 	lapply(function(q){
 		lecture <- sub("^Lecture *(\\d[ab]).*", "\\1", q[1], ignore.case=T, perl=T)
 		question <- q[2]
-		answers <- strsplit(q[3],NL)[[1]] %>% sub("^[*] *", "", .)
+		answers <- strsplit(q[3],paste0(NL,'[*]'))[[1]] %>% sub("^[*] *", "", .)
 		list(lecture=lecture, question=question, answers=answers)
 	})
 }
