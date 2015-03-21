@@ -1,0 +1,1803 @@
+---
+title: "Multiple Choice Questions"
+author: "Robert Horton"
+date: "January 28, 2015"
+output: html_document
+---
+
+## Lecture 1a
+
+Which symbol is used to collect a variable number of function arguments?
+
+* `...`
+* `???`
+* `+++`
+* `yada, yada, yada`
+
+## Lecture 1b
+
+In the following code, what is the type of the variable `v`?
+```
+v <- runif(10) < 0.5
+```
+
+* logical
+* numeric
+* integer
+* character
+
+## Lecture 2a
+
+The standard normal distribution has a mean of 0 and a standard deviation of 1, and the area under this curve over all possible x-values is one. What is the area under the curve of a normal probability distribution function with a standard deviation of 2?
+
+* 1
+* 2
+* 2 &pi;
+* 4
+
+## Lecture 2b
+
+Consider a sequence of 10 coin flips, represented by the string `TTTHTHTTTH`. Which statement gives the total number of different sequences of 10 coin flips that could result in this number of heads?
+
+* `choose(10,3)`
+* `factorial(10)/(factorial(4)*factorial(7))`
+* `integrate(dnorm, -Inf, 0)`
+* `sapply(3:10, function(x) factorial(x))`
+
+## Lecture 2b again
+
+Consider the following code:
+```
+coinflips <- strsplit('TTTHTHTTTH','')[[1]]
+flip10 <- sapply(1:10000, function(i) paste(sample(coinflips),collapse=''))
+length(unique(flip10))
+```
+What does the variable `flip10` contain?
+
+* Ten thousand permutations, each with 3 heads and 7 tails
+* A function for flipping ten coins
+* An estimate of the number of possible permutations of the given sequence
+* A vector of 10 'H' and 'T' characters
+
+## Lecture 3a
+
+Which command will create a multiplication table for the numbers from 1 to 10?
+Assume `r` is a row vector defined like this: `r <- matrix(1:10,1)`
+
+* t(r) %*% r
+* r %*% t(r)
+* r^2
+* t(r)^2
+
+## Lecture 3b
+
+Given a 2 by 2 matrix `A <- matrix(c(2, 5, 3, 8), 2, byrow=TRUE)`, which command performs Gaussian elimination to put A in upper triangular form?
+
+* A[2,] <- A[2,] - A[1,] * 3/2
+* A[3,] <- A[3,] - A[2,]
+* A[2,] <- A[1,] * 3/8
+* A[2,] <- A[2,] + A[1,] + A[1,]/2
+
+
+## Lecture 4a
+
+Here is code to add normally distributed noise to an input vector:
+```
+addRandom <- function(i) i + rnorm(1)
+y <- sapply(0:10, addRandom)
+```
+How would you change `addRandom` to a vectorized version that could be used like this:
+`y <- addRandom(0:10)`? (Choose the best solution)
+
+* `addRandomVectorized <- function(v) v + rnorm(length(v))`
+* `addRandomVectorized <- function(i) vapply(i, function(x) x+rnorm(1), 1)`
+* `addRandomVectorized <- function(x) sapply(x, addRandom)`
+* `addRandomVectorized <- Vectorize(addRandom)`
+
+## Lecture 4b
+
+Consider the following profiling results:
+```
+             self.time self.pct
+"function_A"    278.39    86.46
+"function_B"     29.32     9.10
+"function_C"     14.29     4.44
+```
+If you make `function_B` 100 times faster, how much faster would you expect the program be?
+
+* less than 10% faster
+* twice as fast
+* 100 times as fast
+* no faster
+
+## Lecture 5a
+
+Which of the regular expressions below matches this sentence exactly once?
+"The key, the whole key, and nothing but the key."
+
+* "\\.$"
+* "[Tt]he\\s"
+* "(and|not)"
+* "?key?"
+
+## Lecture 5b
+
+Which of these addresses cannot be read by the built-in `url()` function?
+
+* `https://connect.usfca.edu`
+* `http://rseek.org/`
+* `http://ftp.ics.uci.edu/pub/machine-learning-databases/`
+* `file:///usr/share/dict/words`
+
+## Lecture 6a
+
+How may rows are returned by the following query?
+```
+A <- data.frame(a=1:10)
+B <- data.frame(b=5:15)
+sqldf::sqldf("SELECT * FROM A JOIN B ON a==b")
+```
+
+* 6
+* 10
+* 8
+* none
+
+## Lecture 6b
+
+Which command opens a connection to an SQLite database?
+
+* dsets <- dbConnect(RSQLite::SQLite(), "datasets.sqlite")
+* res <- dbSendQuery(dsets, "select * from iris limit 10")
+* sqliteCopyDatabase(dsets, "datasets.sqlite")
+* dbListTables(dsets)
+
+## Lecture 7a
+
+Which command is equivalent to this pipeline?
+`myData %>% group_by(sex) %>% summarise(avg_price=mean(price))`
+
+* `summarize(group_by(myData, sex), avg_price=mean(price))`
+* `mean(avg_price, group_by(myData, sex), summarise)`
+* `summarise(myData[, "sex"], avg_price=mean(price), group_by(myData))`
+* `lapply(myData, function(sex){ group_by(sex); avg_price=mean(price)})`
+
+## Lecture 7b
+
+The command `tidyr::gather(df, var, val)` produced the following result:
+`  var val
+1   a   1
+2   a   2
+3   a   3
+4   b   1
+5   b   2
+6   b   3`
+Which answer correctly defines the dataframe `df`?
+
+* `df <- data.frame(a=1:3, b=1:3)`
+* `df <- data.frame(var=letters[1:3], val=letters[1:3])`
+* `df <- data.frame(var=rep(c('a','b'), each=3), val=rep(1:3, times=2))`
+* `df <- data.frame(a=var[1:3], b=val[1:3])`
+
+---
+title: "Multiple Choice Questions"
+author: "Chris Atterbury"
+date: "Tuesday, February 24, 2015"
+output:
+  html_document:
+    keep_md: yes
+---
+
+## Lecture 01a
+
+How does an ellipsis behave as a function parameter in R?  
+
+* It takes an undefined number of arguments and applies them wherever the
+ellipsis is used in the function, similar to a normal parameter.
+* It takes each argument passed in by the user and applies them to
+undefined variables in the function based on order.  
+* Each period acts as an anonymous parameter in the function.  
+
+## Lecture 01b
+
+What does the function below return?
+``` {r estimate_pi, echo=FALSE}
+function(N) {
+    x <- runif(N)
+    y <- runif(N)
+    4 * sum( (x^2 + y^2) < 1 )/N
+}
+```
+
+* An estimate for the value of pi.  
+* A sum of TRUE/FALSE values.  
+* The area of a unit circle.  
+
+## Lecture 02a
+
+What is Bayes Theorem?  
+
+* $P(A|B) = \frac{P(B|A) \, P(A)}{P(B)}$
+* $P(A|B) = \frac{P(B|A) \, P(B)}{P(A)}$  
+* $P(A|B) = \frac{P(A|B) \, P(B)}{P(A)}$
+
+## Lecture 02b
+
+Which distribution is in the plot below?
+```{r dense_plot, echo=FALSE}
+x <- seq(-1,1,length=100)
+plot(dnorm(x), type="l", ylab="Density")
+```
+
+* Normal  
+* Poisson  
+* Uniform  
+
+## Lecture 03a
+
+What kind of matrix is this?
+```{r special_matrix, echo=FALSE}
+vals <- c(1,0,0,5,1,0,4,2,1)
+matrix(vals,3,3)
+```
+
+* Upper Triangular  
+* Lower Triangular  
+* Identity  
+
+## Lecture 03b
+
+What is an eigenvector?  
+
+* a vector which, when multiplied by a square matrix, generates the same value as when the vector is multiplied by its eigenvalue.  
+* a vector that Dr. Richard Eigen designed to find a series of velocities relevant in physics.  
+* a vector with determinant zero.  
+
+## Lecture 04a
+
+What does this code do?
+```{r lm, eval=FALSE}
+x <- sort(sample(1:100,5))
+fit <- lm(y ~ poly(x,4))
+```
+
+* sort five random values from the range 1 to 100, store them in `x`, then use the `poly` function on `x` to make a formula with `y` for linear modeling. This model is stored in `fit`.
+* sort five random values from the range 1 to 100, store them in `x`,  then use the `poly` function on `x` to make a new function with `y`, which is then plotted using the `lm` function and stored in `fit`.  
+
+## Lecture 04b
+
+Given a function `f`, rank the below methods of applying `f` to `x` and storing it in `y`, starting with fastest:
+```{r apply_f, eval=FALSE}
+y <- numeric(); for (i in seq_along(x)) y[i] <- f(x[i])
+y <- f(x)
+y <- numeric(length(x)); for (i in seq_along(x)) y[i] <- f(x[i])
+y <- vapply(x, f, numeric(1))
+```
+
+* method 2, method 4, method 3, method 1  
+* method 2, method 3, method 4, method 1  
+* method 3, method 2, method 4, method 1  
+* method 3, method 4, method 2, method 1  
+
+## Lecture 05a
+
+What is the difference between ```read.table()``` and ```read.csv()```?
+
+* ```read.csv``` is the exact same as ```read.table```, except that ```read.csv``` defaults to ```sep=","```.  
+* ```read.csv``` has a few things tweaked in the `C` code "under the hood" so that it runs faster than ```read.table``` for csv files.  
+* ```read.table``` is optimized for Excel tables and ```read.csv``` is optimized for csv files. 
+
+## Lecture 05b
+
+What does the `magrittr` library do in `R`?
+
+* It makes the sequence `%>%` in an `R` script act like the pipe character, `|` , in the terminal, though it is not the pipe character.
+* It allows one to use the pipe character, `|`, in an R script in the same way that it is used in the terminal.
+* It offers a more confusing alternative to the typical passing of arguments into a function, using the `$` character. For this reason, it is becoming less popular among programmers.
+
+## Lecture 06a
+
+How does the `sqldf` library work?  
+
+* The `sqldf` function opens up a temporary instance of a SQLite database and runs the SQL query, saves the results to a variable, then closes the SQLite database and cleans up.  
+* It opens a MySQL connection using one function, then you are able to run SQL queries on the open database using the main `sqldf` function.  
+* The `sqldf` function opens up a new instance of a SQLite database, saves it in your default directory, and runs the SQL query. It returns the results to the screen.  
+
+## Lecture 06b
+
+What is the name of the R function that does the equialent of SQL joins?  
+
+* merge  
+* join  
+* sqlJoin  
+* aggregate  
+
+## Lecture 07a
+
+What `SQL` command does matrix multiplication between matrices `A` and `B`?  
+
+* `SELECT A.row_num, B.col_num, SUM(A.value * B.value) AS value FROM A, B WHERE A.col_num = B.row_num GROUP BY A.row_num, B.col_num;`  
+* `SELECT A.row_num, B.col_num AS value FROM A, B WHERE A.col_num = B.row_num;`  
+* `SELECT SUM(A.value * B.value) FROM A, B WHERE A.col_num = B.row_num;`  
+
+## Lecture 07b
+
+Given a *data.frame* `DF` with features `sex` and `admit`, what does the table look like generated by this code: `xtabs(Freq ~ sex + admit, DF)`?  
+
+* The row label will be `sex` and the different unique entries for `sex` will be the actual rows. The column label will be `admit` and the different unique entries for `admit` will be the actual columns. A given cell will contain the frequency of the given `sex`/`admit` combination in which it resides.  
+* The row label will be `admit` and the different unique entries for `admit` will be the actual rows. The column label will be `sex` and the different unique entries for `sex` will be the actual columns. A given cell will contain the amount of `Freq` of the given `sex`/`admit` combination in which it resides.  
+* The row label will be `admit` and the different unique entries for `admit` will be the actual rows. The column label will be `sex` and the different unique entries for `sex` will be the actual columns. A given cell will show the relationship of the `sex`/`admit` combination in which it resides.  
+---
+title: "Quiz_questions"
+author: Chaman Preet Kaur
+output: html_document
+---
+## Lecture 1a 
+
+In the following code what is u +v?
+```
+u <- c(2,3,4)
+v <- c(3,4,5,6,7,8)
+```
+
+* `(5 7 9 6 7 8)`
+* `NaN`
+* `(5 7 9 8 10 12)`
+* `(3 4 5 8 10 12)`
+
+##  Lecture 1b
+
+What data type does apply function return?
+
+* Both lists and vectors
+* Lists
+* Vectors
+* Matrices
+
+## Lecture 2a
+
+cbind() function is used for what type of data?
+
+* Vectors, matrices and data frames
+* Vectors and matrices
+* Data frames only
+* Vectors only
+
+## Lecture 2b
+
+Indentify the distribution type in the following code:
+```
+x <- seq(0, 4, 0.1)
+plot(x, dnorm(x, 2, 0.5), type = "l”)
+```
+
+* Normal
+* Poisson
+* Unified constant 
+* Binomial
+
+## Lecture 3a
+
+What needs to be changed in the following code for values to be arranged row wise in ascending order?
+```
+m <- matrix(1:20, nrow=5,ncol=4)
+```
+
+* `byrow = TRUE`
+* `bycol = TRUE`
+* `byrow = FALSE`
+* No change required in the code
+
+## Lecture 3b 
+
+Indentify the correct code used for augumenting the square matrix (S_quare (nxn)) by binding an identity matrix on the right?
+
+* `cbind(S_quare, diag(n))`
+* `rbind(S_quare, diag(n))`
+* `outer(S_quare, diag(n),"+")`
+* `cbind(S_quare, diag(0))`
+
+## Lecture 4a
+
+What is the correct way to vectorize the following code:
+```
+for(i in 1:3) x[i] <- i+i
+```
+
+* `x <- c(1,2,3) + c(1, 2, 3)`
+* `for(i in range(1,4)) x+= [i+i]`
+* `while(i<4) x+= [2i]`
+* `for(i<4) x[i] <- 2i`
+
+
+## Lecture 4b:
+
+Which equation best describes an orthogonal matrix? (Q* = Q transpose)
+
+* (1/Q)= Q*
+* QI = IQ*
+* Q^-1*Q = Q
+* Q*I = I
+
+## Lecture 5a
+
+What is the correct code to find mean of following matrix, leaving the not available values?
+```
+age <- c(12,15,16, NA, 18, 30, NA)
+```
+
+* mean(age, na.rm=TRUE)
+* mean(age)
+* mean cannot be found
+* mean (age, rm(any.na))
+
+## Lecture 5b
+
+What is the correct code for subtracting two dates from one another and then cast the difference to a numeric value? 
+
+* `(as.Date("2014-10-10") - as.Date("2014-10-1")) %>% as.numeric`
+* `as.Date("2014-10-10") - as.Date("2014-10-1") %>% as.numeric`
+* `as.numeric %>% (as.Date("2014-10-10" - "2014-10-1" ))`
+* `as.Date %>% ("2014-10-10") - as.Date %>% ("2014-10-1") >%> as.numeric`
+
+## Lecture 6a
+
+Does case sensitivity matter while using SQL in R?
+
+* Yes
+* No
+
+## Lecture 6b 
+
+What is the output of the following code?
+```
+x <- function(numRows=5, numCols=5, probZero=0.7, seed=NULL){
+  if(!is.null(seed)) set.seed(seed)
+	matrix( rnbinom(numRows * numCols, prob=probZero, size=1), nrow=numRows )
+}
+```
+
+* Generates a random sparse matrix
+* Generates a random vector 
+* Generates bionomial distribution values and stores them in x
+* The code does not work
+
+## Lecture 7a
+
+Which of these is not a problem with messy data
+
+* Values stored in table format
+* Multiple variables stored in a single column
+* Variables stored in both rows and columns
+* Multiple types of entities in the same table
+
+## Lecture 7b
+
+Which of these lines of code cannot be used to generate a random data set?
+
+* `qnorm(c(.05,.95))`
+* `replicate( 100, runif(n=20))`
+* `n <- rnorm(2500, mean=65, sd=4.58)`
+* `z=rnorm(20, mean=10, sd=3)`
+
+
+
+
+
+
+
+---
+title: "Multiple Choice Questions"
+author: "Vaishali Chaudhuri"
+date: "March 14 2015"
+output: html_document
+---
+
+## Lecture 1a 
+
+```
+f <- sqrt
+x <- 1:20
+y <- f(x)
+z <- x^2
+d <- data.frame(x, y, z)
+```
+What is the typeof variable d ?
+
+
+* list
+* dataframe
+* integer
+* character
+
+
+## Lecture 1b
+
+Consider the following code:What appears to be  the correct output of the [head(as.integer(in_circle))] ?
+```
+N <-10000
+x <- runif(N)
+y <- runif(N)
+vlength<-sqrt<-(x^2 +y^2)
+in_circle<-vlength < 1
+```
+
+* 1 1 1 1 1 0
+* TRUE TRUE TRUE TRUE TRUE FALSE 
+* 1 -1 1 0 -1 0
+* 0.23, ,0.34, 0.12, 0.45, 0.55, 0.79
+
+
+## Lecture 2a
+
+What does the Central Limit Theorem state ?
+
+* The distribution of the means of a set of random samples is approximately Normal
+* The area under the normal denisty curve is one
+* Measures of central tendency should always be computed with and without outliers
+* Confidence intervals have zero margin of error for large sample sizes.
+
+
+## Lecture 2b
+
+Probability mass function is same as probability density function. what type of functions are they?
+
+* False, the probability mass function is a discrete distribution and the probability density function is a continuous distribution
+* True, they both are continuous distribution
+* True, they both are discrete distribution
+* False, the probability mass function is a continuous distribution and the probability density function is a discrete distribution
+
+
+## Lecture 3a
+
+In the following code . What is the result and typeof  [A%*%t(A)]
+```
+A <- matrix(1:4, nrow=1)
+```
+
+* 5 and integer
+* (2X2) matrix and list
+* A^2 and double
+* A(inv) and integer
+
+
+## Lecture 3b
+
+Consider the eigen equation. If A is the identity matrix. what is lambda?
+
+* lamba is equal to 1
+* lambda is infinity
+* lambda is zero value
+* lamda  doesn't exist for an identity matrix
+
+## Lecture 4a
+
+Consider the following code:All the below lines of code perform the same function but have different levels of bracket or curly braces. would it affect the performance cost and which will be the fastest ? 
+(Hint: R treats curly brackets as a “special” operator, whose arguments are not automatically evaluated, but it treats parentheses as a “built in” operator whose arguments (just one for parentheses) are evaluated automatically, with the results of this evaluation stored in a  list)
+```
+a <- function(x) x = 1/{
+    1 + x
+}
+f <- function(x) x = 1/(1 + x)
+g <- function(x) x = (1/(1 + x))
+h <- function(x) x = ((1/(1 + x)))
+
+x <- sample(1:100, 100, replace = TRUE)
+comp <- microbenchmark(a(x), f(x), g(x), h(x), times = 1e+05)
+comp
+```
+
+* 'a' will be the fastest because it has curly braces
+* 'f' will be fastest because it has paranthesis
+* all the operations have the same time because it is the same function and braces or parnatheses does not matter
+* 'h' will be fastest because you are simplifying the function by adding layers of parantheses
+
+
+## Lecture 4b
+
+Consider the following code  does mean1 and mean2 have equal run times or differ in run times? 
+```
+mean1 <- function(x) mean(x)
+mean2 <- function(x) sum(x) / length(x)
+x <- runif(100)
+stopifnot(all.equal(mean1(x), mean2(x)))
+microbenchmark(
+  mean1(x),
+  mean2(x)
+)
+```
+
+* mean1 is considerably slower  because  mean1 makes two passes over the vector to be more numerically accurate
+* mean2 is considerably faster because just one inbuilt fnction is executed
+* mean1 and mean2  have equal run time because they perform the same operation
+* it cannot be determined from the above data
+
+
+## Lecture 5a
+
+Of the following which is not a valid way to read R data in a technically correct format
+```
+a<-read.xml
+b<-read.csv
+c<-read.table
+d<-read.dataframe
+```
+
+* a & d
+* a & b
+* c & d
+* All are correct formats to read R data
+
+
+## Lecture 5b
+
+In the following code what do the three dots represent?
+```
+maxMinusMin <- function(v, ...) max(v, ...) - min(v, ...)
+apply(A, 1, maxMinusMin, na.rm=TRUE)
+```
+
+* Any additional parameter can be passed to the function but function is valid
+* Function is invalid and cannot be executed
+* It's an invalid function that will need more parameters
+* Typing error
+
+## Lecture 6a
+
+In the following structure of data frame , what is one of the ways to query for the 
+date
+```
+str(result)
+'data.frame':   316125 obs. of  6 variables:
+ $ ID    : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ dt    : Date, format: "1999-12-31" "1999-12-31" "1999-12-31" "1999-12-31" ...
+ $ Ticker: chr  "0111145D US" "0113357D US" "0202445Q US" "0203524D US" ...
+ $ px    : num  32.5 20.6 34.2 21.4 11 ...
+ $ High  : num  34.9 23.5 35.4 25.9 11 ...
+ $ Low   : num  31.19 18 28.85 20.28 9.97 ...
+```
+
+* create new character version of the dt variable (chardt) and query in sqldf on the character version of dt sqldf("SELECT * FROM result WHERE chardt='1999-12-31'")
+* query the table by using the command ("SELECT * FROM result WHERE dt=",as.Date("1999-12-31"),"", sep=""))
+* query the table by using the command ("SELECT * FROM result WHERE dt="1999-12-31")
+* Date is in an integer format  and cannot be searched
+
+## Lecture 6b
+
+What is the dplyr (may also use magrittr package) approach(es) to search for a data point from a dataframe called 'flight' by 1st month and 1st DayofMonth
+```
+A<-flights[flights$Month==1 & flightsDayofMonth==1,]
+B<-filter(flights, Month==1, DayofMonth==1)
+C<-flights %>% select(Month==1) %>% select(DayofMOnth==1)
+```
+
+
+* B & C
+* B
+* C
+* A
+
+## Lecture 7a
+
+The two most important properties of Tidyr package is :Each column is a variable and each row is an observation. Hence which statement is true
+
+* It is easy to  describe functional relationships between columns than between rows
+* It is easy to  describe functional relationships between rows than between columns
+* Row and columns both are attributes of a dataframe , so each datapoint has a relationship with another datapoint across the dataframe
+* All data points in a row are independent observations , hence there is no relationships even across a row in a dataframe
+
+## Lecture 7b
+
+In the following code what does the function xtab do ?
+```
+T_shirts <- data.frame(
+  sex=sample(c("M","F"), 100, replace=T), 
+  size=sample(c("L", "M", "S"), 100, replace=T)
+)
+table(T_shirts)
+xtabs(~ sex + size, T_shirts)
+```
+
+* Crosstabulates variables with small numbers of unique values
+* Introduces equally spaces tabs between columns in the output file
+* Eliminates duplicate data in a table and merges data
+* Breaks one data  frame into separate dataframes depending on the arguments that are passed to to xtab
+
+
+
+
+
+---
+title: "Multiple Choice Questions"
+author: "Tom De Natale"
+date: "March 14, 2015"
+output: html_document
+---
+
+## Lecture 1a
+
+What are your impressions of day one for HS616 Statistical Computing for Biomedical Data?
+
+* All of these answers
+* I should have done the exercises and reading before class 1
+* This looks like fun, so I need to get into it
+* I should have bought the book earlier
+* R we having fun yet?
+
+## Lecture 1b
+
+This is the correct way to set up a chunk of code to set N equal to 10000 please assuming the  "#"s are removed in a RMarkdown file. This code will run as a code chunk using for example "Knit HTML" in RStudio?
+```
+#```r
+N<- 10000
+#```
+```
+
+* True
+* False
+
+## Lecture 2a
+
+If you had 2 decks of cards, using the choose function in R, what code will attain the probability of selecting the same specific card from each deck?
+
+* 1 / (choose (52,1) * choose(52,1))
+* 1 / (choose (52,2))
+* 1 / (choose (52,1) * choose(51,2))
+* 1 / (choose (2,52))
+
+## Lecture 2b 
+
+Concepts that you need to master or at least have some knowledge to use R in this class. These do NOT include:
+
+* Fourier Transforms
+*	All of these
+*	Uniform Distribution(continuous)
+*	Normal of Gaussian distribution (continuous)
+*	Poisson distribution (discrete)
+*	Binomial distribution (discrete)
+
+## Lecture 3a
+
+The diag function has multiple uses:
+```
+diag(x = 1, nrow, ncol)
+diag(x) <- value
+````
+
+* Answers x,w,y, are true
+* w: -- diag() can extract a diagonal given a matrix 
+* x: -- diag() can construct a diagonal matrix 
+* y: -- diag() can replace the diagonal of a matrix
+* z: -- diag() can diagnose cancer without assistance.
+
+## Lecture 3b
+
+Given a Markov Matrix, which is true
+
+* all entries of the matrix are nonnegative and the sum of each column vector
+is equal to 1
+* The sum of the rows is the square root of pi
+* Markov Matrices can be N X M in size, where N does not equal M
+* A Markov matrix is NOT a special classification of an Eigenvector 
+
+## Lecture 4a
+
+Choose the most appropriate answer for this R code calculating two ways the cost of daily medicine?
+```
+> price <- c( lisonopril=106/30, crestor=204.00/30, 
++             clorthiazide=12.10/15, fibrosol=160/30)
+> dosage_day <- c( lisonopril=3, crestor=0.5, 
++             clorthiazide=0.5, fibrosol=1)
+> 
+> cost_day_1  = sum(price * dosage_day)
+> cost_day_1a = price %*% dosage_day
+> cost_day_1
+[1] 19.73667
+> cost_day_1a
+         [,1]
+[1,] 19.73667
+> 
+```
+
+* The Dot product of 2 vectors equals the sum of the products of two vectors
+* A vector times a vector is a scaler
+* A diagonal times a vector of that diagonal results in a squared value
+* R is fun only for statisticians
+
+## Lecture 4b
+
+Given the following runtime data, the goal is for a 10 times improvement in run time. Which function(s) must be improved and in what order should be chosen to reach the goal most quickly?
+```
+             self.time self.pct
+"function_A"    278.39    86.46
+"function_B"     39.32     9.10
+"function_C"      4.29     4.44
+-------------------------------
+Total           322.00   100.00
+```
+
+* Must improve both (function_A and function_B), and improve function_C only if close to target
+* Always must improve  (function_A and function_B, and function_C) 
+* Must improve function_C only
+* Must improve (function_A and function_B) only
+
+## Lecture 5a
+Explain what the first line of code does in making a table or dataframe named "less_toxic"
+```r
+less_toxic <- read.csv("toxic_text.csv", na.strings=c("UNK", "?"))
+knitr::kable(data.frame(
+  toxic = sapply(toxic, class),
+  less_toxic = sapply(less_toxic, class)
+)
+```
+
+* reads a csv file named ("toxic_test.csv") and if values are missing puts "NA" for those entries that are unknown or missing 
+* reads a csv file and halts if a missing or unknown character string is encountered
+* reads a csv file and from the knitr library kables or knocksout table entries, hence the acronym kable in the knock out table
+* writes a csv file to toxic_test.csv and invokes an Excel workbook session after making the dataframe
+
+## Lecture 5b
+
+Which of the following could be used for webscraping?
+
+* All of these
+* Read HTML Table using library(knitr) site using a url
+* kable for easily putting scrapings into dataframes
+* Using library(rvest) to harvest data from the web by creating a wrapper utilizing html syntax to get data using url's
+* magrittr just piping along '%>%' or in other words using magritter to make your function more readable to humans
+
+## Lecture 6a
+
+sqldf is a fantastic tool for data scientists. Which of the following statements are true?
+
+* All of these
+* Right and full outer joins, which are unavailable in sqldf, can be accomplished with the "merge" function of base R
+* sqldf is a useful tool for manipulation data with such statements such as:
+sqldf::sqldf("SELECT * FROM A JOIN B ON a==b")
+* sqldf operates on dataframes
+
+## Lecture 6b
+
+Given the following data_frame named patient. In the process of de-identifying data, one may choose to reference each patient's data indirectly. Which SQL query represents best what one might try to use in further processing? (Assume that id was made up in the process of making this table)?
+```
+> patient
+  id name sex
+1  1  Alt   F
+2  2  Box   M
+3  3  Cox   M
+4  4  Dew   F
+```
+
+* sql <- "SELECT id FROM patient"
+* sql <- "SELECT * FROM patient"
+* sql <- "SELECT name FROM patient"
+* sql <- "SELECT sex FROM patient"
+
+## Lecture 7a
+
+Which is true of Tidy Data by Hadley Wickam?
+
+* None of these other answers
+* Data is always essentially tidy
+* It is always possible to get to the ideal structure, that is attain a one to one relationship for all data
+* It is bad for vectorization to have each observation in a row
+* It is good to have the variables identified at the start of a row versus the variable as a column
+* Wide tables with a unique entry for the first element each row are always better  than long tables which may have nonunique entries as the first element in multiple rows.
+
+## Lecture 7b
+
+What is TRUE of the following code and results? (Note: Code was used in class as an example of how to build a model for our class project)
+```
+> T_shirts <- data.frame(
++   sex=sample(c("M","F"), 100, replace=T), 
++   size=sample(c("L", "M", "S"), 100, replace=T)
++ )
+> 
+> table(T_shirts)
+   size
+sex  L  M  S
+  F 19 19 17
+  M 20 10 15
+> xtabs(~ sex + size, T_shirts)
+   size
+sex  L  M  S
+  F 19 19 17
+  M 20 10 15
+```
+
+* Only sometimes result in the same data , as the code does not identify a seed.
+* Always result in females having more small sizes
+* Always result in males having more large sizes
+* Always result in the same data
+
+---
+title: "Questions"
+author: "John Edward Greer"
+date: "March 14, 2015"
+output: html_document
+---
+
+## Lecture 1a
+
+The data type, 5, is a(n) ________
+
+* Integer 
+* logical
+* numeric
+* complex
+
+## Lecture 1b
+
+Every data type is at least a ________
+
+* vector
+* matrix
+* array
+* factor 
+
+## Lecture 2a
+
+This statement assigns a list of weights(lbs) to a variable “w”
+
+* w <-c(98,154, 140, 190, 173)
+* w -> c(98,154, 140, 190, 173)
+* w == c(98,154, 140, 190, 173)
+* w is c(98,154, 140, 190, 173)
+
+## Lecture 2b
+
+In it’s most basic form, R can be used as a simple calculator, complete the following statement with the appropriate characters in order to assign the variable, V, to have an end value of 36, given the expression: [(48 _ 42) _2]
+
+* V<-(48-42)^2
+* V->(48-42)^2
+* V<-(48-42)*2
+* V<-(48-42)%%2
+
+## Lecture 3a
+
+Add the strings together to form a coherent English statement and in correct R language:
+
+A <- “?”
+B <- “movie”
+C <- “Have”
+D <- “that” 
+E <- “seen”
+F <- “you”
+
+* question<-c(C,F,E,D,B,A)
+* question<- C+F+E+D+B+A
+* question<-c(C+F+E+D+B+A)
+* question<-c(A,B,C,D,E,F)
+
+## Lecture 3b
+
+Generate a sequence from 122 to 154 by intervals of 2.
+
+seq(122,154,2)
+seq(154,122,2)
+seq(122,2,154)
+seq(2,154,122)
+
+## Lecture 4a
+
+Create a normal distribution curve centering on 10, with spread 0 to 20. 
+
+* n<-20
+k<-0:n
+paths<-choose(n,k)
+plot(k,paths, sum(paths))
+
+* n<-10
+k<-0:n
+paths<-choose(n,k)
+plot(k,paths, sum(paths))
+
+* n<-20
+k<-0:n
+paths<-choose(k,n)
+plot(k,paths, sum(paths))
+
+* n<-10
+k<-0:n
+paths<-choose(k,n)
+plot(k,paths, sum(paths))
+
+## Lecture 4b
+
+Create a rectangular matrix with 16 entries of numbers 1 through 16. The matrix should have 4 rows and have the numbers increasing across each row. What would this command look like in R? 
+
+* matrix(1:16, byrow=TRUE, nrow=4)
+* matrix(1:16)
+* matrix(1:16, byrow =FALSE)
+* matrix(1:16, byrow = TRUE, nrow=2) 
+
+## Lecture 5a
+
+Body Mass Index is a measure of body fat based on height(m) and weight(kg) that applies to adult men and women, one matrix holds each patient’s height(“HEIGHT”), while a second matrix holds each patient’s weight(“WEIGHT”). Knowing that BMI = Weight(kg)/Height^2(m^2), what function in R would produce a table of BMI for each respective patient? 
+
+* BMI<-WEIGHT/HEIGHT^2
+* BMI <-HEIGHT/WEIGHT^2
+* It cannot be performed
+
+## Lecture 5b
+
+There is a dataset called CDC, within the dataset there are columns representing patient name, age,  height, and weight – What R command allows the selection of all entries within the weight category:
+
+* CDC$weight
+* Weight$CDC
+* CDC(weight)
+* Wight(CDC)
+
+
+## Lecture 6a
+
+Read.table loads a text file into a data frame. True or False?
+
+* True
+* False 
+
+## Lecture 6b
+
+The function head() does this:
+
+* enables you to show the first observations of a data frame(or any R object you pass to it)
+* creates a header in the data frame
+* summarizes the data in a table
+
+## Lecture 7a
+
+## Lecture 7b
+
+## Lecture 1a
+
+The following R code generates the image below.
+```R
+N <- 100000
+x <- runif(N, min=-*0, max=*0)
+y <- runif(N, min=-*0, max=*0)
+plot(x, y, pch=16, col=ifelse(x^2 + y^2 < 1, "red", "blue"))
+```
+![Generated Plot](https://raw.githubusercontent.com/rmhorton/statprog/master/week_01_teach_yourself_R/01b_literate_programming-figure/more_darts.png)  
+How would you swap the colors in the plot?
+
+* `plot(x, y, pch=16, col=ifelse(x^2 + y^2 < 1, "blue", "red"))`  
+&nbsp;
+* `plot(x, y, pch=16, col=ifelse(x^2 + y^2 > 1, "red", "blue"))`  
+&nbsp;
+* `plot(y, x, pch=16, col=ifelse(x^2 + y^2 > 1, "red", "blue"))`  
+&nbsp;
+* `plot(x, y, pch=16, col=ifelse(x^2 - x^2 < 1, "red", "blue"))`
+
+## Lecture 1b
+
+The following R code generates the image below.
+```R
+N <- 100000
+x <- runif(N, min=-*0, max=*0)
+y <- runif(N, min=-*0, max=*0)
+plot(x, y, pch=16, col=ifelse(x^2 + y^2 < 1, "red", "blue"))
+```
+![Generated Plot](https://raw.githubusercontent.com/rmhorton/statprog/master/week_01_teach_yourself_R/01b_literate_programming-figure/more_darts.png)  
+In order to plot just the the 3rd quadrant of the image, what modification
+would you make to the original code?
+
+* `x <- runif(N, min=-0.5, max=0)`  
+   `y <- runif(N, min=-0.5, max=0)`  
+&nbsp;
+* `x <- runif(N, min=0, max=*0)`  
+   `y <- runif(N, min=-*0, max=0)`  
+&nbsp;
+* `x <- runif(N, min=-*0, max=0)`  
+   `y <- runif(N, min=-*0, max=0)`  
+&nbsp;
+* `x <- runif(N, min=0, max=*0)`  
+   `y <- runif(N, min=0, max=*0)`  
+
+## Lecture 2a
+
+In the context of statistical analysis, a random sampling distribution...  
+
+* allows you to infer the statistical significance of an observed outcome by
+   comparing the observation with numerous random outcomes.    
+* gives you a random selection of an input vector using a normal 
+   distribution.  
+* is made using the `runif()` function in R.  
+* is a deceptive statistical model that often incorrectly rejects the null
+   hypothesis.  
+
+## Lecture 2b
+
+"Setting the seed", e.g. `set.seed(42)`, in R...  
+
+* ensures that the outcome of random number generators is repeated upon
+   re-execution of your code.  
+* ensures that the outcome of random number generators is *not* repeated upon
+   re-execution of your code.  
+* ensures that someone else who runs your code does not get the same random
+   numbers you do.  
+* has nothing to do with random number generation.  
+
+## Lecture 3a
+
+There is more than one way to "multiply" vectors. In R, `A * B` will multiply
+the matrices *A* and *B* using pairwise operation. What operator would you use
+to get the dot product of *A* and *B*?  
+
+* `A %*% B`   
+* `A & B`   
+* `A %>% B`   
+* `A ** B`   
+
+## Lecture 3b
+
+The matrix resulting from the command `matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9),
+ncol=3)` would look like which of the following?  
+
+* &nbsp;&nbsp; `1  4  7`  
+&nbsp;&nbsp; `2  5  8`  
+&nbsp;&nbsp; `3  6  9`  
+&nbsp;  
+* &nbsp;&nbsp; `1  2  3`  
+&nbsp;&nbsp; `4  5  6`  
+&nbsp;&nbsp; `7  8  9`  
+&nbsp;  
+* &nbsp;&nbsp; `9  8  7`  
+&nbsp;&nbsp; `6  5  4`  
+&nbsp;&nbsp; `3  2  1`  
+&nbsp;  
+* &nbsp;&nbsp; `9  6  3`  
+&nbsp;&nbsp; `8  5  2`  
+&nbsp;&nbsp; `7  4  1` 
+
+## Lecture 4a
+
+To plot variables *x* and *y* along the x-axis and y-axis, respectively, one
+could use `plot(x, y)`. What is an alternative command that generates the same
+plot?  
+
+* `plot(y ~ x)`  
+* `plot(x ~ y)`  
+* `plot(x > y)`  
+* `plot(y % x)`  
+
+## Lecture 4b
+
+What is typically the fastest way to analyze and manipulate data using R?  
+
+* With vectorized functions  
+* Using iteration  
+* With loops  
+* With recursion  
+
+## Lecture 5a
+
+There are several data types in R: logical, integer, numeric, character, etc. 
+Sometimes when loading character data R might store the data internally as
+numbers for reference. For example, let's say you load a data frame with a
+vector `s = c('M', 'F', 'F', 'F', 'M', 'F')`. Internally, R represents this
+data as `1, 2, 2, 2, 1, 2`, where 1='M' and 2='F'. Knowing this, if you checked
+the data type of this vector `s` in the data frame, what would it be?
+
+* factor  
+* character  
+* nominal  
+* logical
+
+## Lecture 5b
+
+The magrittr (`%>%`) is a useful tool for:
+
+* piping data into a function  
+* getting the remainder after division  
+* pulling out a column from a data frame  
+* getting the dot product of two matrices
+
+## Lecture 6a
+
+When working with databases through R on your local computer, what is the
+advantage of working with SQLite instead of MySQL?
+
+* SQLite uses a flat file, as opposed to requiring a database connection.
+* There isn't an advantage because there is no way to connect to a SQLite
+database in R.
+* SQLite is also suitable for a multi-user environment where hundreds of users
+connect to the database simultaneously.
+* There are no packages to connect to a MySQL database in R.
+
+## Lecture 6b
+
+Consider the following table:
+```
+| id|name |sex |  
+|---|-----|----|  
+|  1|Alt  |F   |  
+|  2|Box  |M   |  
+|  3|Cox  |M   |  
+|  4|Dew  |F   |  
+|  5|Ely  |F   |  
+```
+What would be the correct SQL query to get all females in this table?
+
+* `SELECT * FROM patient WHERE sex='F'`  
+&nbsp;  
+* `SELECT 'F' from COLUMN 'sex'`  
+&nbsp;  
+* `SELECT sex='f' from patient`  
+&nbsp;  
+* `SELECT sex='f' from patient where COLUMN='name'`
+
+## Lecture 7a
+
+Which matrix is most dense?
+
+* &nbsp;&nbsp; `9  7`  
+&nbsp;&nbsp; `9  5`  
+&nbsp;
+* &nbsp;&nbsp; `0  5  0  0  9  0  0 `    
+&nbsp;&nbsp; `0  0  1  0  0  0  0`     
+&nbsp;&nbsp; `0  0  0  0  8  0  0`   
+&nbsp;
+* &nbsp;&nbsp; `0  8  7`  
+&nbsp;&nbsp; `2  5  12`  
+&nbsp;&nbsp; `0  2  1`  
+&nbsp;
+* &nbsp;&nbsp; `1  0  0`  
+&nbsp;&nbsp; `0  1  0`  
+&nbsp;&nbsp; `0  0  1`
+
+## Lecture 7b
+
+Which characteristics describe *tidy data*?
+
+* Each variable forms a column.  
+Each observation forms a row.  
+Each type of observational unit forms a table.  
+&nbsp;
+* Column headers are values, not variable names.  
+Variables are stored in both rows and columns.  
+&nbsp;
+* As many observational units as possible are stored in the same table.  
+Do not store a single observational unit in a single table.  
+&nbsp;
+* Multiple variables are stored in one column.  
+Each observation forms a row.  
+Column headers are values, not variable names.
+
+---
+output:
+  html_document:
+    keep_md: yes
+  pdf_document:
+    keep_tex: yes
+---
+HS - 616 Questions week-wise
+================================================================
+author: Lakshmi Arbatti
+
+date: 01/31/2015
+
+
+
+## Lecture 1a  
+
+If x <- 1:4 and y <- 5:8 what is the output of x + y ?
+
+* A vector with values 6 8 10 12
+* A numeric integer with value 6
+* A numeric integer with values 6 8 10 12
+* Running the statement gives an error
+
+## Lecture 1b  
+
+What is the class() of the vector 'var' in the statement var <- runif (10) < 0.5?
+
+* Logical  
+* Integer 
+* Character 
+* List 
+
+## Lecture 2a  
+
+Which of the following equation represents the sensitivity of a test?
+
+* sensitivity = number of true positives / number with disease
+* sensitivity = number of true negatives / number without disease
+* sensitivity = number with disease / total population
+* sensitivity = number of true positives / number of true negatives
+
+## Lecture 2b  
+
+Poisson Probability Distribution is a type of 
+
+* Discrete Probability Distribution  
+* Continuour Probability Distribution
+* Cumulative distibution
+* Random number generation
+
+## Lecture 3a  
+
+Given a matrix
+```{r matrix_operations, echo=FALSE}
+
+x <- matrix (1:12,4,3)
+x
+```
+what is the output of the statement __x[1, ]__
+
+* [1] 1 5 9
+* [1] 1
+* [1] 1 2 3 4
+* System generates a syntax error
+
+## Lecture 3b   
+
+Given a matrix A
+```{r matrix1, echo=FALSE}
+x <- matrix (1:12,4,3)
+x
+```
+what is the output of A * Transpose(A)
+
+*
+```{r matrix_operation, echo=FALSE}
+x <- matrix (1:12,4,3)
+trans <- t(x)
+x %*% trans
+```
+
+*
+```{r matrix2, echo=FALSE}
+diag(nrow=4)
+```
+
+* [1] 1 2 3 4
+* System generates a syntax error
+
+## Lecture 4a  
+
+To find the square of each number from 1 to N, which of the following is the fastest approach
+
+*
+x <- 1:N
+y <- x^2
+  
+*
+y <- numeric()
+for (i in 1:N) y[i] <- i^2
+
+*
+y <- numeric(N)
+for (i in 1:N) y[i] <- i^2
+
+## Lecture 4b  
+
+Which of the following function keeps track of the function stack and tabulates how much time is spent on each function?
+
+* RProf()
+* runif()
+* system.time()
+* rnorm()
+
+## Lecture 5a  
+
+Which function in R is best suited to read very large data sets?
+
+* read.table()
+* read.csv()
+* data.frame()
+* None of the choices
+
+## Lecture 5b  
+
+What does the selectorGadget do?
+
+* Allows you to interactively click on a web page and helps generate CSS selectors
+* Generates data for a linear model
+* Selects the best function in a given program
+* Helps to select and time profiler functions
+
+## Lecture 6a
+
+Which statement below best describes "natural join"?
+
+* "natural join" uses an obviously similar column for join.
+* "natural join" keeps only records in first table
+* "natural join" keeps only the information from second table if available
+* SQL does not support natural join
+
+## Lecture 6b
+
+In database management, what is meant by "Data Aggregation"?
+
+* The process by which data is gathered and summarized for further statistical analyses
+* Using an inner join to extract data from a table
+* Normalizing the data in a database table
+* Finding the mean of columns in a database table
+
+## Lecture 7a 
+
+Which of the following in true with respect to relational database normalization?
+
+* Normalization involves removing redundancies aross tables and defining keys
+* Data in tables have a mean of zero and unit standard deviation
+* Making sure the data is normal as in human readable
+* Converting binary data to text data
+
+## Lecture 7b
+
+Which of the following is a common problem with messy datasets?
+
+* One entity is stored in multiple tables
+* Data is in the third norm form
+* Primary and foreign keys are well defined
+* Data is in human readable format
+
+
+
+
+
+
+---
+title: "LectureQuestions"
+author: "Xiangyi Xu (Lydia)"
+date: "Saturday, January 31, 2015"
+output:
+  html_document:
+    keep_md: yes
+---
+
+## Lecture 1a
+
+Which symbol can be used to slicing and extracting data from a vector in R?
+
+* `[ ]`
+* `[[c( ) ]]`
+* `$`
+* `[, c( )]`
+
+## Lecture 1b
+
+In the following codes, what is the type of the variable returned?
+```
+y <- c(5, 6, 7, 8, NA)
+is.na(y)
+```
+
+* logical
+* numeric
+* integer
+* character
+
+## Lecture 2a
+
+In the following codes, when m and n equal to what values, will the plot show a quarter of a circle?
+```r
+N <- 10000
+x <- runif(N, min=m, max=n)
+y <- runif(N, min=m, max=n)
+plot(x, y, pch=16, col=ifelse(x^2 + y^2<1, "red", "blue"))
+```
+
+* m=0,    n=0
+* m=-1.0, n=1.0
+* m=-2.0, n=2.0
+* m=-3.0, n=3.0
+
+## Lecture 2b
+
+What does the following function return?
+```r
+f <- function(x) {
+  f <- function(x) {
+    f <- function(x) {
+      x ^ 2
+    }
+    f(x) + 1
+  }
+  f(x) * 2
+}
+f(10)
+```
+
+* 202
+* 441
+* 40
+* 200
+
+## Lecture 3a
+
+What is the name of the following distribution? 
+```{r uniform_distribution, echo=FALSE}
+x <- seq(0,1,length=200)
+plot(c(-0.1, 0, x, 1, 1.1), c(0,0,dunif(x),0,0), type='l', ylab="P")
+```
+
+* Uniform distribution
+* Normal distribution
+* Poisson distribution
+* Binominal distribution
+
+## Lecture 3b
+
+persp() can be used to produce a three-dimentional plot. What is the function of its arguments theta and phi?
+```r
+  persp(x, y, fa, theta=30, phi=20)
+```
+
+* Control the angles at which the plot is viewed. 
+* Control the width and height of the plot
+* Control the size and dimension of the plot
+* Control the length and width of the plot
+
+## Lecture 4a
+
+Consider the following function, what value will be returned?
+```{r function environment}
+f <- function(x){
+        g <- function(y){
+                y+z
+        }
+        z<- 4
+        x + g(x)
+}
+
+z<-10
+f(3)
+```
+
+* 10 			
+* 7 			
+* 16 	
+* 4
+
+## Lecture 4b
+
+The following code will produce a warning in R. Please explain why?
+```r
+x <- 1:10
+if(x > 5) {
+        x <- 0
+}
+```
+
+* 'x' is a vector of length 10 and 'if' can only test a single logical statement. 	 
+* use 'x' is a vector and 0 is a scalar. 			
+* There are no elements in 'x' that are greater than 5 			
+* The expression uses curly braces. 
+
+## Lecture 5a
+
+x is a data frame and z is a feature of x. Which of the following commands is equivalent to with(x, f(z))?
+
+* f(x$z)
+* x$f(z)
+* f(z)
+* It depends.
+
+## Lecture 5b
+
+Simulated coin-tossing can be done using different methods. Which of the following will NOT work?
+
+* coin <- sample(c("H", "T"), 10, replace = F)
+* rbinom(10, 1, .5)
+* ifelse(rbinom(10, 1, .5) == 1, "H", "T")
+* c("H", "T") [1 +rbinom(10, 1, .5)]
+
+## Lecture 6a
+
+A vector x <- 1:10, which of the following choice will NOT insert 1.23 between x[7] and x[8]?
+
+* z <- rbind(x, 1.23, after = 7)
+* z <- append(x, 1.23, after = 7)
+* z <- c(x[1:7], 1.23, x[8:10]) 
+* v <- 1.23; k <- 7; i <- seq(along = x); z <- c(x[i <= k], v, x[i > k])
+  
+## Lecture 6b
+
+What is the name of the following distribution? 
+```{r snippet code}
+set.seed(1)
+rpois(5, 2)
+```
+
+* A vector with the numbers 2, 2, 3, 5, 2
+* A vector with the numbers 3.3, 2.5, 0.5, 1.1, 1.7
+* It is impossible to tell because the result is random
+* A vector with the numbers 1, 4, 1, 1, 5
+
+## Lecture 7a
+
+What R function can be used to generate standard Normal random variables?
+
+* rnorm
+* pnorm
+* dnorm
+* qnorm
+
+## Lecture 7b
+
+When simulating data, why is using the set.seed() function important?
+
+* It can be used to specify which random number generating algorithm R should use, ensuring consistency and reproducibility.
+* It can be used to generate non-uniform random numbers.
+* It ensures that the random numbers generated are within specified boundaries.
+* It ensures that the sequence of random numbers is truly random.
+
+Sneha Krishna
+HS616
+Spring 2015
+
+
+## Lecture 1a
+
+Which of the following statements about R are true? (1)
+
+* All of the below
+* R is free! 
+* R can directly access and import data from a wide variety of sources, including text files, database management systems, statistical packages, web pages, and social media sites. It can write data out to these systems as well.
+* R provides quite a bit of flexibility and control over where input comes from and where it goes. 
+(1) R in Action, Second Edition by Robert Kabacoff
+
+##Lecture 1b
+
+The runif(n) function in R:
+
+* returns ’n’ number of uniform random numbers
+* is similar to ifelse()
+* always generates numbers in the range of 0 and 100
+* doesn’t really do anything
+
+##Lecture 2a
+
+The probability of mutation ABC occurring in the general population is 50%, the probability of disease XYZ occurring 25%, and the probability of a person being affected by diseases ABC if they have mutation ABC is 10%. What is the probability of mutation ABC occurring the population of patents with disease XYZ?
+
+* 20%
+* 100%
+* 0%
+* 50%
+
+##Lecture 2b
+
+A Poisson distribution is defined as:
+
+* The probability of a given number of events occurring in a fixed interval of time and/or space if these events occur with a known average rate and independently of the time since the last event (1)
+* The discrete probability distribution of the number of successes in a sequence of n independent yes/no experiments, each of which yields success (2)
+* Is a very commonly occurring continuous probability distribution—a function that tells the probability that any real observation will fall between any two real limits or real numbers, as the curve approaches zero on either side. (3)
+* None of the above. These answers are terrible.
+(1)http://en.wikipedia.org/wiki/Poisson_distribution
+(2)http://en.wikipedia.org/wiki/Binomial_distribution
+(3)http://en.wikipedia.org/wiki/Normal_distribution
+
+##Lecture 3a
+
+The inverse of matrix A (of size 3x3) is called A_inverse (of size 3x3). Which is the following is FALSE?
+
+* ‘A * A_inverse’ returns an identity matrix (of size 3x3)
+* ‘A %*% A_inverse’ returns an identity matrix (of size 3x3)
+* ‘solve(A)’ returns A_inverse
+* ‘solve(A_inverse)’ returns A
+
+##Lecture 3b
+
+Which of following statements about a Markov chain and is FALSE?
+
+*a transition matrix can be used to describe the transitions of a Markov chain. the sum of each row OR the sum of each column will add up to 0. 
+*a Markov chain describes a random process
+*transitions within a Markov chain, from one state to the next depend only on the current state and not on the sequence of events that preceded it. 
+* Each entries of the transition matrix represent a probability. 
+
+##Lecture 4a
+
+Given a<- matrix(1:5) and b<-matrix(6:10) and c<-rbind(a,b), what does ‘c’ look like? 
+
+*     [,1]
+ [1,]    1
+ [2,]    2
+ [3,]    3
+ [4,]    4
+ [5,]    5
+ [6,]    6
+ [7,]    7
+ [8,]    8
+ [9,]    9
+[10,]   10
+*     [,1] [,2]
+[1,]    1    6
+[2,]    2    7
+[3,]    3    8
+[4,]    4    9
+[5,]    5   10
+*       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+[1,]    1    2    3    4    5    6    7    8    9    10
+*     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    2    3    4    5
+[2,]    6    7    8    9   10
+
+##Lecture 4b
+
+Given x,f,y,l,z below, which of the following are equivalent?
+x <- 1:10
+f <- function(n) n^2
+y <- sapply(x, f)
+l<-lapply(x,f)
+z <- vapply(x, f, numeric(1))
+
+* y and z
+* y and l
+* z and l
+* None
+
+##Lecture 5a
+
+Which of the following packages in R will allow you to easily ‘scrape’ (ie. download, then manipulate, both html and xml? 
+
+* rvest
+* ggplot
+* microbenchmark
+* this can’t be done
+
+##Lecture 5b
+
+The ‘stingsAsFactors’ option is useful when reading a data file because:
+
+* all choices are correct
+* it allow us to keep character variables as they are rather than convert to factors 
+* the default in R is for columns with non-numeric characters to be made into factors unless you specify that they should remain characters
+* even if stingsAsFactors= F, it is easy to convert character data to factors using as.factor()
+
+##Lecture 6a
+
+Which keyword is used in a SQL select statement to eliminate duplicate values within a column?
+
+* DISTINCT
+* ONLY
+* UNIQUE
+* can use ‘*’
+
+##Lecture 6b
+
+database A:  names  DeptID
+	      "John" "1"   
+	      "Jane" "2"   
+	      "Sam"  "1"   
+	      "Sara" "2"  
+database B:   DeptID DeptName    
+		"1"    "HR"        
+		"2"    "IT"        
+		"3"    "Accounting"
+database C:   names  DeptID  DeptName    
+		"John" "1"    "HR"            
+		"Jane" "2"    "IT"            
+		"Sam"  "1"    "HR"     
+		"Sara" "2"    "IT" 
+Which of following SQL queries will generate C from A and B?
+
+* Select A.names, A.DeptID, B.DeptID, B.DeptName from A CROSS JOIN B
+* Select A.names, A.DeptID, B.DeptID, B.DeptName from A JOIN B
+* Select A.names, A.DeptID, B.DeptID, B.DeptName from A AND B
+* Select * from A AND B
+
+##Lecture 7a
+
+xtab() does the following:
+
+* all answers are correct
+* crosstabulates variables 
+* is similar to table()
+* can be used to easily generate a sparseMatrix
+
+##Lecture 7b
+
+In his paper ‘Tidy Data,’ Hadley Wickam says all of following are true of tidy data EXCEPT:
+
+*  Each variable forms a row, each observation forms a row, and each type of observational unit forms a table
+* a standard way of mapping the meaning of a dataset to its structure
+* consisting of variables (which contains all values that measure the same underlying attribute across units) and observations (which contains all values measured on
+the same unit across attributes)
+*most messy ( or ‘not tidy’) datasets can be tidied with a small set of tools: melting, string splitting, and casting
+
+
+
+
+
+ 

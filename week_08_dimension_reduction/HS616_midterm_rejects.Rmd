@@ -1,0 +1,430 @@
+---
+title: "Midterm Rejects"
+author: "Robert Horton"
+date: "March 17, 2015"
+output: html_document
+---
+
+___tdenatale___ 
+What are your impressions of day one for HS616 Statistical Computing for Biomedical Data?
+
+* All of these answers
+*  I should have done the exercises and reading before class 1
+*  This looks like fun, so I need to get into it
+*  I should have bought the book earlier
+*  R we having fun yet?
+
+___johnedwardgreer___ 
+The data type of 5 is:
+
+*  integer 
+*  logical
+*  numeric
+*  complex
+
+___tdenatale___ 
+This is the correct way to set up a chunk of code to set N equal to 10000 please assuming the  "#"s are removed in a RMarkdown file. This code will run as a code chunk using for example "Knit HTML" in RStudio?
+```
+
+N <- 10000
+
+```
+
+* True
+*  False
+
+___tdenatale___ 
+If you had 2 decks of cards, using the choose function in R, what code will attain the probability of selecting the same specific card from each deck?
+
+*  1 / (choose (52,1) * choose(52,1))
+*  1 / (choose (52,2))
+*  1 / (choose (52,1) * choose(51,2))
+*  1 / (choose (2,52))
+
+___johnedwardgreer___ 
+This statement assigns a list of weights(lbs) to a variable "w"
+
+*  w <-c(98,154, 140, 190, 173)
+*  w -> c(98,154, 140, 190, 173)
+*  w == c(98,154, 140, 190, 173)
+*  w is c(98,154, 140, 190, 173)
+
+___nsh87___ 
+In the context of statistical analysis, a random sampling distribution...  
+
+*  allows you to infer the statistical significance of an observed outcome by
+   comparing the observation with numerous random outcomes.    
+*  gives you a random selection of an input vector using a normal 
+   distribution.  
+*  is made using the `runif()` function in R.  
+*  is a deceptive statistical model that often incorrectly rejects the null
+   hypothesis.  
+
+___sneha-krishna___ 
+The probability of mutation ABC occurring in the general population is 50%, the probability of disease XYZ occurring 25%, and the probability of a person being affected by diseases ABC if they have mutation ABC is 10%. What is the probability of mutation ABC occurring the population of patents with disease XYZ?
+
+* 20%
+* 100%
+* 0%
+* 50%
+
+___tdenatale___ Concepts that you need to master or at least have some knowledge to use R in this class. These do NOT include:
+
+* Fourier Transforms
+* All of these
+* Uniform Distribution (continuous)
+* Normal or Gaussian distribution (continuous)
+* Poisson distribution (discrete)
+* Binomial distribution (discrete)
+
+___johnedwardgreer___ 
+In it's most basic form, R can be used as a simple calculator, complete the following statement with the appropriate characters in order to assign the variable, V, to have an end value of 36, given the expression: [(48 _ 42) _2]
+
+* V <- (48-42)^2
+*  V -> (48-42)^2
+*  V <- (48-42)*2
+*  V <- (48-42)%%2
+
+___johnedwardgreer___ 
+Add the strings together to form a coherent English statement and in correct R language:
+
+* A <- "?"
+B <- "movie"
+C <- "Have"
+D <- "that" 
+E <- "seen"
+F <- "you"
+
+___lakarbatti___ Given a matrix
+```{r matrix_operations, echo=FALSE}
+
+x <- matrix (1:12,4,3)
+x
+```
+what is the output of the statement __x[1, ]__
+
+___lakarbatti___ Given a matrix A
+```{r matrix1, echo=FALSE}
+x <- matrix (1:12,4,3)
+x
+```
+what is the output of A * Transpose(A)
+
+* 
+```{r matrix_operation, echo=FALSE}
+x <- matrix (1:12,4,3)
+trans <- t(x)
+x %*% trans
+```
+
+___xxu26___ 
+persp() can be used to produce a three-dimentional plot. What is the function of its arguments theta and phi?
+```r
+  persp(x, y, fa, theta=30, phi=20)
+```
+
+* Control the angles at which the plot is viewed. 
+*  Control the width and height of the plot
+*  Control the size and dimension of the plot
+*  Control the length and width of the plot
+
+___catterbu___ 
+What does this code do?
+```{r lm, eval=FALSE}
+x <- sort(sample(1:100,5))
+fit <- lm(y ~ poly(x,4))
+```
+
+* sort five random values from the range 1 to 100, store them in `x`, then use the `poly` function on `x` to make a formula with `y` for linear modeling. This model is stored in `fit`.
+* sort five random values from the range 1 to 100, store them in `x`,  then use the `poly` function on `x` to make a new function with `y`, which is then plotted using the `lm` function and stored in `fit`.  
+
+___vchaudhuri___ 
+Consider the following code: All the below lines of code perform the same function but have different levels of bracket or curly braces. would it affect the performance cost and which will be the fastest ? 
+(Hint: R treats curly brackets as a "special" operator, whose arguments are not automatically evaluated, but it treats parentheses as a "built in" operator whose arguments (just one for parentheses) are evaluated automatically, with the results of this evaluation stored in a  list)
+```
+a <- function(x) x = 1/{
+    1 + x
+}
+f <- function(x) x = 1/(1 + x)
+g <- function(x) x = (1/(1 + x))
+h <- function(x) x = ((1/(1 + x)))
+
+* x <- sample(1:100, 100, replace = TRUE)
+comp <- microbenchmark(a(x), f(x), g(x), h(x), times = 1e+05)
+comp
+```
+
+___johnedwardgreer___ 
+Create a normal distribution curve centering on 10, with spread 0 to 20. 
+
+* n<-20
+k<-0:n
+paths<-choose(n,k)
+plot(k,paths, sum(paths))
+
+___xxu26___ 
+Consider the following function; what value will be returned?
+```
+f <- function(x){
+        g <- function(y){
+                y+z
+        }
+        z <- 4
+        x + g(x)
+}
+
+z <- 10
+f(3)
+```
+
+___catterbu___ 
+Given a vectorized function `f`, rank the following methods of applying `f` to `x` and storing it in `y`, starting with fastest:
+```{r apply_f, eval=FALSE}
+y <- numeric(); for (i in seq_along(x)) y[i] <- f(x[i])
+y <- f(x)
+y <- numeric(length(x)); for (i in seq_along(x)) y[i] <- f(x[i])
+y <- vapply(x, f, numeric(1))
+```
+
+* method 2, method 4, method 3, method 1  
+* method 2, method 3, method 4, method 1  
+* method 3, method 2, method 4, method 1  
+* method 3, method 4, method 2, method 1  
+
+___vchaudhuri___ 
+Consider the following code. Do mean1 and mean2 have equal run times or differ in run times? 
+```
+mean1 <- function(x) mean(x)
+mean2 <- function(x) sum(x) / length(x)
+x <- runif(100)
+stopifnot(all.equal(mean1(x), mean2(x)))
+microbenchmark(
+  mean1(x),
+  mean2(x)
+)
+```
+
+* mean1 is considerably slower because  mean1 makes two passes over the vector to be more numerically accurate
+*  mean2 is considerably faster because just one inbuilt fnction is executed
+*  mean1 and mean2  have equal run time because they perform the same operation
+*  it cannot be determined from the above data
+
+___catterbu___ 
+What is the difference between `read.table()` and `read.csv()`?
+
+* `read.csv` is the exact same as `read.table`, except that `read.csv` defaults to `sep=","`.  
+*  `read.csv` has a few things tweaked in the `C` code "under the hood" so that it runs faster than `read.table` for csv files.  
+*  `read.table` is optimized for Excel tables and `read.csv` is optimized for csv files. 
+
+___vchaudhuri___ 
+Of the following which is not a valid way to read R data in a technically correct format
+```
+a<-read.xml
+b<-read.csv
+c<-read.table
+d<-read.dataframe
+```
+
+* a & d
+*  a & b
+*  c & d
+*  All are correct formats to read R data
+
+___nsh87___ 
+There are several data types in R: logical, integer, numeric, character, etc. 
+Sometimes when loading character data R might store the data internally as
+numbers for reference. For example, let's say you load a data frame with a
+vector `s = c('M', 'F', 'F', 'F', 'M', 'F')`. Internally, R represents this
+data as `1, 2, 2, 2, 1, 2`, where 1='M' and 2='F'. Knowing this, if you checked
+the data type of this vector `s` in the data frame, what would it be?
+
+* factor  
+*  character  
+*  nominal  
+*  logical
+
+___lakarbatti___ Which function in R is best suited to read very large data sets?
+
+* read.table()
+*  read.csv()
+*  data.frame()
+*  None of the choices
+
+___tdenatale___ 
+Which of the following could be used for webscraping?
+
+* All of these
+*  Read HTML Table using library(knitr) site using a url
+*  kable for easily putting scrapings into dataframes
+*  Using library(rvest) to harvest data from the web by creating a wrapper utilizing html syntax to get data using url's
+*  magrittr just piping along '%>%' or in other words using magritter to make your function more readable to humans
+
+___catterbu___ 
+How does the `sqldf` library work?  
+
+* The `sqldf` function opens up a temporary instance of a SQLite database and runs the SQL query, saves the results to a variable, then closes the SQLite database and cleans up.  
+*  It opens a MySQL connection using one function, then you are able to run SQL queries on the open database using the main `sqldf` function.  
+*  The `sqldf` function opens up a new instance of a SQLite database, saves it in your default directory, and runs the SQL query. It returns the results to the screen.  
+
+___cpkaur___ 
+Does case sensitivity matter while using SQL in R?
+
+* Yes
+*  No
+
+___vchaudhuri___ 
+In the following structure of data frame , what is one of the ways to query for the 
+date
+```
+str(result)
+'data.frame':   316125 obs. of  6 variables:
+ $ ID    : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ dt    : Date, format: "1999-12-31" "1999-12-31" "1999-12-31" "1999-12-31" ...
+ $ Ticker: chr  "0111145D US" "0113357D US" "0202445Q US" "0203524D US" ...
+ $ px    : num  32.5 20.6 34.2 21.4 11 ...
+ $ High  : num  34.9 23.5 35.4 25.9 11 ...
+ $ Low   : num  31.19 18 28.85 20.28 9.97 ...
+```
+
+* create new character version of the dt variable (chardt) and query in sqldf on the character version of dt sqldf("SELECT * FROM result WHERE chardt='1999-12-31'")
+*  query the table by using the command ("SELECT * FROM result WHERE dt=",as.Date("1999-12-31"),"", sep=""))
+*  query the table by using the command ('SELECT * FROM result WHERE dt="1999-12-31"')
+*  Date is in an integer format  and cannot be searched
+
+___johnedwardgreer___ 
+Read.table loads a text file into a data frame. True or False?
+
+* True
+*  False 
+
+___vchaudhuri___ 
+What is the dplyr approach(es) to search for a data point from a dataframe called 'flight' by 1st month and 1st DayofMonth
+```
+A <- flights[flights$Month==1 & flightsDayofMonth==1,]
+B <- filter(flights, Month==1, DayofMonth==1)
+C <- flights %>% filter(Month==1, DayofMonth==1)
+```
+
+*  B & C
+*  B
+*  C
+*  A
+
+___tdenatale___ 
+Given the following data_frame named patient. In the process of de-identifying data, one may choose to reference each patient's data indirectly. Which SQL query represents best what one might try to use in further processing? (Assume that id was made up in the process of making this table)?
+```
+> patient
+  id name sex
+1  1  Alt   F
+2  2  Box   M
+3  3  Cox   M
+4  4  Dew   F
+```
+
+* sql <- "SELECT id FROM patient"
+*  sql <- "SELECT * FROM patient"
+*  sql <- "SELECT name FROM patient"
+*  sql <- "SELECT sex FROM patient"
+
+___xxu26___ 
+What is the name of the following distribution? 
+```{r snippet code}
+set.seed(1)
+rpois(5, 2)
+```
+
+* A vector with the numbers 2, 2, 3, 5, 2
+*  A vector with the numbers 3.3, 2.5, 0.5, 1.1, 1.7
+*  It is impossible to tell because the result is random
+*  A vector with the numbers 1, 4, 1, 1, 5
+
+___sneha-krishna___ 
+database A:  names  DeptID
+          "John" "1"   
+	      "Jane" "2"   
+	      "Sam"  "1"   
+	      "Sara" "2"  
+database B:   DeptID DeptName    
+		"1"    "HR"        
+		"2"    "IT"        
+		"3"    "Accounting"
+database C:   names  DeptID  DeptName    
+		"John" "1"    "HR"            
+		"Jane" "2"    "IT"            
+		"Sam"  "1"    "HR"     
+		"Sara" "2"    "IT" 
+Which of following SQL queries will generate C from A and B?
+
+* Select A.names, A.DeptID, B.DeptID, B.DeptName from A CROSS JOIN B
+*  Select A.names, A.DeptID, B.DeptID, B.DeptName from A JOIN B
+*  Select A.names, A.DeptID, B.DeptID, B.DeptName from A AND B
+*  Select * from A AND B
+
+___vchaudhuri___ 
+The two most important properties of tidyr package is : Each column is a variable and each row is an observation. Hence which statement is true
+
+* It is easy to  describe functional relationships between columns than between rows
+*  It is easy to  describe functional relationships between rows than between columns
+*  Row and columns both are attributes of a dataframe , so each datapoint has a relationship with another datapoint across the dataframe
+*  All data points in a row are independent observations , hence there is no relationships even across a row in a dataframe
+
+___tdenatale___ 
+Which is true of Tidy Data by Hadley Wickam?
+
+* None of these other answers
+*  Data is always essentially tidy
+*  It is always possible to get to the ideal structure, that is attain a one to one relationship for all data
+*  It is bad for vectorization to have each observation in a row
+*  It is good to have the variables identified at the start of a row versus the variable as a column
+*  Wide tables with a unique entry for the first element each row are always better  than long tables which may have nonunique entries as the first element in multiple rows.
+
+___johnedwardgreer___ 
+
+* NA
+
+___nsh87___ 
+Which matrix is most dense?
+
+* &nbsp;&nbsp; `9  7`  
+&nbsp;&nbsp; `9  5`  
+&nbsp;
+*  &nbsp;&nbsp; `0  5  0  0  9  0  0 `    
+&nbsp;&nbsp; `0  0  1  0  0  0  0`     
+&nbsp;&nbsp; `0  0  0  0  8  0  0`   
+&nbsp;
+*  &nbsp;&nbsp; `0  8  7`  
+&nbsp;&nbsp; `2  5  12`  
+&nbsp;&nbsp; `0  2  1`  
+&nbsp;
+*  &nbsp;&nbsp; `1  0  0`  
+&nbsp;&nbsp; `0  1  0`  
+&nbsp;&nbsp; `0  0  1`
+
+___catterbu___ 
+Given a dataframe `DF` with features `sex` and `admit`, what does the table look like generated by this code: `xtabs(Freq ~ sex + admit, DF)`?  
+
+* The row label will be `sex` and the different unique entries for `sex` will be the actual rows. The column label will be `admit` and the different unique entries for `admit` will be the actual columns. A given cell will contain the frequency of the given `sex`/`admit` combination in which it resides.  
+*  The row label will be `admit` and the different unique entries for `admit` will be the actual rows. The column label will be `sex` and the different unique entries for `sex` will be the actual columns. A given cell will contain the amount of `Freq` of the given `sex`/`admit` combination in which it resides.  
+*  The row label will be `admit` and the different unique entries for `admit` will be the actual rows. The column label will be `sex` and the different unique entries for `sex` will be the actual columns. A given cell will show the relationship of the `sex`/`admit` combination in which it resides.  
+
+___johnedwardgreer___ NA
+
+* NA
+
+___xxu26___ 
+When simulating data, why is using the set.seed() function important?
+
+* It can be used to specify which random number generating algorithm R should use, ensuring consistency and reproducibility.
+*  It can be used to generate non-uniform random numbers.
+*  It ensures that the random numbers generated are within specified boundaries.
+*  It ensures that the sequence of random numbers is truly random.
+
+___sneha-krishna___ 
+In his paper 'Tidy Data,' Hadley Wickam says all of following are true of tidy data EXCEPT:
+
+* Each variable forms a row, each observation forms a row, and each type of observational unit forms a table
+*  a standard way of mapping the meaning of a dataset to its structure
+*  consisting of variables (which contains all values that measure the same underlying attribute across units) and observations (which contains all values measured on
+the same unit across attributes)
+* most messy ( or 'not tidy') datasets can be tidied with a small set of tools: melting, string splitting, and casting
+
