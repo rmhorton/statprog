@@ -1,0 +1,71 @@
+---
+title: "Multicolinearity"
+author: "Bob Horton"
+date: "March 18, 2015"
+output: pdf_document
+---
+
+```{r linear_relationship}
+N <- 1e3	# 1e5
+
+a <- runif(N, min=0, max=10)
+b <- runif(N, min=0, max=10)
+
+s <- 1.2
+
+y <- 6 + 0.7 * a + 1.2 * b + rnorm(N, sd=0.2)
+
+df1 <- data.frame(a, b, y)
+```
+
+To display three dimensions, we can use color. Here we break the y values into a series of ranges, and assign a color to each range. Colors are made by the `rainbow` function, which makes a series of hues spanning the spectrum.
+
+```{r plot1_base_graphics}
+df1$y_bucket <- cut(y, breaks=quantile(y, probs=0:16/16))
+rbow <- rainbow(16, end=5/6)
+
+with(df1, plot(x=a, y=b, col=rbow[y_bucket]))
+```
+
+```{r ggplot1}
+library(ggplot2)
+ggplot(df1, aes(x=a, y=b, col=y)) + 
+    geom_point() +
+    scale_colour_gradient(low="red", high="blue")
+```
+
+```{r model1}
+fit1 <- lm( y ~ a + b, data=df1)
+
+df1$pred1 <- fit1$fitted
+
+ggplot(df1, aes(x=y, y=pred1)) + geom_point()
+
+summary(fit1)
+
+###
+# (I want the fit to be good, but the coefficients to be non-significant.
+# Try more multicollinear columns:
+
+```
+
+Matrix version 
+```{r matrix_version}
+num_a_cols <- 4
+num_b_cols <- 4
+
+X_signal <- matrix( c(rep(a, num_a_cols), rep(b, num_b_cols)), ncol=(num_a_cols + num_b_cols) )
+X_noise <- matrix( rnorm( (num_a_cols + num_b_cols) * N), ncol=(num_a_cols + num_b_cols) )
+X <- X_signal + X_noise
+df2 <- cbind(data.frame(X), y)
+
+fitA <- lm(y ~ ., data=df2)
+summary(fitA)
+
+df2$fitted <- fitA$fitted
+plot(y ~ fitted, data=df2)
+
+df2$fitted <- fitA$fitted
+
+
+```

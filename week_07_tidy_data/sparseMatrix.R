@@ -1,6 +1,6 @@
  # These are the examples from the help file for Matrix::sparseMatrix
  # Project ideas: try a large matrix multiplication, maybe with FNDDS data.
- # Race against other approaches (like SQL, amybe SQLite in RAM)
+ # Race against other approaches (like SQL, maybe SQLite in RAM)
  
  i <- c(1,3:8); j <- c(2,9,6:10); x <- 7 * (1:7)
  (A <- sparseMatrix(i, j, x = x))

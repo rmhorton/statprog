@@ -28,12 +28,20 @@ parse_quiz_text <- function(quiz_text, NL="\n"){
 	})
 }
 
-# transform the input URL into a raw file URL
-# @param blob_url the github URL for the normal web interface to the file (must include "/blob/" after repo name)
-# https://github.com/sneha-krishna/hs616/blob/working-doc/lecturequestions.txt
-# https://raw.githubusercontent.com/sneha-krishna/hs616/working-doc/lecturequestions.txt
+#' transform the input URL into a raw file URL
+#' @param blob_url the github URL for the normal web interface to the file (must include "/blob/" after repo name)
+#' @note input: https://github.com/sneha-krishna/hs616/blob/working-doc/lecturequestions.txt
+#' 		output: https://raw.githubusercontent.com/sneha-krishna/hs616/working-doc/lecturequestions.txt
 github_raw_url <- function(blob_url){
     blob_url <- gsub("^https://github.com/", "", blob_url)
     user_doc <- strsplit(blob_url, "/blob/")[[1]] 
     sprintf("https://raw.githubusercontent.com/%s/%s", user_doc[1], user_doc[2])
+}
+
+# vectorized and pipelined version of 'github_raw_url'; I will replace it after the midterm
+gru <- function(blob_url){
+	library("magrittr")
+    url_parts <- blob_url %>% gsub("^https://github.com/", "", .) %>% 
+    			strsplit("/blob/") %>% do.call(rbind, .)
+    paste("https://raw.githubusercontent.com", url_parts[,1], url_parts[,2], sep="/")
 }

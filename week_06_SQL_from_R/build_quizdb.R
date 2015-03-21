@@ -1,4 +1,4 @@
-DATA_DIR <- "/Users/bhorton/GitHub/"  # "/Volumes/data/Courses/USF_stats_programming/"
+DATA_DIR <- "~/GitHub"
 library("RCurl")
 library("magrittr")
 
