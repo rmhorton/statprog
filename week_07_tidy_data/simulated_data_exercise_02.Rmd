@@ -13,17 +13,19 @@ generate_dataset <- function(N=100){
 	HEIGHT_SD <- 0.15
 	WEIGHT_MEAN <- c( F = 54, M = 70 )
 	WEIGHT_SD <- 20
+    SALT_MEAN <- 2200
+    SALT_SD <- 50
 	
 	bmi <- function(height, weight) weight/height^2
 
 	sbp <- function(sex, salt, bmi, etoh){
 		ifelse (sex == "M",
-			90 + 0.005 * salt + 1.0 * bmi - 0.01 * etoh,
-			80 + 0.005 * salt + 1.5 * bmi - 0.01 * etoh)
+			101 + 0.1 * (salt - SALT_MEAN) + 1.0 * bmi - 0.01 * etoh,
+			91 + 0.1 * (salt - SALT_MEAN) + 1.5 * bmi - 0.01 * etoh)
 	}
 
 	sex <- sample(c("M", "F"), N, replace=TRUE)
-	salt <- rnorm(N, mean=2200, sd=50)
+	salt <- rnorm(N, mean=SALT_MEAN, sd=SALT_SD)
 	height <- rnorm(N, mean=HEIGHT_MEAN[sex], sd=HEIGHT_SD)
 	weight <-  1.2 * ( height - HEIGHT_MEAN[sex] ) + WEIGHT_MEAN[sex] + rnorm(N, sd=WEIGHT_SD)
 	etoh <- 50 * rpois(N, lambda=6)
@@ -60,9 +62,12 @@ The outcome variable "systolic" is the patient's blood pressure. The analytical 
 We examined the outcome repeatedly when designing the simulation and adjusted the coefficients and other parameters so that the outcomes fit the patterns we wanted to create. First we want to be sure that the drivers are in reasonable ranges, and have the appropriate collinear relationships. In this simulation, weight is related to height.
 
 ```{r calibration_viz}
-with(bpdata, plot( height ~ sex, col=sex))
-
-plot( weight ~ height, border=sex, data=bpdata )
+plot( weight ~ height, col=sex, data=bpdata )
+with(bpdata, plot( weight ~ height, col=sex ) )
+plot( height ~ sex, col=sex, data=bpdata )
+plot( height ~ sex, col=sex, data=bpdata )
+# with(bpdata, plot( sex, weight, col=sex, sex))
+# shouldn't F be black?
 ```
 
 The ggplot2 package makes it easy to plot densities, so we can get a quick overview of how the sample attributes are distributed:
@@ -92,9 +97,9 @@ ggplot(bpdata, aes(x=systolic, col=sex)) + geom_density()
 
 Outcome conditioned on inputs
 ```{r categorical_conditioning}
-plot( systolic ~ car, data=bpdata)
-plot( systolic ~ sign, data=bpdata)
-plot( systolic ~ sex, data=bpdata)
+plot( systolic ~ car, data=bpdata, las=2)
+plot( systolic ~ sign, data=bpdata, las=2)
+plot( systolic ~ sex, data=bpdata, las=2)
 
 plot( systolic ~ salt, data=bpdata)
 abline( lm(systolic ~ salt, data=bpdata), col="blue")
@@ -130,6 +135,20 @@ plot( bmi ~ sex, data=bpdata )
 plot( systolic ~ bmi, col=sex, data=bpdata)
 # same thing, without adding a column to the data frame
 plot( systolic ~ I(weight/height^2), col=sex, data=bpdata)
+
+plot( systolic ~ I(1/height^2), data=bpdata, col=bpdata$sex, pch=20)
+```
+
+```{r salt_effects}
+bpdata$salt_quartile <- with(bpdata, cut(salt, breaks=quantile(salt, 0:4/4), labels=1:4))
+
+plot(systolic ~ salt_quartile, data=bpdata, outline=F, notch=T)
+
+
+quartile_colors <- c("blue", "black", "black", "red")
+plot( systolic ~ I(1/height^2), data=bpdata[bpdata$sex=="F",], col=quartile_colors[salt_quartile], pch=20)
+# we know there is a difference, but it is hard to see this way
+
 ```
 
 Some of the attributes in the dataset are distractors, and they have nothing to do with the outcome. The type of car a person drives and their zodiac sign are examples of categorical distractors.
