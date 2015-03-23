@@ -36,7 +36,8 @@ v <- c(3,4,5,6,7,8)
 *  `NaN`
 *  `(3 4 5 8 10 12)`
 
-___vchaudhuri___ ```
+___vchaudhuri___
+```
 f <- sqrt
 x <- 1:20
 y <- f(x)
@@ -212,7 +213,8 @@ What does the Central Limit Theorem state ?
 * Measures of central tendency should always be computed with and without outliers
 * Confidence intervals have zero margin of error for large sample sizes.
 
-___lakarbatti___ Which of the following equations represents the sensitivity of a test?
+___lakarbatti___
+Which of the following equations represents the sensitivity of a test?
 
 * sensitivity = number of true positives / number with disease
 * sensitivity = number of true negatives / number without disease
@@ -533,7 +535,8 @@ plot?
 * `plot(x %>% y)`  
 * `plot(y % x)`  
 
-___lakarbatti___ To find the square of each number from 1 to N, which of the following is the fastest approach
+___lakarbatti___
+To find the square of each number from 1 to N, which of the following is the fastest approach
 
 * x <- 1:N; y <- x^2 
 * y <- numeric(); for (i in 1:N) y[i] <- i^2
@@ -623,7 +626,8 @@ What is typically the fastest way to analyze and manipulate data using R?
 * With loops  
 * With recursion  
 
-___lakarbatti___ Which of the following function keeps track of the function stack and tabulates how much time is spent on each function?
+___lakarbatti___
+Which of the following function keeps track of the function stack and tabulates how much time is spent on each function?
 
 * RProf()
 * runif()
@@ -772,7 +776,8 @@ The magrittr operator `%>%` is a useful tool for:
 * redirecting results to standard input  
 * getting the dot product of two matrices
 
-___lakarbatti___ What does the selectorGadget do?
+___lakarbatti___
+What does the selectorGadget do?
 
 * Allows you to interactively click on a web page to generate CSS selectors
 * Generates data for a linear model
@@ -948,12 +953,13 @@ Which of these is not a problem with messy data
 *  Variables stored in both rows and columns
 *  Multiple types of entities in the same table
 
-___lakarbatti___ Which of the following in true with respect to relational database normalization?
+___lakarbatti___
+Which of the following in true with respect to relational database normalization?
 
 * Normalization involves removing redundancies aross tables and defining keys
 * Data in tables have a mean of zero and unit standard deviation
-* Making sure the data is normal as in human readable
-* Converting binary data to text data
+* It is a way of making sure the data is human readable
+* It is basically converting binary data to text data
 
 ___xxu26___ 
 What R function can be used to generate standard Normal random variables?

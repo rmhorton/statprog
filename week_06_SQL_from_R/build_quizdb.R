@@ -1,3 +1,5 @@
+# TO DO: be sure that student idneifier strings are on their own line (e.g., ___rmhorton___)
+
 DATA_DIR <- "~/GitHub"
 library("RCurl")
 library("magrittr")
