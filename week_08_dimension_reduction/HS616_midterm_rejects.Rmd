@@ -95,7 +95,8 @@ D <- "that"
 E <- "seen"
 F <- "you"
 
-___lakarbatti___ Given a matrix
+___lakarbatti___
+Given a matrix
 ```{r matrix_operations, echo=FALSE}
 
 x <- matrix (1:12,4,3)
@@ -103,7 +104,8 @@ x
 ```
 what is the output of the statement __x[1, ]__
 
-___lakarbatti___ Given a matrix A
+___lakarbatti___
+Given a matrix A
 ```{r matrix1, echo=FALSE}
 x <- matrix (1:12,4,3)
 x

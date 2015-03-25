@@ -3,7 +3,7 @@ library(dplyr)
 process_question <- function(qtxt){
 	q_a <- strsplit(qtxt, "\n\n+")[[1]]
 	question <- q_a[1]
-	answers <- q_a[2] %>% gsub("\n$", "", .) %>% gsub(" *(\n|$)", "\\1", .)  %>%
+	answers <- q_a[2] %>% gsub("\n$", "", .) %>% # gsub(" *(\n|$)", "\\1", .)  %>%
 			strsplit("(^|\n)[*] +") %>% .[[1]] %>% .[-1]
 	num_answers <- length(answers)
 	answer_numbers <- 1:num_answers
@@ -41,7 +41,7 @@ get_answer_key <- function(qlist)
 		paste(i, qlist[[i]]['correct'], sep=":")
 	})
 
-generate_quiz <- function(quiz_file, num_questions=30, seed=1){
+generate_quiz <- function(quiz_file, num_questions, seed){
 	set.seed(seed)
 	quiz_file %>% readLines %>% paste(collapse="\n") %>%
 		strsplit("\n+## Lecture ([^\n]+)") %>% .[[1]] %>% .[-1] %>% 

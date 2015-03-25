@@ -6,7 +6,7 @@ output: pdf_document
 ---
 
 ```{r linear_relationship}
-N <- 1e3	# 1e5
+N <- 1e2	# 1e5
 
 a <- runif(N, min=0, max=10)
 b <- runif(N, min=0, max=10)
@@ -51,8 +51,8 @@ summary(fit1)
 
 Matrix version 
 ```{r matrix_version}
-num_a_cols <- 4
-num_b_cols <- 4
+num_a_cols <- 20
+num_b_cols <- 20
 
 X_signal <- matrix( c(rep(a, num_a_cols), rep(b, num_b_cols)), ncol=(num_a_cols + num_b_cols) )
 X_noise <- matrix( rnorm( (num_a_cols + num_b_cols) * N), ncol=(num_a_cols + num_b_cols) )
@@ -63,9 +63,30 @@ fitA <- lm(y ~ ., data=df2)
 summary(fitA)
 
 df2$fitted <- fitA$fitted
-plot(y ~ fitted, data=df2)
+# plot(y ~ fitted, data=df2)
+ggplot(df2, aes(x=y, y=fitted)) + geom_point()
 
 df2$fitted <- fitA$fitted
 
+df2$y_bucket <- cut(df2$y, breaks=quantile(df2$y, probs=0:16/16, include.lowest=TRUE))
+rbow <- rainbow(16, end=5/6)
+with(df2, plot(x=X1, y=X21, col=rbow[y_bucket]))
+```
 
+## Number of components
+
+```{r number_of_components}
+library(psych)
+fa.parallel(X_signal, fa="pc")
+
+pca <- prcomp(X)
+plot(summary(pca)$importance["Proportion of Variance",], type="b")
+```
+
+```{r extracting_top_components}
+pcdf <- data.frame(cbind(pca$x[, c("PC1", "PC2")], y=df2$y))
+
+pcdf$y_bucket <- cut(pcdf$y, breaks=quantile(pcdf$y, probs=0:16/16, include.lowest=TRUE))
+rbow <- rainbow(16, end=5/6)
+with(pcdf, plot(x=PC1, y=PC2, col=rbow[y_bucket]))
 ```

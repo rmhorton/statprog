@@ -8,7 +8,7 @@ output:
     keep_md: yes
 ---
 
-Principle component analysis uses linear algebra to reduce the number of dimensions in a data set. Consider this collection of (x,y) values:
+Principle component analysis uses linear algebra to reduce a large number of correlated variables into a smaller number of uncorrelated variables  in a data set(dimension reduction). Consider this collection of (x,y) values:
 ```{r setup}
 library("knitr")
 opts_chunk$set( fig.height=4.0, fig.width=4.0 )

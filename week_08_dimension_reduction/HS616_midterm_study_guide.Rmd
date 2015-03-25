@@ -16,13 +16,13 @@ Which symbol is used to collect a variable number of function arguments?
 *  `yada, yada, yada`
 
 ___catterbu___ 
-How does an ellipsis behave as a function parameter in R?  
+How does an ellipsis behave as a function parameter in R?
 
 * It takes an undefined number of arguments and applies them wherever the
 ellipsis is used in the function, similar to a normal parameter.
 *  It takes each argument passed in by the user and applies them to
-undefined variables in the function based on order.  
-*  Each period acts as an anonymous parameter in the function.  
+undefined variables in the function based on order.
+*  Each period acts as an anonymous parameter in the function.
 
 ___cpkaur___ 
 In the following code what is u + v?
@@ -61,13 +61,13 @@ plot(x, y, pch=16, col=ifelse(x^2 + y^2 < 1, "red", "blue"))
 ```
 How would you swap the colors in the plot?
 
-*  `plot(x, y, pch=16, col=ifelse(x^2 + y^2 > 1, "red", "blue"))`  
-*  `plot(x, y, pch=16, col=ifelse(x^2 + y^2 > 1, "blue", "red"))`  
-*  `plot(y, x, pch=16, col=ifelse(x^2 + y^2 < 1, "red", "blue"))`  
+*  `plot(x, y, pch=16, col=ifelse(x^2 + y^2 > 1, "red", "blue"))`
+*  `plot(x, y, pch=16, col=ifelse(x^2 + y^2 > 1, "blue", "red"))`
+*  `plot(y, x, pch=16, col=ifelse(x^2 + y^2 < 1, "red", "blue"))`
 *  `plot(x, y, pch=16, col=ifelse(x^2 - x^2 < 1, "red", "blue"))`
 
 ___lakarbatti___ 
-If x <- 1:4 and y <- 5:8 what is the output of x + y ?
+If `x <- 1:4` and `y <- 5:8` what is the output of `x + y` ?
 
 *  A vector with values 6 8 10 12
 *  A numeric integer with value 6
@@ -122,10 +122,10 @@ in_circle <- vlength < 1
 ```
 Which of the following could be the output of `head(as.integer(in_circle))` ?
 
-* 1 1 1 1 1 0
-* TRUE TRUE TRUE TRUE TRUE FALSE 
-* 1 -1 1 0 -1 0
-* 0.23, ,0.34, 0.12, 0.45, 0.55, 0.79
+* `1 1 1 1 1 0`
+* `TRUE TRUE TRUE TRUE TRUE FALSE`
+* `1 -1 1 0 -1 0`
+* `0.23, ,0.34, 0.12, 0.45, 0.55, 0.79`
 
 ___johnedwardgreer___ 
 Every data type is at least a ________
@@ -133,7 +133,7 @@ Every data type is at least a ________
 *  vector
 *  matrix
 *  array
-*  factor 
+*  factor
 
 ___nsh87___ 
 The following R code generates the image below.
@@ -146,18 +146,18 @@ plot(x, y, pch=16, col=ifelse(x^2 + y^2 < 1, "red", "blue"))
 To plot just the the 3rd quadrant of the image, what modification
 would you make to the original code?
 
-*  `x <- runif(N, min=-1, max=0); y <- runif(N, min=-1, max=0)`  
-*  `x <- runif(N, min=-0.5, max=0); y <- runif(N, min=-0.5, max=0)`  
-*  `x <- runif(N, min=0, max=1); y <- runif(N, min=-1, max=0)`  
-*  `x <- runif(N, min=0, max=1); y <- runif(N, min=0, max=1)`  
+*  `x <- runif(N, min=-1, max=0); y <- runif(N, min=-1, max=0)`
+*  `x <- runif(N, min=-0.5, max=0); y <- runif(N, min=-0.5, max=0)`
+*  `x <- runif(N, min=0, max=1); y <- runif(N, min=-1, max=0)`
+*  `x <- runif(N, min=0, max=1); y <- runif(N, min=0, max=1)`
 
 ___lakarbatti___ 
 In the statement `var <- runif (10) < 0.5`, what is the class() of the vector 'var' ?
 
-*  logical  
-*  integer 
-*  character 
-*  list 
+*  logical
+*  integer
+*  character
+*  list
 
 ___xxu26___ 
 In the following code, what is the type of the variable returned?
@@ -189,11 +189,11 @@ The standard normal distribution has a mean of 0 and a standard deviation of 1, 
 *  2 pi
 *  4
 
-___catterbu___ 
-Which equation represents Bayes Theorem?  
+___catterbu___
+Which equation represents Bayes Theorem?
 
 *  $P(A|B) = \frac{P(B|A) \, P(A)}{P(B)}$
-*  $P(A|B) = \frac{P(B|A) \, P(B)}{P(A)}$  
+*  $P(A|B) = \frac{P(B|A) \, P(B)}{P(A)}$
 *  $P(A|B) = \frac{P(A|B) \, P(B)}{P(A)}$
 *  $P(A|B) = \frac{P(A|B) \, P(A)}{P(B)}$
 
@@ -280,17 +280,17 @@ True or false: "probability mass function" means the same thing as "probability 
 * False, the probability mass function is a continuous distribution and the probability density function is a discrete distribution
 
 ___nsh87___ 
-"Setting the seed", e.g. `set.seed(42)`, in R...  
+"Setting the seed", e.g. `set.seed(42)`, in R...
 
-* ensures that the outcome of random number generators will be repeated upon re-execution of your code.  
-* ensures that the outcome of random number generators is _not_ repeated upon re-execution of your code.  
-* ensures that someone else who runs your code does not get the same random numbers you do.  
-* has nothing to do with random number generation.  
+* ensures that the outcome of random number generators will be repeated upon re-execution of your code.
+* ensures that the outcome of random number generators is _not_ repeated upon re-execution of your code.
+* ensures that someone else who runs your code does not get the same random numbers you do.
+* has nothing to do with random number generation.
 
 ___lakarbatti___
 The Poisson Distribution is a type of 
 
-* Discrete Probability Distribution  
+* Discrete Probability Distribution
 * Continuous Probability Distribution
 * Cumulative distibution
 * Random number generation
@@ -336,14 +336,14 @@ Assume `v` is a row vector defined like this: `v <- matrix(1:10,1)`
 
 ___catterbu___ 
 What kind of matrix is this?
-```
+```{r, echo=FALSE}
 vals <- c(1,0,0,5,1,0,4,2,1)
 matrix(vals, 3, 3)
 ```
 
-* Upper Triangular  
-* Lower Triangular  
-* Identity  
+* Upper Triangular
+* Lower Triangular
+* Identity
 
 ___cpkaur___ 
 What needs to be changed in the following code for values to be arranged row wise in ascending order?
@@ -371,18 +371,18 @@ A %*% t(A)
 ___tdenatale___ 
 Which of the following cannot be done by the `diag()` function?
 
+*  diagnose errors in a linear regression
 *  extract a diagonal given a matrix 
 *  construct a diagonal matrix 
 *  replace the diagonal of a matrix
-*  diagnose errors in a linear regression
 
 ___nsh87___ 
-There is more than one way to "multiply" vectors. In R, `A * B` performs elementwise multiplication. What operator would you use to get the dot product of vectors `A` and `B`?  
+There is more than one way to "multiply" vectors. In R, `A * B` performs elementwise multiplication. What operator would you use to get the dot product of vectors `A` and `B`?
 
-* `A %*% B`   
-* `A & B`   
-* `A %>% B`   
-* `A ** B`   
+* `A %*% B`
+* `A & B`
+* `A %>% B`
+* `A ** B`
 
 ___xxu26___ 
 What is the name of the following distribution? 
@@ -415,11 +415,11 @@ Given a 2 by 2 matrix `A <- matrix(c(2, 5, 3, 8), 2, byrow=TRUE)`, which command
 * A[2,] <- A[2,] + A[1,] + A[1,]/2
 
 ___catterbu___ 
-What is an eigenvector?  
+What is an eigenvector?
 
-* a vector which, when multiplied by a square matrix, generates the same value as when the vector is multiplied by its eigenvalue.  
-* a vector that Dr. Richard Eigen designed to find a series of velocities relevant in physics.  
-* a vector with determinant zero.  
+* a vector which, when multiplied by a square matrix, generates the same value as when the vector is multiplied by its eigenvalue.
+* a vector that Dr. Richard Eigen designed to find a series of velocities relevant in physics.
+* a vector with determinant zero.
 
 ___cpkaur___
 `A` is an n by n square matrix. Identify the correct code used for augumenting the matrix A by binding an identity matrix on the right?
@@ -430,7 +430,7 @@ ___cpkaur___
 * `cbind(A, diag(1))`
 
 ___vchaudhuri___ 
-Consider the equation $A v == \lambda v$. If A is the identity matrix, what is lambda?
+Consider the equation $A v = \lambda v$. If A is the identity matrix, what is lambda?
 
 * lamba is equal to 1
 * lambda is infinity
@@ -456,22 +456,26 @@ Generate a sequence from 122 to 154 by intervals of 2.
 
 ___nsh87___ 
 Which matrix results from the command `matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9),
-ncol=3)`?  
+ncol=3)`?
 
-*  &nbsp;&nbsp; `1  4  7 `
-&nbsp;&nbsp; `2  5  8` 
-&nbsp;&nbsp; `3  6  9`
-*  &nbsp;&nbsp; `1  2  3`  
+*  &nbsp;  
+&nbsp;&nbsp; `1  4  7 `  
+&nbsp;&nbsp; `2  5  8`  
+&nbsp;&nbsp; `3  6  9`  
+*  &nbsp;  
+&nbsp;&nbsp; `1  2  3`  
 &nbsp;&nbsp; `4  5  6`  
 &nbsp;&nbsp; `7  8  9`  
 &nbsp;  
-*  &nbsp;&nbsp; `9  8  7`  
+*  &nbsp;  
+&nbsp;&nbsp; `9  8  7`  
 &nbsp;&nbsp; `6  5  4`  
 &nbsp;&nbsp; `3  2  1`  
 &nbsp;  
-*  &nbsp;&nbsp; `9  6  3`  
+*  &nbsp;  
+&nbsp;&nbsp; `9  6  3`  
 &nbsp;&nbsp; `8  5  2`  
-&nbsp;&nbsp; `7  4  1` 
+&nbsp;&nbsp; `7  4  1`  
 
 ___sneha-krishna___ 
 Which of following statements about a Markov chain is FALSE?
@@ -515,7 +519,6 @@ price <- c( lisonopril=106/30, crestor=204.00/30,
              clorthiazide=12.10/15, fibrosol=160/30)
 dosage_day <- c( lisonopril=3, crestor=0.5, 
             clorthiazide=0.5, fibrosol=1)
-
 cost_day_1  = sum(price * dosage_day)
 cost_day_1a = price %*% dosage_day
 ```
@@ -528,46 +531,58 @@ cost_day_1a = price %*% dosage_day
 ___nsh87___ 
 To plot variables `x` and `y` along the x-axis and y-axis, respectively, one
 could use `plot(x, y)`. What is an alternative command that generates the same
-plot?  
+plot?
 
-* `plot(y ~ x)`  
-* `plot(x ~ y)`  
-* `plot(x %>% y)`  
-* `plot(y % x)`  
+* `plot(y ~ x)`
+* `plot(x ~ y)`
+* `plot(x %>% y)`
+* `plot(y % x)`
 
 ___lakarbatti___
 To find the square of each number from 1 to N, which of the following is the fastest approach
 
-* x <- 1:N; y <- x^2 
-* y <- numeric(); for (i in 1:N) y[i] <- i^2
-* y <- numeric(N); for (i in 1:N) y[i] <- i^2
-* y <- sapply(1:N, function(i) i^2)
+* `x <- 1:N; y <- x^2`
+* `y <- numeric(); for (i in 1:N) y[i] <- i^2`
+* `y <- numeric(N); for (i in 1:N) y[i] <- i^2`
+* `y <- sapply(1:N, function(i) i^2)`
 
 ___sneha-krishna___ 
 Given `A <- matrix(1:5)` and `B <- matrix(6:10)` and `C <- rbind(A, B)`, what does matrix `C` look like? 
 
-* [,1]
- [1,]    1
- [2,]    2
- [3,]    3
- [4,]    4
- [5,]    5
- [6,]    6
- [7,]    7
- [8,]    8
- [9,]    9
+*   &nbsp;  
+```
+.    [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]  
+[1,]    1    2    3    4    5    6    7    8    9    10  
+```
+*   &nbsp;  
+```
+.    [,1]  
+[1,]    1  
+[2,]    2  
+[3,]    3  
+[4,]    4  
+[5,]    5  
+[6,]    6  
+[7,]    7  
+[8,]    8  
+[9,]    9  
 [10,]   10
-*      [,1] [,2]
-[1,]    1    6
-[2,]    2    7
-[3,]    3    8
-[4,]    4    9
-[5,]    5   10
-*        [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-[1,]    1    2    3    4    5    6    7    8    9    10
-*      [,1] [,2] [,3] [,4] [,5]
-[1,]    1    2    3    4    5
-[2,]    6    7    8    9   10
+```
+*   &nbsp;  
+```
+.    [,1] [,2]  
+[1,]    1    6  
+[2,]    2    7  
+[3,]    3    8  
+[4,]    4    9  
+[5,]    5   10  
+```
+*   &nbsp;  
+```
+.    [,1] [,2] [,3] [,4] [,5]  
+[1,]    1    2    3    4    5  
+[2,]    6    7    8    9   10  
+```
 
 ## Lecture 04b
 
@@ -619,12 +634,12 @@ Create a rectangular matrix with 16 entries of numbers 1 through 16. The matrix 
 * matrix(1:16, byrow = TRUE, nrow=2) 
 
 ___nsh87___ 
-What is typically the fastest way to analyze and manipulate data using R?  
+What is typically the fastest way to analyze and manipulate data using R?
 
-* With vectorized functions  
-* Using iteration  
-* With loops  
-* With recursion  
+* With vectorized functions
+* Using iteration
+* With loops
+* With recursion
 
 ___lakarbatti___
 Which of the following function keeps track of the function stack and tabulates how much time is spent on each function?
@@ -771,9 +786,9 @@ A dataframe called CDC has columns representing patient name, age, height, and w
 ___nsh87___ 
 The magrittr operator `%>%` is a useful tool for:
 
-* piping data into a function  
-* getting the remainder after division  
-* redirecting results to standard input  
+* piping data into a function
+* getting the remainder after division
+* redirecting results to standard input
 * getting the dot product of two matrices
 
 ___lakarbatti___
@@ -870,12 +885,12 @@ Which command opens a connection to an SQLite database?
 * dbListTables(dsets)
 
 ___catterbu___ 
-What is the name of the R function that does the equialent of SQL joins?  
+What is the name of the R function that does the equialent of SQL joins?
 
-* merge  
-* join  
-* sqlJoin  
-* aggregate  
+* merge
+* join
+* sqlJoin
+* aggregate
 
 ___cpkaur___
 What is the output of the following code?
@@ -911,12 +926,9 @@ Consider the following table called `patient`:
 ```
 What would be the correct SQL query to get all females in this table?
 
-* `SELECT * FROM patient WHERE sex='F'`  
-&nbsp;  
-*  `SELECT 'F' from COLUMN 'sex'`  
-&nbsp;  
-*  `SELECT sex='f' from patient`  
-&nbsp;  
+* `SELECT * FROM patient WHERE sex='F'`
+*  `SELECT 'F' from COLUMN 'sex'`
+*  `SELECT sex='f' from patient`
 *  `SELECT sex='f' from patient where COLUMN='name'`
 
 ___lakarbatti___ 
@@ -939,11 +951,11 @@ Which command is equivalent to this pipeline?
 * `lapply(myData, function(sex){ group_by(sex); avg_price=mean(price)})`
 
 ___catterbu___ 
-What `SQL` command does matrix multiplication between matrices `A` and `B`?  
+What `SQL` command does matrix multiplication between matrices `A` and `B`?
 
-* `SELECT A.row_num, B.col_num, SUM(A.value * B.value) AS value FROM A, B WHERE A.col_num = B.row_num GROUP BY A.row_num, B.col_num;`  
-*  `SELECT A.row_num, B.col_num AS value FROM A, B WHERE A.col_num = B.row_num;`  
-*  `SELECT SUM(A.value * B.value) FROM A, B WHERE A.col_num = B.row_num;`  
+* `SELECT A.row_num, B.col_num, SUM(A.value * B.value) AS value FROM A, B WHERE A.col_num = B.row_num GROUP BY A.row_num, B.col_num;`
+* `SELECT A.row_num, B.col_num AS value FROM A, B WHERE A.col_num = B.row_num;`
+* `SELECT SUM(A.value * B.value) FROM A, B WHERE A.col_num = B.row_num;`
 
 ___cpkaur___ 
 Which of these is not a problem with messy data
@@ -1040,14 +1052,11 @@ Which characteristics describe "tidy" data?
 
 * Each variable forms a column.  
 Each observation forms a row.  
-Each type of observational unit forms a table.  
-&nbsp;
+Each type of observational unit forms a table.
 *  Column headers are values, not variable names.  
-Variables are stored in both rows and columns.  
-&nbsp;
+Variables are stored in both rows and columns.
 *  As many observational units as possible are stored in the same table.  
-Do not store a single observational unit in a single table.  
-&nbsp;
+Do not store a single observational unit in a single table.
 *  Multiple variables are stored in one column.  
 Each observation forms a row.  
 Column headers are values, not variable names.

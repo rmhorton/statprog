@@ -1,0 +1,44 @@
+---
+title: "PCA of Yeast Sporulation Data"
+author: "Bob Horton"
+date: "March 23, 2015"
+output: pdf_document
+---
+
+Here we re-compute the Principal Components Analysis of the yeast sporulation dataset as described in [Chu_1998].
+
+```{r}
+library(knitr)
+library(dplyr)
+
+setwd("~/GitHub/statprog/week_08_dimension_reduction/sporulation")
+
+spodata <- read.delim("spospread.txt")
+
+time <- c(0, 0.5, 2, 5, 7, 9, 11)
+
+spo <- spodata %>% mutate(t0 = -log(t0.g.r.ratio), t0.5 = -log(t0.5.g.r.ratio), t2 = -log(t2.g.r.ratio), 
+                   t5 = -log(t5.g.r.ratio), t7 = -log(t7.g.r.ratio), t9 = -log(t9.g.r.ratio),
+                   t11.5 = -log(t11.5.g.r.ratio)) %>%
+            select( t0, t0.5, t2, t5, t7, t9, t11.5table_1 <- apply(spo, 2, function(v) c( median=median(v), mean=mean(v), var=var(v)))                
+```
+
+## Table 1
+```{r cable1}
+kable(spo)
+```
+
+
+
+## Parallel Analysis
+```{r parallel_analysis}
+library(psych)
+fa.parallel(spo)
+
+install.packages("GPArotation")
+
+```
+
+References:
+http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2669932/#R6
+http://rana.lbl.gov/papers/Chu_Science_1998.pdf
