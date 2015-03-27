@@ -7,5 +7,5 @@ Principle Component Analysis
 ========================================================
 
 * visualization (reduce to 2 or 3 dimensions)
-* feature selection / engineering
+* feature selection
 * factor analysis

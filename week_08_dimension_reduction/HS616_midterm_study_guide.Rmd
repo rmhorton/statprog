@@ -551,11 +551,6 @@ Given `A <- matrix(1:5)` and `B <- matrix(6:10)` and `C <- rbind(A, B)`, what do
 
 *   &nbsp;  
 ```
-.    [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]  
-[1,]    1    2    3    4    5    6    7    8    9    10  
-```
-*   &nbsp;  
-```
 .    [,1]  
 [1,]    1  
 [2,]    2  
@@ -567,6 +562,11 @@ Given `A <- matrix(1:5)` and `B <- matrix(6:10)` and `C <- rbind(A, B)`, what do
 [8,]    8  
 [9,]    9  
 [10,]   10
+```
+*   &nbsp;  
+```
+.    [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]  
+[1,]    1    2    3    4    5    6    7    8    9    10  
 ```
 *   &nbsp;  
 ```
@@ -808,12 +808,12 @@ Simulated coin-tossing can be done using different methods. Which of the followi
 * c("H", "T") [1 + rbinom(10, 1, .5)]
 
 ___sneha-krishna___ 
-The 'stingsAsFactors = FALSE' option is useful when reading a data file because:
+The 'stringsAsFactors = FALSE' option is useful when reading a data file because:
 
 * all choices are correct
 * it allow us to keep character variables as they are rather than convert to factors 
 * the default in R is for columns with character data to be made into factors
-* even if stingsAsFactors= F, it is easy to convert character data to factors using as.factor()
+* even if stringsAsFactors= F, it is easy to convert character data to factors using as.factor()
 
 ## Lecture 06a
 
