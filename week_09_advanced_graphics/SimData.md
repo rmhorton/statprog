@@ -35,8 +35,8 @@ Your outcome variable can be continuous (e.g., blood pressure) or binomial (e.g.
 
 ### Observations
 
-* The number of observations must be sufficient for both training and testing.
-(WE NEED STATISTICAL CRITERIA HERE)
+* The number of observations must be sufficient for both training and testing.  
+    (NEED STATISTICAL CRITERIA HERE)
 
 ### Examples
 
@@ -46,7 +46,7 @@ Search [PubMed](http://www.ncbi.nlm.nih.gov/pubmed) for "linear regression" or "
 
 ### Noise
 
-* You can add noise to the inpputs, the outcome, or both. The noisy data must still be amenable to analysis; generally, larger data sets are can compensate for noise. 
+* You can add noise to the inputs, the outcome, or both. The noisy data must still be amenable to analysis; generally, larger data sets are can compensate for noise. 
 * All random noise should be from the random normal distribution, and should be additive.
 
 ### Categorization level
@@ -84,8 +84,8 @@ A simple relationship between category and outcome can be obscured by providing 
 
 * Remember, this is a _friendly_ contest.
 * We are using this as a way to review and study analytical approaches. There should be a clear path to the answer using data manipulation, feature engineering and data analysis approaches we have learned (or will learn) in class.
-* You need to be able to do the analysis on your own simulated dataset yorself.
-* What goes around comes around. You will need to anaylize someone else's dataset.
+* You need to be able to do the analysis on your own simulated dataset yourself.
+* What goes around comes around. You will need to analyze someone else's dataset.
 
 ## Regression Model
 
