@@ -46,8 +46,8 @@ Search [PubMed](http://www.ncbi.nlm.nih.gov/pubmed) for "linear regression" or "
 
 ### Noise
 
-* You can add noise to the inputs, the outcome, or both. The noisy data must still be amenable to analysis; generally, larger data sets are can compensate for noise. 
-* All random noise should be from the random normal distribution, and should be additive.
+* You can add noise to the inputs, the outcome, or both. The noisy data must still be amenable to analysis; larger data sets may sometimes be used to compensate for noise. 
+* Random noise should be from the random normal distribution, and should be additive. (More technically, after the model is fitted the residuals should be normally distributed.)
 
 ### Categorization level
 
