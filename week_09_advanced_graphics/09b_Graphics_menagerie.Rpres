@@ -60,7 +60,7 @@ Flu Season
 
 ![Flu Season](http://upload.wikimedia.org/wikipedia/en/6/6f/CDC-influenza-pneumonia-deaths-2015-01-10.gif)
 
-Flu Season
+Simulated Flu Data
 ========================================================
 
 ```{r flu_Season, echo=FALSE}
