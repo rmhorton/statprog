@@ -1,0 +1,283 @@
+Graphics Menagerie
+========================================================
+author: Bob Horton
+date: 4/2/2015
+
+```{r setup, echo=FALSE, message=FALSE}
+library(knitr)
+opts_chunk$set( fig.width=6, fig.height=6 )
+```
+Standard types of plots
+========================================================
+Plots can be categorized by characteristics of the variables:
+
+- Discrete vs. Continuous
+- Number of variables
+  + univariate
+  + bivariate
+  + more than 2
+
+Base Graphics - Formula Interface
+========================================================
+
+```{r base_graphics_formulas}
+N <- 100
+df <- data.frame(
+  num1 = runif(N, min=0, max=10),
+  num2 = runif(N, min=0, max=10),
+  cat1 = sample(LETTERS[1:5], N, replace=T),
+  cat2 = sample(letters[1:5], N, replace=T)
+)
+kable(head(df))
+```
+
+Numeric vs. Numeric
+========================================================
+```{r num_vs_num}
+plot(num1 ~ num2, data=df)
+```
+
+Numeric vs. Factor
+========================================================
+```{r num_vs_cat}
+plot(num1 ~ cat1, data=df)
+```
+
+Factor vs. Numeric 
+========================================================
+```{r cat_vs_num}
+plot(cat1 ~ num1, data=df)
+```
+
+Factor vs. Numeric Factor
+========================================================
+```{r cat_vs_numfactor}
+plot(cat1 ~ as.factor(floor(num1)), data=df)
+```
+
+Flu Season
+========================================================
+
+![Flu Season](http://upload.wikimedia.org/wikipedia/en/6/6f/CDC-influenza-pneumonia-deaths-2015-01-10.gif)
+
+Flu Season
+========================================================
+
+```{r flu_Season, echo=FALSE}
+# http://en.wikipedia.org/wiki/Flu_season
+# http://www.cdc.gov/flu/about/season/flu-season.htm
+N <- 365 * 4
+x <- 1:N
+
+season_breaks <- c(spring_equinox = "2015-03-20", 
+  summer_solstice = "2015-06-21", 
+	fall_equinox = "2015-09-23", 
+	winter_solstice = "2015-12-22")
+
+# actually dates of equinox vary by year; pretty close though
+season_breaks_doy <- format(as.Date(season_breaks), "%j")
+
+flu <- data.frame( 
+	date = as.Date("1990-10-01") + x, 
+	rate = 7 + sin(2 * pi * x/365.25) + rnorm(N)
+)
+
+flu$month_num <- format(flu$date, "%m")
+
+flu$month <- factor(format(flu$date, "%b"), levels=c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" , "Oct", "Nov", "Dec"))
+
+doy <- as.integer(format(flu$date, "%j"))
+
+flu$season = cut(doy, breaks=c(0, season_breaks_doy, 367))
+levels(flu$season) <- list(winter=c("(0,79]", "(356,367]"), spring="(79,172]", summer="(172,266]", fall="(266,356]")
+
+library(lubridate)
+flu$year <- year(flu$date)
+
+head(flu)
+```
+
+Flu Rate by Date
+========================================================
+```{r flu_season_scatterplot}
+plot( rate ~ date, data=flu)
+```
+
+Flu Rate by Month Number
+========================================================
+```{r flu_season_month_num}
+plot( rate ~ month_num, data=flu)
+```
+
+Flu Rate by Month
+========================================================
+```{r flu_season_monthly}
+plot( rate ~ month, data=flu)
+```
+
+
+Base Graphics - Specialized Plots
+========================================================
+
+2d Density Plot
+========================================================
+```{r density_rate_by_date}
+with(flu, smoothScatter(date, rate))
+```
+
+2d Density Plot with Transformation
+========================================================
+```{r density_rate_by_date_exp} 
+with(flu, smoothScatter(date, rate, transformation=exp))
+```
+
+Corrgrams
+========================================================
+```{r correlated_groups}
+N <- 1e2  # 1e5
+
+a <- runif(N, min=0, max=10)
+b <- runif(N, min=0, max=10)
+y <- 6 + 0.7 * a + 1.2 * b + rnorm(N, sd=0.2)
+
+df2 <- data.frame(
+  a1 = a + rnorm(N),
+  a2 = a + rnorm(N), 
+  a3 = a + rnorm(N), 
+  a3 = a + rnorm(N), 
+  b1 = b + rnorm(N), 
+  b2 = b + rnorm(N), 
+  b3 = b + rnorm(N), 
+  b4 = b + rnorm(N), 
+  y
+)
+```
+
+Corrgrams
+========================================================
+```{r corrgram}
+library(corrgram)
+corrgram(df2, order=TRUE, 
+    lower.panel=panel.shade, upper.panel=panel.pts, 
+    text.panel=panel.txt, main="Corrgram")
+```
+
+Heatmap
+========================================================
+```{r heatmap}
+heatmap(as.matrix(df2))
+```
+
+ggplot2  - The Grammar of Graphics
+========================================================
+Powerful, flexible system
+* mini-language for graphics
+* multiple layers from different data sources
+* save plot objects
+* custom themes
+* automated legends
+* customizable smoothers (loess, linear models)
+* visual perspective
+
+Scattergram
+===
+```{r ggplot_scattergram}
+library(ggplot2)
+g <- ggplot(data=flu, mapping=aes(x=date, y=rate)) + geom_point()
+g
+```
+
+Add to a plot
+===
+```{r ggplot_smooth}
+g + geom_smooth(method="loess", span=0.1, col="red")
+```
+
+Change Themes
+===
+```{r ggplot_bw}
+g + theme_bw()
+```
+
+Get More Themes
+===
+```
+library(devtools)
+install_github("jrnold/ggthemes")
+```
+
+The Economist Theme
+===
+```{r ggthemes1}
+library(ggthemes)
+g + theme_economist()
+```
+
+Wall Street Journal Theme
+===
+```{r ggthemes2}
+g + theme_wsj()
+```
+
+Boxplot
+===
+```{r gg_boxplot}
+g2 <- ggplot(flu, aes(x=month, y=rate))
+g2 + geom_boxplot()
+
+```
+
+Adjust Elements of Theme
+===
+```{r adjust_theme}
+g2 + geom_boxplot() + theme(axis.text.x=element_text(angle=50, size=20, vjust=0.5))
+```
+
+Violin Plot
+===
+```{r violin_plot}
+g2 + geom_violin(alpha=0.5, color="gray")
+```
+
+Automatic legends
+===
+```{r not_faceting_flu}
+g3 <- ggplot(flu, aes(x=date, y=rate, col=season)) + geom_point()
+g3
+```
+
+Faceting
+===
+```{r faceting_flu1}
+g3 + facet_grid( . ~ month)
+```
+
+Faceted the other way
+===
+```{r faceting_flu2}
+g3 + facet_grid(month ~ .)
+```
+
+Faceted Two Ways
+===
+```{r faceting_flu3}
+g3 + facet_grid(year ~ month)
+```
+
+rgl: Three Dimensional Data
+===
+```{r rgl_demo}
+library(rgl)
+N <- 100
+x <- runif(N, min=-10, max=10)
+y <- runif(N, min=-10, max=10)
+z <- 10 + 1.3 * x + 2.1*y
+plot3d(x,y,z)
+```
+
+References
+===
+* Wickham, H. ggplot2: Elegant Graphics for Data Analysis (2009)
+* Wilkinson L and Wills D. The Grammar of Graphics (2005)
+* Chang W. R Graphics Cookbook (2013)
+* [ggplot cheatsheet](http://zevross.com/blog/2014/08/04/beautiful-plotting-in-r-a-ggplot2-cheatsheet-3/)
