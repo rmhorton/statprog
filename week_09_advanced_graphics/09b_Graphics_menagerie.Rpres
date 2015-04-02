@@ -131,7 +131,7 @@ with(flu, smoothScatter(date, rate))
 with(flu, smoothScatter(date, rate, transformation=exp))
 ```
 
-Corrgrams
+Correlated Variables
 ========================================================
 ```{r correlated_groups}
 N <- 1e2  # 1e5
@@ -153,7 +153,7 @@ df2 <- data.frame(
 )
 ```
 
-Corrgrams
+Corrgram
 ========================================================
 ```{r corrgram}
 library(corrgram)
@@ -204,16 +204,19 @@ Get More Themes
 ```
 library(devtools)
 install_github("jrnold/ggthemes")
+library(ggthemes)
 ```
 
 The Economist Theme
 ===
-```{r ggthemes1}
+```{r load_themes, echo=FALSE, message=FALSE}
 library(ggthemes)
+```
+```{r ggthemes1}
 g + theme_economist()
 ```
 
-Wall Street Journal Theme
+The Wall Street Journal Theme
 ===
 ```{r ggthemes2}
 g + theme_wsj()
@@ -264,7 +267,7 @@ Faceted Two Ways
 g3 + facet_grid(year ~ month)
 ```
 
-rgl: Three Dimensional Data
+Three Dimensional Data: rgl Demo
 ===
 ```{r rgl_demo}
 library(rgl)

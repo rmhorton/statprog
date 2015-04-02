@@ -33,12 +33,12 @@ kable(head(df))
 
 |      num1|     num2|cat1 |cat2 |
 |---------:|--------:|:----|:----|
-| 6.4531998| 4.672754|C    |e    |
-| 0.1222506| 2.314665|B    |c    |
-| 0.1541922| 5.554767|C    |a    |
-| 8.0005447| 9.680428|C    |b    |
-| 4.1147863| 1.297650|B    |a    |
-| 6.5072518| 6.662385|C    |b    |
+| 2.2058237| 1.689121|C    |b    |
+| 0.0216266| 2.014678|A    |b    |
+| 7.3280681| 9.232133|B    |d    |
+| 6.1539779| 8.775885|E    |c    |
+| 6.0520227| 7.982650|C    |c    |
+| 6.9188230| 8.244367|C    |a    |
 
 Numeric vs. Numeric
 ========================================================
@@ -87,12 +87,12 @@ Flu Season
 
 ```
         date     rate month_num month season year
-1 1990-10-02 5.791783        10   Oct   fall 1990
-2 1990-10-03 7.341260        10   Oct   fall 1990
-3 1990-10-04 5.565334        10   Oct   fall 1990
-4 1990-10-05 7.176974        10   Oct   fall 1990
-5 1990-10-06 7.581741        10   Oct   fall 1990
-6 1990-10-07 6.504430        10   Oct   fall 1990
+1 1990-10-02 7.531883        10   Oct   fall 1990
+2 1990-10-03 5.505455        10   Oct   fall 1990
+3 1990-10-04 7.114126        10   Oct   fall 1990
+4 1990-10-05 7.062548        10   Oct   fall 1990
+5 1990-10-06 5.732839        10   Oct   fall 1990
+6 1990-10-07 8.159107        10   Oct   fall 1990
 ```
 
 Flu Rate by Date
@@ -144,7 +144,7 @@ with(flu, smoothScatter(date, rate, transformation=exp))
 
 ![plot of chunk density_rate_by_date_exp](09b_Graphics_menagerie-figure/density_rate_by_date_exp-1.png) 
 
-Corrgrams
+Correlated Variables
 ========================================================
 
 ```r
@@ -167,7 +167,7 @@ df2 <- data.frame(
 )
 ```
 
-Corrgrams
+Corrgram
 ========================================================
 
 ```r
@@ -233,19 +233,20 @@ Get More Themes
 ```
 library(devtools)
 install_github("jrnold/ggthemes")
+library(ggthemes)
 ```
 
 The Economist Theme
 ===
 
+
 ```r
-library(ggthemes)
 g + theme_economist()
 ```
 
 ![plot of chunk ggthemes1](09b_Graphics_menagerie-figure/ggthemes1-1.png) 
 
-Wall Street Journal Theme
+The Wall Street Journal Theme
 ===
 
 ```r
@@ -319,7 +320,7 @@ g3 + facet_grid(year ~ month)
 
 ![plot of chunk faceting_flu3](09b_Graphics_menagerie-figure/faceting_flu3-1.png) 
 
-rgl: Three Dimensional Data
+Three Dimensional Data: rgl Demo
 ===
 
 ```r
