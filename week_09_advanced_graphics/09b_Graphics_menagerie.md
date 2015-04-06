@@ -31,14 +31,14 @@ kable(head(df))
 
 
 
-|      num1|      num2|cat1 |cat2 |
-|---------:|---------:|:----|:----|
-| 0.4043198| 8.0490429|A    |c    |
-| 1.7498908| 6.0122689|A    |d    |
-| 4.3784986| 0.0552062|E    |e    |
-| 4.3172385| 5.1208162|D    |d    |
-| 5.6950940| 7.3409130|B    |d    |
-| 1.6462083| 6.4671161|E    |e    |
+|     num1|     num2|cat1 |cat2 |
+|--------:|--------:|:----|:----|
+| 1.309249| 4.474811|C    |b    |
+| 4.482256| 2.773325|E    |e    |
+| 3.623895| 7.808193|D    |c    |
+| 5.400945| 6.385259|A    |b    |
+| 1.843721| 2.079707|B    |b    |
+| 1.571488| 4.632063|D    |c    |
 
 Numeric vs. Numeric
 ========================================================
@@ -87,12 +87,12 @@ Simulated Flu Data
 
 ```
         date     rate month_num month season year
-1 1990-10-02 9.011273        10   Oct   fall 1990
-2 1990-10-03 7.851943        10   Oct   fall 1990
-3 1990-10-04 6.269507        10   Oct   fall 1990
-4 1990-10-05 6.712996        10   Oct   fall 1990
-5 1990-10-06 7.730693        10   Oct   fall 1990
-6 1990-10-07 5.624002        10   Oct   fall 1990
+1 1990-10-02 5.678508        10   Oct   fall 1990
+2 1990-10-03 6.086411        10   Oct   fall 1990
+3 1990-10-04 6.040295        10   Oct   fall 1990
+4 1990-10-05 6.352340        10   Oct   fall 1990
+5 1990-10-06 7.293149        10   Oct   fall 1990
+6 1990-10-07 5.401919        10   Oct   fall 1990
 ```
 
 Flu Rate by Date
@@ -126,11 +126,25 @@ plot( rate ~ month, data=flu)
 Base Graphics - Specialized Plots
 ========================================================
 
+Large Numbers of Points
+========================================================
+
+```r
+N <- 20000
+x <- 2 * runif(N) - 1
+y1 <- -1 * x + rnorm(N/2, sd=1/2)
+y2 <- 1 * x + rnorm(N/2, sd=1/2)
+df2 <- data.frame(x, y=c(y1,y2))
+plot(y ~ x, data=df2)
+```
+
+![plot of chunk dense_points](09b_Graphics_menagerie-figure/dense_points-1.png) 
+
 2d Density Plot
 ========================================================
 
 ```r
-with(flu, smoothScatter(date, rate))
+with(df2, smoothScatter(x, y))
 ```
 
 ![plot of chunk density_rate_by_date](09b_Graphics_menagerie-figure/density_rate_by_date-1.png) 
@@ -139,7 +153,7 @@ with(flu, smoothScatter(date, rate))
 ========================================================
 
 ```r
-with(flu, smoothScatter(date, rate, transformation=exp))
+with(df2, smoothScatter(x, y, transformation=exp))
 ```
 
 ![plot of chunk density_rate_by_date_exp](09b_Graphics_menagerie-figure/density_rate_by_date_exp-1.png) 
@@ -154,7 +168,7 @@ a <- runif(N, min=0, max=10)
 b <- runif(N, min=0, max=10)
 y <- 6 + 0.7 * a + 1.2 * b + rnorm(N, sd=0.2)
 
-df2 <- data.frame(
+df3 <- data.frame(
   a1 = a + rnorm(N),
   a2 = a + rnorm(N), 
   a3 = a + rnorm(N), 
@@ -172,7 +186,7 @@ Corrgram
 
 ```r
 library(corrgram)
-corrgram(df2, order=TRUE, 
+corrgram(df3, order=TRUE, 
     lower.panel=panel.shade, upper.panel=panel.pts, 
     text.panel=panel.txt, main="Corrgram")
 ```
@@ -183,7 +197,7 @@ Heatmap
 ========================================================
 
 ```r
-heatmap(as.matrix(df2))
+heatmap(as.matrix(df3))
 ```
 
 ![plot of chunk heatmap](09b_Graphics_menagerie-figure/heatmap-1.png) 

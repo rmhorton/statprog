@@ -119,16 +119,27 @@ plot( rate ~ month, data=flu)
 Base Graphics - Specialized Plots
 ========================================================
 
+Large Numbers of Points
+========================================================
+```{r dense_points}
+N <- 20000
+x <- 2 * runif(N) - 1
+y1 <- -1 * x + rnorm(N/2, sd=1/2)
+y2 <- 1 * x + rnorm(N/2, sd=1/2)
+df2 <- data.frame(x, y=c(y1,y2))
+plot(y ~ x, data=df2)
+```
+
 2d Density Plot
 ========================================================
 ```{r density_rate_by_date}
-with(flu, smoothScatter(date, rate))
+with(df2, smoothScatter(x, y))
 ```
 
 2d Density Plot with Transformation
 ========================================================
 ```{r density_rate_by_date_exp} 
-with(flu, smoothScatter(date, rate, transformation=exp))
+with(df2, smoothScatter(x, y, transformation=exp))
 ```
 
 Correlated Variables
@@ -140,7 +151,7 @@ a <- runif(N, min=0, max=10)
 b <- runif(N, min=0, max=10)
 y <- 6 + 0.7 * a + 1.2 * b + rnorm(N, sd=0.2)
 
-df2 <- data.frame(
+df3 <- data.frame(
   a1 = a + rnorm(N),
   a2 = a + rnorm(N), 
   a3 = a + rnorm(N), 
@@ -157,7 +168,7 @@ Corrgram
 ========================================================
 ```{r corrgram}
 library(corrgram)
-corrgram(df2, order=TRUE, 
+corrgram(df3, order=TRUE, 
     lower.panel=panel.shade, upper.panel=panel.pts, 
     text.panel=panel.txt, main="Corrgram")
 ```
@@ -165,7 +176,7 @@ corrgram(df2, order=TRUE,
 Heatmap
 ========================================================
 ```{r heatmap}
-heatmap(as.matrix(df2))
+heatmap(as.matrix(df3))
 ```
 
 ggplot2  - The Grammar of Graphics

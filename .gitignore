@@ -5,3 +5,4 @@ Thumbs.db
 .Rhistory
 *_cache/
 *_files/
+.Rproj.user
