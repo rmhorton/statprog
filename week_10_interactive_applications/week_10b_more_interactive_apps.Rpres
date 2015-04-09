@@ -1,0 +1,32 @@
+week_10b_more_interactive_apps
+========================================================
+author: 
+date: 
+
+rpivotTable
+========================================================
+
+```{r install_rpivotTable, eval=FALSE}
+library(devtools)
+install_github("ramnathv/htmlwidgets") 
+install_github("smartinsightsfromdata/rpivotTable")
+```
+
+rpivotTable
+========================================================
+
+```{r run_rpivotTable, echo=FALSE, results="asis"}
+library(rpivotTable)
+data(mtcars)
+
+rpivotTable(mtcars, rows="gear", col="cyl", 
+            aggregatorName="Average", vals="mpg", 
+            rendererName="Treemap")
+```
+
+Slide With Plot
+========================================================
+
+```{r, echo=FALSE}
+plot(cars)
+```

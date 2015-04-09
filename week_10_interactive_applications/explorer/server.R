@@ -4,15 +4,16 @@ library(shiny)
 library(ggplot2)
 library(dplyr)
 
-site <- "http://data.princeton.edu/wws509/datasets/phbirths.dat"
+# site <- "http://data.princeton.edu/wws509/datasets/phbirths.dat"
+# 
+# phbirths <- site %>% url %>% readLines %>% 
+#   gsub(" +", "\t", .) %>% 
+#   paste(collapse="\n") %>%
+#   textConnection %>%
+#   read.delim(header=TRUE, row.names=1)
 
-phbirths <- site %>% url %>% readLines %>% 
-  gsub(" +", "\t", .) %>% 
-  paste(collapse="\n") %>%
-  textConnection %>%
-  read.delim(header=TRUE)
 
-dataset <- phbirths   # diamonds
+dataset <- readRDS("phbirths.rds")
 
 shinyServer(function(input, output) {
   
@@ -44,5 +45,9 @@ shinyServer(function(input, output) {
     print(p)
     
   }, height=700)
+  
+  output$table <- renderTable(datasubset())
+  
+  output$dataTable <- renderDataTable(datasubset())  # http://rstudio.github.io/DT/
   
 })

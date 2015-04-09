@@ -1,0 +1,26 @@
+---
+title: "rpivotTable"
+author: "Bob Horton"
+date: "April 8, 2015"
+output: html_document
+---
+
+## rpivotTable
+
+```{r}
+library(rpivotTable)
+load("body_dat.rda")
+
+body_dat$wrist_group <- cut(body_dat$wrist_diameter, 
+                            quantile(body_dat$wrist_diameter, probs=0:5/5), 
+                            include.lowest=TRUE)
+
+body_dat$age_group <- cut(body_dat$age, 
+                            quantile(body_dat$age, probs=0:5/5), 
+                            include.lowest=TRUE)
+
+## One line to create pivot table
+rpivotTable(body_dat, rows="height", col="gender", 
+            aggregatorName="Average", vals="weight", 
+            rendererName="Table")
+```

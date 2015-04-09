@@ -6,13 +6,15 @@ library(dplyr)
 
 site <- "http://data.princeton.edu/wws509/datasets/phbirths.dat"
 
-phbirths <- site %>% url %>% readLines %>% 
-  gsub(" +", "\t", .) %>% 
-  paste(collapse="\n") %>%
-  textConnection %>%
-  read.delim(header=TRUE)
+# phbirths <- site %>% url %>% readLines %>% 
+#   gsub(" +", "\t", .) %>% 
+#   paste(collapse="\n") %>%
+#   textConnection %>%
+#   read.delim(header=TRUE)
+# 
+# dataset <- phbirths   # diamonds
 
-dataset <- phbirths   # diamonds
+dataset <- readRDS("phbirths.rds")
 
 shinyUI(pageWithSidebar(
   
@@ -21,7 +23,7 @@ shinyUI(pageWithSidebar(
   sidebarPanel(
     
     sliderInput('sampleSize', 'Sample Size', min=1, max=(nrow(dataset)-1),
-                value=min(1000, nrow(dataset)), step=500, round=0),
+                value=min(1000, nrow(dataset)), step=10, round=0),
     
     selectInput('x', 'X', names(dataset), names(dataset)[[2]]),
     selectInput('y', 'Y', names(dataset), names(dataset)[[1]]),
@@ -35,6 +37,10 @@ shinyUI(pageWithSidebar(
   ),
   
   mainPanel(
-    plotOutput('plot')
+    tabsetPanel(
+      tabPanel("Plot", plotOutput('plot', height=700)),
+      tabPanel("Static Table", tableOutput('table')),
+      tabPanel("Data Table", dataTableOutput('dataTable'))
+    )
   )
 ))

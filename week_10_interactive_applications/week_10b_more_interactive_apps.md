@@ -16,8 +16,8 @@ install_github("smartinsightsfromdata/rpivotTable")
 rpivotTable
 ========================================================
 
-<!--html_preserve--><div id="htmlwidget-1711" style="width:504px;height:504px;" class="rpivotTable"></div>
-<script type="application/json" data-for="htmlwidget-1711">{ "x": {
+<!--html_preserve--><div id="htmlwidget-477" style="width:504px;height:504px;" class="rpivotTable"></div>
+<script type="application/json" data-for="htmlwidget-477">{ "x": {
  "data": {
  "mpg": [                21,                21,              22.8,              21.4,              18.7,              18.1,              14.3,              24.4,              22.8,              19.2,              17.8,              16.4,              17.3,              15.2,              10.4,              10.4,              14.7,              32.4,              30.4,              33.9,              21.5,              15.5,              15.2,              13.3,              19.2,              27.3,                26,              30.4,              15.8,              19.7,                15,              21.4 ],
 "cyl": [                 6,                 6,                 4,                 6,                 8,                 6,                 8,                 4,                 4,                 6,                 6,                 8,                 8,                 8,                 8,                 8,                 8,                 4,                 4,                 4,                 4,                 8,                 8,                 8,                 8,                 4,                 4,                 4,                 8,                 6,                 8,                 4 ],
