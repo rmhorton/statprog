@@ -7,6 +7,13 @@ output: html_document
 
 ## rpivotTable
 
+```{r install_rpivotTable, echo=FALSE, eval=FALSE}
+library(devtools)
+install_github("ramnathv/htmlwidgets") 
+install_github("smartinsightsfromdata/rpivotTable")
+```
+
+
 ```{r}
 library(rpivotTable)
 load("body_dat.rda")

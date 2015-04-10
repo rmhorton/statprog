@@ -1,4 +1,5 @@
 library("manipulate")
+library("ggplot2")
 
 load("body_dat.rda")
 
