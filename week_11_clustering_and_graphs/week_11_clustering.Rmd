@@ -1,0 +1,120 @@
+---
+title: "Clustering"
+author: "Bob Horton"
+date: "April 12, 2015"
+output: ioslides_presentation
+runtime: shiny
+---
+
+## networkD3:
+
+Easily create network diagrams with D3.
+
+```{r deNetwork_demo, results='asis'}
+library("networkD3")
+caffeineData <- data.frame(Source=c("N1", "C2", "N3", "C3a", "N4", "C5", "N6", "C7", "C7a", "C7a", "C3a", "N1", "N4", "N6", "C5", "C7"),
+Target=c("C2", "N3", "C3a", "N4", "C5", "N6", "C7", "C7a", "N1", "C3a", "C7a", "CH3a", "CH3b", "CH3c", "O1", "O2"))
+simpleNetwork(caffeineData, height = 300, width = 700, fontSize=14)
+```
+
+## Caffeine
+
+![caffeine with IUPAC numbering](https://www.chemaxon.com/jchem4excel/userguide/embim7.png)
+
+## Clustering
+
+```{r make_cluster_data_1, echo=FALSE, fig.height=4, fig.width=4}
+clusdat1 <- rbind(
+  data.frame( x=rnorm(200, mean=0.5, sd=0.1), y=rnorm(200, mean=0.3, sd=0.1), class="A"),
+  data.frame( x=rnorm(100, mean=0.15, sd=0.05), y=rnorm(100, mean=0.85, sd=0.05), class="B"), 
+  data.frame( x=rnorm(100, mean=0.65, sd=0.05), y=rnorm(100, mean=0.65, sd=0.05), class="C"),
+  data.frame( x=runif(25), y=runif(25), class="D")
+)
+
+with(clusdat1, plot(x, y, col=class, xlim=c(0,1), ylim=c(0,1)))
+```
+
+## Hierarchical Clustering
+
+```{r hclust1, echo=FALSE}
+hc1 <- hclust(dist(clusdat1[,c("x","y")]), method='average')
+plot(hc1)
+```
+
+## Hierarchical Clustering
+
+```{r color_by_tree_height1, echo=FALSE}
+sliderInput("hc_height1", "Height to cut tree", 
+            min=min(hc1$height), max=max(hc1$height),
+            value=median(hc1$height), step=(max(hc1$height) - min(hc1$height))/100)
+
+renderPlot({
+  with(clusdat1, plot(x, y, col=cutree(hc1, h=input$hc_height1)))
+}, width=350, height=350)
+```
+
+## Density-based clustering
+
+## dbscan
+
+```{r dbscan_clustdat1, echo=FALSE, fig.height=4, fig.width=4}
+library("fpc")
+# ds1 <- dbscan(clusdat1[,c("x","y")], 0.1)
+
+sliderInput("eps", label="reachability distance", 
+            min=0.01, max=0.2, value=0.05, step=0.01)
+
+renderPlot({
+    ds_cluster <- dbscan(clusdat1[,c("x","y")], input$eps)$cluster + 1
+    with(clusdat1, plot(x, y, col=ds_cluster, xlim=c(0,1), ylim=c(0,1)))
+}, width=350, height=350)
+```
+
+## More Complex Shapes
+```{r make_cluster_data_2, echo=FALSE, fig.height=4, fig.width=4}
+N_arc <- 200
+theta <- runif(N_arc, min=0, max=pi)
+r <- rnorm(N_arc, mean=0.35, sd=0.05)
+
+clusdat2 <- rbind(
+  data.frame( x=rnorm(100, mean=0.3, sd=0.1), y=rnorm(100, mean=0.5, sd=0.1), class="A"),
+  data.frame( x=r * sin(theta) + 0.3, y=r * cos(theta) + 0.5, class="B")
+)
+
+with(clusdat2, plot(x, y, col=class, xlim=c(0,1), ylim=c(0,1)))
+```
+
+
+## Hierarchical Clustering
+
+```{r hclust2, echo=FALSE}
+hc2 <- hclust(dist(clusdat2[,c("x","y")]), method='average')
+plot(hc2)
+```
+
+## Hierarchical Clustering
+
+```{r color_by_tree_height2, echo=FALSE}
+sliderInput("hc_height2", "Height to cut tree", 
+            min=min(hc2$height), max=max(hc2$height),
+            value=median(hc2$height), step=(max(hc2$height) - min(hc2$height))/100)
+
+renderPlot({
+  with(clusdat2, plot(x, y, col=cutree(hc2, h=input$hc_height2)))
+}, width=350, height=350)
+```
+
+## dbscan
+
+```{r dbscan_clustdat2, echo=FALSE, fig.height=4, fig.width=4}
+library("fpc")
+
+sliderInput("eps2", label="reachability distance", 
+            min=0.01, max=0.2, value=0.05, step=0.01)
+
+renderPlot({
+    ds_cluster <- dbscan(clusdat2[,c("x","y")], input$eps2)$cluster + 1
+    with(clusdat2, plot(x, y, col=ds_cluster, xlim=c(0,1), ylim=c(0,1)))
+}, width=350, height=350)
+```
+
