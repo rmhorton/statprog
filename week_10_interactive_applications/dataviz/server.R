@@ -1,13 +1,9 @@
-
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
-
 library(shiny)
-require(rCharts)
+library(dplyr)
+library(rCharts)
 library(ggvis)
+
+options(RCHART_WIDTH = 900)
 
 
 shinyServer(function(input, output) {
@@ -23,6 +19,13 @@ shinyServer(function(input, output) {
     # draw the histogram with the specified number of bins
     hist(x, breaks = bins, col = 'darkgray', border = 'white')
 
+  })
+  
+  output$chart1 <- renderChart2({
+    library(rCharts)
+    # aggregate with dplyr to produce summary.data. Use input variables to aggregate (e.g., input$groupvar)
+    df %>% group_by_( input$groupvar) %>% summarize( 
+    nPlot(Freq ~ Count.Var, group = groupvar, data = summary.data, type = "multiBarChart")
   })
 
 })
