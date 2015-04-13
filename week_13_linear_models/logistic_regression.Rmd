@@ -1,0 +1,84 @@
+---
+title: "Logistic Regression"
+author: "Bob Horton"
+date: "April 11, 2015"
+output: ioslides_presentation
+---
+
+## The Logistic Function
+
+$y = \frac{1}{1+e^{-t}}$
+
+```{r logistic_function}
+logistic <- function(t) 1 / (1 + exp(-t))
+```
+
+## Logistic function "squashes" values
+
+The logistic function creates an "S" shaped (or sigmoid) curve that maps any numeric input into the range between 0 and 1:
+
+$y = \frac{1}{1+e^{-t}}$
+
+```{r, echo=FALSE}
+x <- seq(-10, 10, length=100)
+plot(x, logistic(x), col="blue", type='l')
+```
+
+## History of the Logistic Function {.flexbox .vcenter}
+
+![Pierre François Verhulst](http://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Pierre_Francois_Verhulst.jpg/155px-Pierre_Francois_Verhulst.jpg)
+
+* named by P.F. Verhulst in 1844-1845.
+* related to population growth
+
+## The Logistic Function
+
+$$
+\frac{dN}{dt} = r N \left(1 - \frac {N}{K} \right)
+$$
+
+* N is the population
+* K is the carrying capacity (the maximum population)
+* r is the reproduction rate
+
+The integral of this equation gives us the logistic function:
+$$
+N(t) = \frac{K}{1+ C K e^{-rt}}
+$$
+
+
+## Population Growth
+
+```{r population_growth, echo=FALSE}
+library(ggplot2)
+
+growth <- function(t, K, C, r) K / (1 + C * K * exp(-r * t))
+
+num_timeslices <- 1000
+df <- data.frame(t=seq(-10, 10, length=num_timeslices))
+df$N <- growth(df$t, K=1, C=1, r=1)
+df$phase <- cut(df$N, breaks=c(0, 0.05, 0.95, 1.0), labels=c("lag", "log", "stationary"), include.lowest=TRUE)
+ggplot(df, aes(x=t, y=N, col=phase)) + geom_line(size=1)
+
+```
+
+## The logit function
+
+$\operatorname{logit}(p)=\log\left( \frac{p}{1-p} \right)$
+
+```{r logit_function}
+logit <- function(p) log(p/(1-p))
+```
+
+## The logit function expands numbers between 0 and 1 to any value
+```{r plot_logit}
+p <- seq(0,1, length=1000)
+plot(p, logit(p), type='l')
+```
+
+## logit undoes the logistic transformation
+```{r logit_inverses_logistic}
+x <- seq(-10, 10, length=201)
+plot(x, logit(logistic(x)))
+```
+

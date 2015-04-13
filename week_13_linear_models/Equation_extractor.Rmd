@@ -1,0 +1,54 @@
+---
+title: "Extracting an equation from a fitted model"
+author: "Bob Horton"
+date: "April 10, 2015"
+output: html_document
+---
+
+Once a model has been fitted to a dataset, it contains a collection of coefficients by which each of the inputs are multiplied. Here we show how those coefficients can be used to construct an equation for predicting the outcome variable y.
+
+```{r fitting_model}
+
+get_equation <- function(model, mode="math"){
+  coeff <- format(coef(model), digits=4)
+  # mode = "math" or "code"
+  assignOp <- if (mode == "math") "=" else "<-"
+  multOp <-  if (mode == "math") "" else "*"
+  paste( "y", assignOp, coeff[1] , "+", paste( coeff[-1], names(coeff[-1]), sep=multOp, collapse=" + "))
+}
+
+# Sample size; large samples let us estimate the coefficients accurately
+N <- 10000
+
+# Start with a data frame of independent variables:
+df <- data.frame(
+  a = rnorm(N, mean=50, sd=20),
+  b = rnorm(N, mean=50, sd=20),
+  c = rnorm(N, mean=50, sd=20),
+  d = rnorm(N, mean=50, sd=20),
+  e = rnorm(N, mean=50, sd=20)
+)
+
+# These are the actual coefficient values used to determine the dependent variable:
+I <- 1.111; A <- 2.222; B <- 3.333; C <- 4.444; D <- 5.555; E <- 6.666
+
+# The dependent variable 'y' is a linear function of the independent variables:
+df$y <- with(df, I + A*a + B*b + C*c + D*d + E*e) + rnorm(N, sd=2)
+
+# Fit the model
+fit <- lm( y ~ ., data=df)
+
+# Generate character strings representing the equation containing model coefficients:
+math_equation <- get_equation(fit, mode="math")
+code_equation <- get_equation(fit, mode="code")
+```
+
+The equation extracted from the model is:
+$$
+`r math_equation`
+$$
+
+In R code, this is represented as:
+```
+`r code_equation`
+```
