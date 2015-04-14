@@ -1,26 +1,19 @@
 ---
 title: "Clustering"
 author: "Bob Horton"
-date: "April 12, 2015"
+date: "April 14, 2015"
 output: ioslides_presentation
 runtime: shiny
 ---
 
-## networkD3:
+## Clustering
 
-Easily create network diagrams with D3.
+* Unsupervised learning
+* Exploring relationships
 
-```{r deNetwork_demo, results='asis'}
-library("networkD3")
-caffeineData <- data.frame(Source=c("N1", "C2", "N3", "C3a", "N4", "C5", "N6", "C7", "C7a", "C7a", "C3a", "N1", "N4", "N6", "C5", "C7"),
-Target=c("C2", "N3", "C3a", "N4", "C5", "N6", "C7", "C7a", "N1", "C3a", "C7a", "CH3a", "CH3b", "CH3c", "O1", "O2"))
-simpleNetwork(caffeineData, height = 300, width = 700, fontSize=14)
+```{r setup, echo=FALSE}
+set.seed(1)
 ```
-
-## Caffeine
-
-![caffeine with IUPAC numbering](https://www.chemaxon.com/jchem4excel/userguide/embim7.png)
-
 ## Clustering
 
 ```{r make_cluster_data_1, echo=FALSE, fig.height=4, fig.width=4}
@@ -77,7 +70,7 @@ theta <- runif(N_arc, min=0, max=pi)
 r <- rnorm(N_arc, mean=0.35, sd=0.05)
 
 clusdat2 <- rbind(
-  data.frame( x=rnorm(100, mean=0.3, sd=0.1), y=rnorm(100, mean=0.5, sd=0.1), class="A"),
+  data.frame( x=rnorm(100, mean=0.3, sd=0.05), y=rnorm(100, mean=0.5, sd=0.05), class="A"),
   data.frame( x=r * sin(theta) + 0.3, y=r * cos(theta) + 0.5, class="B")
 )
 
@@ -93,16 +86,48 @@ plot(hc2)
 ```
 
 ## Hierarchical Clustering
-
+<!-- div class="columns-2" -->
+<table>
+<tr><td colspan=2 align="center">
 ```{r color_by_tree_height2, echo=FALSE}
 sliderInput("hc_height2", "Height to cut tree", 
             min=min(hc2$height), max=max(hc2$height),
             value=median(hc2$height), step=(max(hc2$height) - min(hc2$height))/100)
-
-renderPlot({
-  with(clusdat2, plot(x, y, col=cutree(hc2, h=input$hc_height2)))
-}, width=350, height=350)
 ```
+</tr><tr></td><td>
+```{r, echo=FALSE}
+renderPlot({
+  op <- par(mfrow=c(1,2))
+
+  spectrum <- c('red', 'green', 'blue', 'cyan', 'magenta', 'yellow', 
+                'darkred', 'darkgreen', 'darkblue', 
+                'orange', 'pink', 'purple', 'darkgray', 'brown', 'lightgray')
+
+  hc2 <- hclust(dist(clusdat2[,c("x","y")]), method='average')
+  branches <- cutree(hc2, h=input$hc_height2)
+  colors <- spectrum[branches]
+  colors[is.na(colors)] <- "black"
+  
+  with(clusdat2, plot(x, y, col=colors))
+  
+  # see http://rstudio-pubs-static.s3.amazonaws.com/1876_df0bf890dd54461f98719b461d987c3d.html
+  colLab <- function(n) {
+    if (is.leaf(n)) {
+        a <- attributes(n)
+        labCol <- spectrum[branches[which(names(branches) == a$label)]]
+        attr(n, "nodePar") <- c(a$nodePar, lab.col = labCol)
+    }
+    n
+  }
+
+  hcd2 = as.dendrogram(hc2)
+  plot( dendrapply(hcd2, colLab), xlab="")
+  abline(h=input$hc_height2, lwd=2, col="red")
+  par(op)
+}, width=700, height=350)
+```
+</td></tr></table>
+
 
 ## dbscan
 
@@ -110,7 +135,7 @@ renderPlot({
 library("fpc")
 
 sliderInput("eps2", label="reachability distance", 
-            min=0.01, max=0.2, value=0.05, step=0.01)
+            min=0.01, max=0.1, value=0.05, step=0.001)
 
 renderPlot({
     ds_cluster <- dbscan(clusdat2[,c("x","y")], input$eps2)$cluster + 1
@@ -118,3 +143,40 @@ renderPlot({
 }, width=350, height=350)
 ```
 
+## K-means Clustering
+[Visualizing K-Means Clustering](http://www.naftaliharris.com/blog/visualizing-k-means-clustering/)
+
+## Distance Metrics
+
+  * Euclidean
+  * Edit distance
+  * Correlation (Pearson, Spearman)
+  * Jaccard distance: $1 - {{|A \cap B|}\over{|A \cup B|}}$
+
+## Properties of Distance Metrics
+
+  * identity
+    + distance(A, A) = 0
+  * symmetry
+    + distance(A, B) = distance(B, A)
+  * triangle inequality
+  	+ distance(A, C) <=  distance(A, B) + distance(B, C)
+  
+## Applications of Clustering
+
+  * typology
+    + [political](http://www.people-press.org/2014/06/26/the-political-typology-beyond-red-vs-blue/)
+  * systematics
+    + phylogenetics
+    + gene families
+  * transcriptomics (group genes by expression patterns)
+  * community detection in social networks
+  * recommender systems
+  * image segmentation
+
+## Further Reading
+
+  * _R in Action_, Chapter 16.
+    + [Quick-R](http://www.statmethods.net/advstats/cluster.html)
+  * [Cluster Analysis](http://en.wikipedia.org/wiki/Cluster_analysis#Density-based_clustering) on Wikipedia
+  * [fpc](http://cran.r-project.org/web/packages/fpc/fpc.pdf) package on CRAN.
