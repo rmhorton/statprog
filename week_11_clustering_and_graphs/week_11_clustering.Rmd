@@ -41,6 +41,8 @@ sliderInput("hc_height1", "Height to cut tree",
             min=min(hc1$height), max=max(hc1$height),
             value=median(hc1$height), step=(max(hc1$height) - min(hc1$height))/100)
 
+# methods <- c("single", "complete", "average", "centroid", "ward")
+# see p402
 renderPlot({
   with(clusdat1, plot(x, y, col=cutree(hc1, h=input$hc_height1)))
 }, width=350, height=350)
@@ -152,6 +154,8 @@ renderPlot({
   * Edit distance
   * Correlation (Pearson, Spearman)
   * Jaccard distance: $1 - {{|A \cap B|}\over{|A \cup B|}}$
+  * `?dist`
+  * `?cluster::daisy`
 
 ## Properties of Distance Metrics
 
@@ -180,3 +184,5 @@ renderPlot({
     + [Quick-R](http://www.statmethods.net/advstats/cluster.html)
   * [Cluster Analysis](http://en.wikipedia.org/wiki/Cluster_analysis#Density-based_clustering) on Wikipedia
   * [fpc](http://cran.r-project.org/web/packages/fpc/fpc.pdf) package on CRAN.
+  * CRAN Task View for [Cluster Analysis and Finite Mixture Models](http://cran.r- project.org/web/views/Cluster.html)
+  
