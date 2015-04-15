@@ -22,6 +22,10 @@ $y = \frac{1}{1+e^{-t}}$
 ```{r, echo=FALSE}
 x <- seq(-10, 10, length=100)
 plot(x, logistic(x), col="blue", type='l')
+
+# x <- seq(-10, 10, length=100)
+# plot(x, 1-1/(1 + exp(x)), type='l', col="red")
+# lines(x, 1 / (1 + exp(-x)), col="blue", lwd=3, lty=2)
 ```
 
 ## History of the Logistic Function {.flexbox .vcenter}
