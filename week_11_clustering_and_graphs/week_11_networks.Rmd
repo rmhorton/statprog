@@ -21,3 +21,88 @@ simpleNetwork(caffeineData, height = 300, width = 700, fontSize=14)
 
 ![caffeine with IUPAC numbering](https://www.chemaxon.com/jchem4excel/userguide/embim7.png)
 
+## Static Images of Graphs
+
+* Rgraphviz
+* igraph
+
+## Adjacency Matrix
+
+```{r igraph_plot, echo=FALSE}
+library(igraph)
+
+A <- matrix(c(
+    		0, 1, 0, 0, 0, 0, 0, 0,
+      	1, 0, 1, 0, 0, 0, 0, 0,
+      	0, 1, 0, 1, 1, 1, 0, 0,
+      	0, 0, 1, 0, 1, 0, 0, 1,
+      	0, 0, 1, 1, 0, 1, 1, 1,
+      	0, 0, 1, 0, 1, 0, 1, 0,
+      	0, 0, 0, 0, 1, 1, 0, 1,
+      	0, 0, 0, 1, 1, 0, 1, 0
+    ), byrow=T, nrow=8)
+
+rownames(A) <- colnames(A) <- letters[1:ncol(A)]
+knitr::kable(A)
+```
+
+## igraph
+```{r igraph}
+g <- graph.adjacency(A, mode=c("undirected"))
+
+plot(g)
+```
+
+## Circular Layout
+```{r layout_circle}
+plot(g, layout=layout.circle)
+```
+
+## Spherical Layout
+```{r layout_sphere, eval=FALSE}
+rglplot(g, layout=layout.sphere)
+```
+
+## Centrality
+
+  * degree: the number of edges connected to a node.
+    + in
+    + out
+    + total
+  * betweenness: number of geodesics (shortest paths) going througn a node.
+  * closeness: number of steps required to access every other node.
+
+Further reading
+
+  * ?igraph
+  * [Social Network Analysis with sna](http://www.jstatsoft.org/v24/i06/paper)
+
+
+## Social Network Analysis
+
+Yet another way to engineer features.
+
+## Social Network Analysis
+
+<table><tr><td>
+```{r sna1, echo=FALSE, fig.height=4, fig.width=4}
+plot(g)
+```
+</td><td>
+```{r centrality_measures}
+degree(g)
+betweenness(g)
+round(closeness(g),3)
+```
+</td></tr></table>
+
+## Social Network Analysis
+
+```{r, echo=FALSE}
+node_attributes <- data.frame(
+  degree = degree(g),
+  betweenness = betweenness(g),
+  closeness = closeness(g)
+)
+knitr::kable(node_attributes, padding = 0)
+```

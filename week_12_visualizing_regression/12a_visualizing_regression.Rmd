@@ -26,8 +26,11 @@ y <- SLOPE * x + INTERCEPT + rnorm(N, 0, 10)
 <table><tr><td>
 ```{r echo = FALSE}
 # http://shiny.rstudio.com/articles/interactive-docs.html
-sliderInput("m", "slope:", min = (SLOPE-2), max = (SLOPE+2), value = SLOPE)
-sliderInput("b", "y-intercept:", min = -10, max = 100, value = INTERCEPT)
+fit <- lm(y ~ x)
+fitted_intercept <- coef(fit)[1]
+fitted_slope <- coef(fit)[2]
+sliderInput("m", "slope:", min = (SLOPE-2), max = (SLOPE+2), value = fitted_slope)
+sliderInput("b", "y-intercept:", min = -10, max = 100, value = fitted_intercept)
 ```
 </td><td>
 
