@@ -16,8 +16,10 @@ m <- 4
 b <- 3
 y <- m*x + b + rnorm(length(x))
 
-m_range <- m + c(-10, 10)
-b_range <- b + c(-5, 50)
+beta <- coef(lm(y ~ x))
+
+m_range <- beta[2] + c(-10, 10)
+b_range <- beta[1] + c(-50, 50)
 
 cost <- function(x, y, with_b, with_m){
   predicted <- with_m*x + with_b
@@ -51,11 +53,10 @@ renderPlot({
   op <- par(no.readonly = TRUE, mfrow=c(1,2))
   
   prediction <- input$m * x + input$b
-  #error <- y - prediction
-  #SSE <- sum(error^2)
-  plot(x,y, xlim=c(0, max(x)), ylim=c(0, max(y)), main="measurement space")
+  plot(x,y, xlim=c(0, max(x)), ylim=c(0, max(y)), 
+       main="measurement space")
   if (input$show_fit)
-      abline(b, m, lty=1, lwd=3, col="yellow")
+      abline(beta[1], beta[2], lty=1, lwd=3, col="yellow")
   if (input$show_errors)
     for (i in seq_along(x))
       lines(c(x[i], x[i]), c(prediction[i], y[i]), col="orange")
@@ -74,7 +75,7 @@ renderPlot({
 	contour(m_val, b_val, M, add=TRUE)
   points(input$m, input$b, col="green", cex=3, pch=16)
   if (input$show_fit)
-    points(m, b, col="yellow", cex=3, pch=1)
+    points(beta[2], beta[1], col="yellow", cex=3, pch=1)
   
   par(op)
 })
@@ -88,19 +89,19 @@ renderText({
 
 ```
 
-## Solution using `lm`
-
-```{r lm_solution}
-fit <- lm(y ~ x)
-coef(fit)
-```
-
 ## Solution using a general-purpose optimizer
 
 Here we use the `optim()` function in base R (see Chapter 7 of "Machine Learning for Hackers"):
 
 ```{r optim}
 optim(c(0,0), function(beta) cost(x, y, beta[1], beta[2]))$par
+```
+
+## Solution using linear model
+
+```{r lm_solution}
+fit <- lm(y ~ x)
+coef(fit)
 ```
 
 ## Solution using the normal equation
