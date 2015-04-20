@@ -1,0 +1,111 @@
+---
+title: "Regression as Cost Function Optimization"
+author: "Bob Horton"
+date: "April 17, 2015"
+output: html_document
+runtime: shiny
+---
+
+Linear regression can be thought of as an optimization problem, where you are trying to find values for the coefficients `m` and `b` that minimize the total squared error.
+
+
+```{r, echo=FALSE}
+
+x <- runif(10)
+m <- 4
+b <- 3
+y <- m*x + b + rnorm(length(x))
+
+m_range <- m + c(-10, 10)
+b_range <- b + c(-5, 50)
+
+cost <- function(x, y, with_b, with_m){
+  predicted <- with_m*x + with_b
+  sum((predicted - y)^2)
+}
+
+cost_matrix <- function(x, y, m_val, b_val){
+  M <- matrix(numeric(length(m_val) * length(b_val)), nrow=length(m_val), byrow=TRUE)
+  for (mi in 1:length(m_val)){
+    for (bi in 1:length(b_val)){
+      # predicted <- m_val[mi]*x + b_val[bi]
+      # sse <- sum((predicted - y)^2)
+      sse <- cost(x, y, b_val[bi], m_val[mi])
+      M[mi, bi] <- sse
+    }
+  }
+  M
+}
+
+inputPanel(
+  sliderInput("m", label = "slope:",
+              min = m_range[1], max = m_range[2], value = 0, step = diff(m_range)/100),
+  sliderInput("b", label = "intercept:",
+              min = b_range[1], max = b_range[2], value = 0, step = diff(b_range)/100),
+  checkboxInput("show_errors", "show errors", value = TRUE),
+  checkboxInput("log_M", "log(error)", value = FALSE),
+  checkboxInput("show_fit", "show optimal", value = FALSE)
+)
+
+renderPlot({
+  op <- par(no.readonly = TRUE, mfrow=c(1,2))
+  
+  prediction <- input$m * x + input$b
+  #error <- y - prediction
+  #SSE <- sum(error^2)
+  plot(x,y, xlim=c(0, max(x)), ylim=c(0, max(y)), main="measurement space")
+  if (input$show_fit)
+      abline(b, m, lty=1, lwd=3, col="yellow")
+  if (input$show_errors)
+    for (i in seq_along(x))
+      lines(c(x[i], x[i]), c(prediction[i], y[i]), col="orange")
+  abline(input$b, input$m, lty=2, lwd=3, col="green")
+  # m_range[1] + 0.1 * diff(m_range), b_range[1] + 0.9 * diff(b_range)
+
+  num_m <- num_b <- 100
+  m_val <- seq(m_range[1], m_range[2], length=num_m)
+  b_val <- seq(b_range[1], b_range[2], length=num_b)
+  
+  M <- cost_matrix(x, y, m_val, b_val)
+  if (input$log_M) M <- log(M)
+  
+  image(m_val, b_val, M, col=heat.colors(1024), main="parameter space",
+        xlab="slope", ylab="intercept")
+	contour(m_val, b_val, M, add=TRUE)
+  points(input$m, input$b, col="green", cex=3, pch=16)
+  if (input$show_fit)
+    points(m, b, col="yellow", cex=3, pch=1)
+  
+  par(op)
+})
+
+renderText({
+  prediction <- input$m * x + input$b
+  error <- y - prediction
+  SSE <- sum(error^2)
+  paste("SSE:", SSE)
+})
+
+```
+
+## Solution using `lm`
+
+```{r lm_solution}
+fit <- lm(y ~ x)
+coef(fit)
+```
+
+## Solution using a general-purpose optimizer
+
+Here we use the `optim()` function in base R (see Chapter 7 of "Machine Learning for Hackers"):
+
+```{r optim}
+optim(c(0,0), function(beta) cost(x, y, beta[1], beta[2]))$par
+```
+
+## Solution using the normal equation
+
+```{r normal}
+X <- cbind(1, x)
+solve(t(X) %*% X) %*% t(X) %*% y
+```

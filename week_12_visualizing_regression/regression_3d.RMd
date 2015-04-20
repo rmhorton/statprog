@@ -1,0 +1,54 @@
+---
+title: "The Regression Equation"
+author: "Bob Horton"
+date: "April 19, 2015"
+output: html_document
+runtime: shiny
+---
+
+This is a multivariate example of the regression equation.
+
+## Linear regression in 3D
+
+Here x1 and x2 are independent variables, and will be used to identify points on a 2D plane; the dependent variable will be plotted on the z-axis.
+
+
+```{r, echo=FALSE}
+inputPanel(
+  selectInput("N", label = "Number of points:",
+              choices = c(10, 25, 50, 100, 200), selected = 25),
+  
+  sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+              min = 0.2, max = 2, value = 1, step = 0.2)
+)
+
+renderPlot({
+  hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks),
+       xlab = "Duration (minutes)", main = "Geyser eruption duration")
+  
+  dens <- density(faithful$eruptions, adjust = input$bw_adjust)
+  lines(dens, col = "blue")
+})
+```
+
+## Embedded Application
+
+It's also possible to embed an entire Shiny application within an R Markdown document using the `shinyAppDir` function. This example embeds a Shiny application located in another directory:
+
+```{r, echo=FALSE}
+shinyAppDir(
+  system.file("examples/06_tabsets", package="shiny"),
+  options=list(
+    width="100%", height=550
+  )
+)
+```
+
+Note the use of the `height` parameter to determine how much vertical space the embedded application should occupy.
+
+You can also use the `shinyApp` function to define an application inline rather then in an external directory.
+
+In all of R code chunks above the `echo = FALSE` attribute is used. This is to prevent the R code within the chunk from rendering in the document alongside the Shiny components.
+
+
+

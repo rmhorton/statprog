@@ -1,0 +1,74 @@
+---
+title: "regression with linear algebra"
+author: "Bob Horton"
+date: "April 19, 2015"
+output: html_document
+---
+
+Here we compre the linear model generated using the `lm` function to fitting the coefficients directly using the 'normal equation' from linear algebra.
+
+```{r, echo=FALSE}
+N <- 30
+x <- rnorm(N, mean=50, sd=20)
+m <- 1.2
+b <- 12
+y <- m*x + b + rnorm(N, sd=5)
+fit <- lm(y ~ x)
+plot(x,y, xlim=c(0, max(x)), ylim=range(data.frame(x=c(0, max(x))) ) )
+abline(fit, lty=3, lwd=3, col="red")
+abline(b, m, col="blue")
+coef(fit)
+```
+
+This is a function to extract a linear equation from a fitted model in R:
+
+```{r get_equation}
+get_equation <- function(model, mode="math"){
+  if (!(mode %in% c("math", "code")) ) stop("mode must be 'math' or 'code'")
+  beta <- format(coef(model), digits=4, trim=TRUE)
+  assignOp <- switch(mode, math="=", code="<-")
+  multOp <-  switch(mode, math="", code="*")
+  paste( "y", assignOp, beta[1], "+", paste( beta[-1], names(beta[-1]), sep=multOp, collapse=" + "))
+}
+```
+
+The equation from our fitted model is
+$$`r get_equation(fit)`$$
+
+We can express the equation in matrix form as:
+$$X\beta = y$$
+
+The normal equation from linear algebra is:
+
+$$\boldsymbol{\hat\beta} =( X ^TX)^{-1}X^{T}\boldsymbol y$$
+
+In R code, that looks like this:
+```beta <- solve(X %*% t(X)) %*% t(X)```
+
+```{r linear_algebra_solution}
+X <- cbind(1, x)
+beta_hat <- solve(t(X) %*% X) %*% t(X) %*% y
+beta_hat
+```
+
+## More Attributes
+
+```{r more_attributes}
+N <- 100
+a <- rnorm(N)
+b <- rnorm(N)
+c <- rnorm(N)
+
+y <- 10 + 1.1*a + 2.2*b + 3.3*c + rnorm(N, sd=3)
+
+X <- cbind(1,a,b,c)
+
+beta <- solve(t(X) %*% X) %*% t(X) %*% y
+beta
+
+fit <- lm(y ~ a + b + c + 1)
+coef(fit)
+```
+## References
+
+http://en.wikipedia.org/wiki/Least_squares
