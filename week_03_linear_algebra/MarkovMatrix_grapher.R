@@ -53,3 +53,17 @@ for (i in nodeNames){
 
 # layout twopi, neato, dot; dot handles directional edges the best.
 plot(g, "dot", nodeAttrs=nAttrs, edgeAttrs=eAttrs, attrs=attrs, recipEdges="distinct")
+
+
+# plot MM graph with igraph
+
+MM <- matrix(c(
+	0.3, 0.3, 0.4, 0.0,
+	0.1, 0.5, 0.1, 0.3,
+	0.0, 0.4, 0.2, 0.4,
+	0.9, 0.0, 0.0, 0.1),
+	nrow=n, byrow=T)
+rownames(MM) <- colnames(MM) <- letters[1:4]
+g <- graph.adjacency(MM, mode=c("directed"), weighted=TRUE)
+E(g)$label <- as.vector(t(MM))[as.vector(t(MM)) != 0]
+plot(g)

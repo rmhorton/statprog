@@ -183,12 +183,49 @@ for (tbl in c("FNDDSNutVal", "MainFoodDesc", "NutDesc"))
 library(dplyr)
 library(tidyr)
 
-foods <- MainFoodDesc %>% 
-	filter( grepl(", NFS", main_food_description ) | grepl("^93", food_code)) %>%
-	filter(!grepl("infant formula", main_food_description ) ) %>%
-	select( food_code, main_food_description, fortification_id ) %>%
-	mutate( main_food_description = gsub(", NFS", "", main_food_description) )
+# Make a simplified selection of foods.
+# TO DO: have MainFoodDesc be a tbl sourced from SQLite.
+get_selected_foods <- function(){
+	# Pull out all "Not Further Specified" foods as a wide selection of reasonably generic items.
+	generics <- MainFoodDesc %>% 
+		filter( grepl(", NFS", main_food_description )) %>%
+		filter(!grepl("infant formula", main_food_description, ignore.case = TRUE ) )
 
+	# Raw fruits
+	# Berries are covered by "Berries, raw, NFS" and "Berries, frozen, NFS"
+	fruits <- MainFoodDesc %>% 
+		filter( grepl("^6", food_code) ) %>%
+		filter( grepl("^([^,\\(]+), raw$", main_food_description) ) %>% 
+		filter( !grepl("berries", main_food_description) )
+
+	# Raw vegetables
+	# Potatoes are covered by "White potato, NFS", "Sweet potato, NFS", etc.
+	vegetables <- MainFoodDesc %>% 
+		filter( grepl("^7", food_code) ) %>%
+		filter(!grepl("potato", main_food_description)) %>%
+		filter( grepl(", raw$", main_food_description))
+
+	# 4="legumes, nuts, and seeds"
+	nuts_and_seeds <- MainFoodDesc %>% 
+		filter( grepl("^4", food_code) ) %>%
+		mutate( firstWord = strsplit(main_food_description, " ")[[1]][1] )
+	
+	# Selected alcoholic beverages
+	# All alcoholic beverages: grepl("^93", food_code))
+	# "Cocktail, NFS" already gives us "Cocktail"
+	alcoholic_beverages <- MainFoodDesc %>% 
+		filter( main_food_description %in% c("Beer", "Wine, table, red", "Wine, table, white", 
+			"Whiskey", "Gin", "Rum", "Vodka") )
+
+	# Collect them all into one table
+	rbind(generics, fruits, vegetables, alcoholic_beverages) %>%
+		select( food_code, main_food_description, fortification_id )  %>% 
+		filter( nchar(main_food_description) < 20 ) %>%
+		mutate( main_food_description = gsub("(, NFS|, raw)", "", main_food_description) )
+
+}
+
+foods <- get_selected_foods()	# 163 items
 
 library(sqldf)
 long_food_nutrients <- sqldf("SELECT f.main_food_description, nd.nutrient_description, nv.nutrient_value \
@@ -196,9 +233,10 @@ long_food_nutrients <- sqldf("SELECT f.main_food_description, nd.nutrient_descri
 	INNER JOIN FNDDSNutVal nv ON f.food_code = nv.food_code \
 	INNER JOIN NutDesc nd ON nv.nutrient_code = nd.nutrient_code")
 
-
 nutrient_food_df <- spread(long_food_nutrients, main_food_description, nutrient_value, fill=0)
 
 food_nutrient_mat <- t(as.matrix(nutrient_food_df[-1]))
 colnames(food_nutrient_mat) <- nutrient_food_df$nutrient_description
-save(food_nutrient_mat, file="food_nutrient_mat.Rdata")
+
+save(food_nutrient_mat, file="../week_03_linear_algebra/food_nutrient_mat.Rdata")
+saveRDS(foods, file="../week_03_linear_algebra/foods.rds")
