@@ -10,11 +10,11 @@ Once a model has been fitted to a dataset, it contains a collection of coefficie
 ```{r fitting_model}
 
 get_equation <- function(model, mode="math"){
-  coeff <- format(coef(model), digits=4)
+  beta <- signif(coef(model), digits=4)
   # mode = "math" or "code"
-  assignOp <- if (mode == "math") "=" else "<-"
-  multOp <-  if (mode == "math") "" else "*"
-  paste( "y", assignOp, coeff[1] , "+", paste( coeff[-1], names(coeff[-1]), sep=multOp, collapse=" + "))
+  assignOp <- switch(mode, math="=", "<-")
+  multOp <- switch(mode, math="", "*")
+  paste( "y", assignOp, beta[1] , "+", paste( beta[-1], names(beta[-1]), sep=multOp, collapse=" + "))
 }
 
 # Sample size; large samples let us estimate the coefficients accurately
