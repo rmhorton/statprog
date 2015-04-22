@@ -1,17 +1,17 @@
 ---
 title: "Regression as Cost Function Optimization"
 author: "Bob Horton"
-date: "April 17, 2015"
+date: "April 21, 2015"
 output: html_document
 runtime: shiny
 ---
 
 Linear regression can be thought of as an optimization problem, where you are trying to find values for the coefficients `m` and `b` that minimize the total squared error.
 
-
 ```{r, echo=FALSE}
 
-x <- runif(10)
+N <- 20
+x <- rnorm(N)
 m <- 4
 b <- 3
 y <- m*x + b + rnorm(length(x))
@@ -19,7 +19,7 @@ y <- m*x + b + rnorm(length(x))
 beta <- coef(lm(y ~ x))
 
 m_range <- beta[2] + c(-10, 10)
-b_range <- beta[1] + c(-50, 50)
+b_range <- beta[1] + c(-20, 20)
 
 cost <- function(x, y, with_b, with_m){
   predicted <- with_m*x + with_b
@@ -30,8 +30,6 @@ cost_matrix <- function(x, y, m_val, b_val){
   M <- matrix(numeric(length(m_val) * length(b_val)), nrow=length(m_val), byrow=TRUE)
   for (mi in 1:length(m_val)){
     for (bi in 1:length(b_val)){
-      # predicted <- m_val[mi]*x + b_val[bi]
-      # sse <- sum((predicted - y)^2)
       sse <- cost(x, y, b_val[bi], m_val[mi])
       M[mi, bi] <- sse
     }
@@ -41,9 +39,13 @@ cost_matrix <- function(x, y, m_val, b_val){
 
 inputPanel(
   sliderInput("m", label = "slope:",
-              min = m_range[1], max = m_range[2], value = 0, step = diff(m_range)/100),
+              min = m_range[1], max = m_range[2], 
+              value = 0, step = diff(m_range)/100),
   sliderInput("b", label = "intercept:",
-              min = b_range[1], max = b_range[2], value = 0, step = diff(b_range)/100),
+              min = b_range[1], max = b_range[2], 
+              value = 0, step = diff(b_range)/100)
+)
+inputPanel(
   checkboxInput("show_errors", "show errors", value = TRUE),
   checkboxInput("log_M", "log(error)", value = FALSE),
   checkboxInput("show_fit", "show optimal", value = FALSE)
@@ -61,7 +63,6 @@ renderPlot({
     for (i in seq_along(x))
       lines(c(x[i], x[i]), c(prediction[i], y[i]), col="orange")
   abline(input$b, input$m, lty=2, lwd=3, col="green")
-  # m_range[1] + 0.1 * diff(m_range), b_range[1] + 0.9 * diff(b_range)
 
   num_m <- num_b <- 100
   m_val <- seq(m_range[1], m_range[2], length=num_m)
@@ -72,7 +73,7 @@ renderPlot({
   
   image(m_val, b_val, M, col=heat.colors(1024), main="parameter space",
         xlab="slope", ylab="intercept")
-	contour(m_val, b_val, M, add=TRUE)
+  contour(m_val, b_val, M, add=TRUE)
   points(input$m, input$b, col="green", cex=3, pch=16)
   if (input$show_fit)
     points(beta[2], beta[1], col="yellow", cex=3, pch=1)
@@ -109,4 +110,15 @@ coef(fit)
 ```{r normal}
 X <- cbind(1, x)
 solve(t(X) %*% X) %*% t(X) %*% y
+```
+
+### Using the Solution
+
+```{r using_solution}
+solve(t(X) %*% X) %*% t(X) %*% y -> beta
+y_est <- X %*% beta
+
+plot(x, y_est, pch=19)
+points(x, y, col="red")
+for (i in seq_along(x)) lines(c(x[i],x[i]), c(y[i],y_est[i]), col="red")
 ```
