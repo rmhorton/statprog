@@ -12,6 +12,54 @@ $y = \frac{1}{1+e^{-t}}$
 ```{r logistic_function}
 logistic <- function(t) 1 / (1 + exp(-t))
 ```
+## History of the Logistic Function {.flexbox .vcenter}
+
+![Pierre François Verhulst](http://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Pierre_Francois_Verhulst.jpg/155px-Pierre_Francois_Verhulst.jpg)
+
+* named by P.F. Verhulst in 1844-1845.
+* related to population growth
+
+## The Logistic Function
+
+This is a simple model of population growth relative to a carrying capacity K:
+$$
+\frac{dN}{dt} = r N \left(1 - \frac {N}{K} \right)
+$$
+
+* N is the population
+* K is the carrying capacity (the maximum population)
+* r is the reproduction rate
+
+The integral of this equation gives us the logistic function:
+$$
+N(t) = \frac{K}{1+ C K e^{-rt}}
+$$
+
+## Numeric Integration
+
+```{r numeric_integration}
+dN <- function(N, r=0.15, K=100) r * N * (1 - N/K)
+N <- 0.1
+t <- 0:100
+pop <- sapply(t, function(i) { N <<- N + dN(N) })
+plot(t, pop)
+```
+
+## Population Growth
+
+```{r population_growth, echo=FALSE}
+library(ggplot2)
+
+growth <- function(t, K, C, r) K / (1 + C * K * exp(-r * t))
+
+num_timeslices <- 1000
+df <- data.frame(t=seq(0, 10, length=num_timeslices))
+df$N <- growth(df$t, K=100, C=1, r=1)
+df$phase <- cut(df$N, breaks=c(0, 5, 95, 100), labels=c("lag", "log", "stationary"), include.lowest=TRUE)
+ggplot(df, aes(x=t, y=N, col=phase)) + geom_line(size=1)
+
+```
+
 
 ## Logistic function "squashes" values
 
@@ -28,43 +76,6 @@ plot(x, logistic(x), col="blue", type='l')
 # lines(x, 1 / (1 + exp(-x)), col="blue", lwd=3, lty=2)
 ```
 
-## History of the Logistic Function {.flexbox .vcenter}
-
-![Pierre François Verhulst](http://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Pierre_Francois_Verhulst.jpg/155px-Pierre_Francois_Verhulst.jpg)
-
-* named by P.F. Verhulst in 1844-1845.
-* related to population growth
-
-## The Logistic Function
-
-$$
-\frac{dN}{dt} = r N \left(1 - \frac {N}{K} \right)
-$$
-
-* N is the population
-* K is the carrying capacity (the maximum population)
-* r is the reproduction rate
-
-The integral of this equation gives us the logistic function:
-$$
-N(t) = \frac{K}{1+ C K e^{-rt}}
-$$
-
-
-## Population Growth
-
-```{r population_growth, echo=FALSE}
-library(ggplot2)
-
-growth <- function(t, K, C, r) K / (1 + C * K * exp(-r * t))
-
-num_timeslices <- 1000
-df <- data.frame(t=seq(-10, 10, length=num_timeslices))
-df$N <- growth(df$t, K=1, C=1, r=1)
-df$phase <- cut(df$N, breaks=c(0, 0.05, 0.95, 1.0), labels=c("lag", "log", "stationary"), include.lowest=TRUE)
-ggplot(df, aes(x=t, y=N, col=phase)) + geom_line(size=1)
-
-```
 
 ## The logit function
 
@@ -86,3 +97,10 @@ x <- seq(-10, 10, length=201)
 plot(x, logit(logistic(x)))
 ```
 
+## Logit as the log of the odds ratio
+
+If `p` is a probability of success, then `(1 - p)` is the probability of failure. The ratio of these probabilities is the _odds_.
+
+$$
+\frac{p}{(1 - p)}
+$$

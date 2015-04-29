@@ -1,4 +1,4 @@
-N <- 2000
+N <- 200
 
 # Try changing these coefficients; bigger numbers cause larger effects.
 # Since we are not changing the noise, it appears relatively smaller 
@@ -12,7 +12,7 @@ coeffB <- -1.1		# -1.1
 
 df <- data.frame(
 	category = sample(LETTERS[1:2], N, prob=c(0.5, 0.5), replace=T),
-	stimulus = 5 + rnorm(N)
+	stimulus = rnorm(N)
 )
 
 df <- transform(df, 
@@ -20,6 +20,8 @@ df <- transform(df,
 )
 
 with(df, plot(response ~ stimulus, col=category))
+# If this were not colored by category would you see a pattern?
+
 
 fit1 <- lm( response ~ stimulus, data=df)
 summary(fit1)
@@ -30,5 +32,9 @@ summary(fit2)
 fit3 <- lm( response ~ stimulus:category, data=df)
 summary(fit3)
 
+# Try increasing the magnitude of coeffA and CoeffB to exaggerate the signal (leaving the noise the same).
+
+
+# Show where the linear predictions are
 df$fitted <- fit3$fitted.values
 with(df, points(stimulus, fitted, col="green"))
