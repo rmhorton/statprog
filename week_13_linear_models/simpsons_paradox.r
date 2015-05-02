@@ -1,59 +1,66 @@
 # In Simpson's Paradox, the overall effect is in the opposite direction of the effect for each category.
 
-N <- 100
+sim_simpsons <- function(slopes, intercepts,  doses, N = 100){
+  
+  category <- sample(LETTERS[1:2], N, replace=T)
+  dose <- doses[category] + rnorm(N)
+  response = intercepts[category] + slopes[category] * dose + rnorm(N)
+  data.frame( category, dose, response )
+}
 
-coeffA <- 1.1
-coeffB <- 1.1
+plot_simpsons <- function(df, cat_colors){
+  
+  with(df, plot(response ~ dose, col=cat_colors[category]))
+  
+  fit1 <- lm( response ~ dose, data=df)
+  abline(fit1, lty=2, lwd=4)
+  
+  fit2 <- lm( response ~ category - 1, data=df)
+  abline(h=coef(fit2)[["categoryA"]], col=cat_colors["A"], lty=3, lwd=3)
+  abline(h=coef(fit2)[["categoryB"]], col=cat_colors["B"], lty=3, lwd=3)
+  
+  fit3 <- lm( response ~ category + category:dose - 1, data=df)
+  abline(coef(fit3)[["categoryA"]], coef(fit3)[["categoryA:dose"]], col=cat_colors["A"], lty=2, lwd=4)
+  abline(coef(fit3)[["categoryB"]], coef(fit3)[["categoryB:dose"]], col=cat_colors["B"], lty=2, lwd=4)
+}
 
-interceptA <- 12
-interceptB <- 5
+df <- sim_simpsons(slopes = c(A=1.1, B=1.1), intercepts = c(A=12, B=5), doses=c(A=8, B=10),  N=100)
 
-df <- data.frame(
-	category = sample(LETTERS[1:2], N, prob=c(0.5, 0.5), replace=T)
-)
-
-df$stimulus <- ifelse( df$category=="A", 8 + rnorm(N), 10 + rnorm(N) )
-df <- transform(df,
-	response = ifelse( category=="A",
-		interceptA + coeffA * stimulus, interceptB + coeffB * stimulus) + rnorm(N)
-)
-
-with(df, plot(response ~ stimulus, col=category))
-
-fit1 <- lm( response ~ stimulus, data=df)
-summary(fit1)
-
-fit2 <- lm( response ~ category, data=df)
-summary(fit2)
-
-fit3 <- lm( response ~ stimulus:category, data=df)
-summary(fit3)
-
-
+plot_simpsons(df, cat_colors=c(A="blue", B="red"))
 
 library(manipulate)
 N <- 1000
 
 manipulate({
-    category <- sample(LETTERS[1:2], N, prob=c(0.5, 0.5), replace=T)
-    stimulus <- ifelse( category=="A", 
-                        rnorm(N, stim_mean_A, stim_sd_A), 
-                        rnorm(N, stim_mean_B, stim_sd_B) )
-    response <- ifelse( category=="A",
-                        interceptA + coeffA * stimulus, interceptB + coeffB * stimulus) + rnorm(N)
-    
-    plot(response ~ stimulus, col=factor(category))
-    abline(lm(response[category=="A"] ~ stimulus[category=="A"]), col="green", lty=3, lwd=4)
-    abline(lm(response[category=="B"] ~ stimulus[category=="B"]), col="green", lty=3, lwd=4)
-    abline(lm(response ~ stimulus), col="blue", lty=3, lwd=4)
+    df <- sim_simpsons(slopes = c(A=slopeA, B=slopeB), 
+                       intercepts = c(A=interceptA, B=interceptB), 
+                       doses=c(A=doseA, B=doseB),  N=100)
+    plot_simpsons(df, cat_colors=c(A="blue", B="red"))
   }, 
-  coeffA = slider(min=-10, max=10, initial=1, step=0.1),
-  coeffB = slider(min=-10, max=10, initial=1, step=0.1),
-  stim_mean_A = slider(min=0, max=10, initial=3, step=0.1),
-  stim_mean_B = slider(min=0, max=10, initial=5, step=0.1),
-  stim_sd_A = slider(min=0, max=10, initial=1, step=0.1),
-  stim_sd_B = slider(min=0, max=10, initial=1, step=0.1),
-  interceptA = slider(min=0, max=20, initial=8, step=0.1),
-  interceptB = slider(min=0, max=20, initial=2, step=0.1)
+  slopeA = slider(min=-10, max=10, initial=1.1, step=0.1),
+  slopeB = slider(min=-10, max=10, initial=1.1, step=0.1),
+  doseA = slider(min=0, max=15, initial=8, step=0.1),
+  doseB = slider(min=0, max=15, initial=10, step=0.1),
+  interceptA = slider(min=0, max=20, initial=12, step=0.1),
+  interceptB = slider(min=0, max=20, initial=5, step=0.1)
 )
 
+###
+
+simulate_dose_symptoms_data <- function(N=300){
+  severity = sample(c("mild", "moderate", "severe"), N, replace=T)
+  mean_dose = c(mild=5, moderate=10, severe=15)
+  dose = rnorm(N, mean=mean_dose[severity], sd=2)
+  untreated_symptoms = c(mild=5, moderate=10, severe=15)
+  symptoms = untreated_symptoms[severity] - 0.5 * dose + rnorm(N, sd=2)
+  data.frame(severity, dose, symptoms)
+}
+ds_data <- simulate_dose_symptoms_data(300)
+plot(symptoms ~ dose, col=severity, data=ds_data)
+
+fit_wrong <- lm(symptoms ~ dose, data=ds_data)
+abline(fit_wrong)
+
+fit_right <- lm( symptoms ~ severity + dose - 1, data=ds_data)
+points( ds_data$dose, fit_right$fitted.values, col="blue", pch=4)
+summary(fit_right)
