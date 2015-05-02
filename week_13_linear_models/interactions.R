@@ -1,4 +1,4 @@
-N <- 20000
+N <- 200
 
 # Try changing these coefficients; bigger numbers cause larger effects.
 # Since we are not changing the noise, it appears relatively smaller 
