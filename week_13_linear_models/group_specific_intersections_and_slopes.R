@@ -1,7 +1,5 @@
 N <- 1000
 
-# Try changing the probabilities of each category. If one group is a minority, the main effects for the overall population can give wrong predictions for the minority group.
-
 simulate_data <- function(intercepts, slopes, N){
   category = sample(names(intercepts), N, replace=T)
   dose = runif(N, min=0, max=10)
