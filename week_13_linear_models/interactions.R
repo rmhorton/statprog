@@ -26,8 +26,10 @@ with(df, plot(response ~ stimulus, col=category))
 fit1 <- lm( response ~ stimulus, data=df)
 summary(fit1)
 
-fit2 <- lm( response ~ category, data=df)
+fit2 <- lm( response ~ category - 1, data=df)
 summary(fit2)
+mean(df[df$category=="A","response"])
+mean(df[df$category=="B","response"])
 
 fit3 <- lm( response ~ stimulus:category, data=df)
 summary(fit3)
@@ -35,6 +37,8 @@ summary(fit3)
 # Try increasing the magnitude of coeffA and CoeffB to exaggerate the signal (leaving the noise the same).
 
 
-# Show where the linear predictions are
+# Show the linear predictions. For a simple line, you can just call "abline" on the fitted model,
+# but for more complicated arrangements, the easiest way to visualize the model is to plot the
+# predicted outcomes.
 df$fitted <- fit3$fitted.values
 with(df, points(stimulus, fitted, col="green"))
