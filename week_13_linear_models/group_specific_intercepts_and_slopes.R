@@ -3,11 +3,11 @@ N <- 1000
 simulate_data <- function(intercepts, slopes, N){
   category = sample(names(intercepts), N, replace=T)
   dose = runif(N, min=0, max=10)
-  response = 0 + intercepts[as.character(category)] + slopes[as.character(category)] * dose + rnorm(N)
+  response = intercepts[category] + slopes[category] * dose + rnorm(N)
   data.frame(category, dose, response)
 }
 
-intercepts <- c( Tall=10, Medium=0, Short=-10)
+intercepts <- c( Tall=10, Medium=5, Short=-10)
 slopes <- c(Tall=-1, Medium=0, Short=1)
 cat_colors <- c(Tall="red", Medium="orange", Short="darkgreen")
 

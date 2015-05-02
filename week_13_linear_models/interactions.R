@@ -1,4 +1,4 @@
-N <- 200
+N <- 20000
 
 # Try changing these coefficients; bigger numbers cause larger effects.
 # Since we are not changing the noise, it appears relatively smaller 
@@ -38,7 +38,7 @@ summary(fit3)
 
 
 # Show the linear predictions. For a simple line, you can just call "abline" on the fitted model,
-# but for more complicated arrangements, the easiest way to visualize the model is to plot the
+# but for more complicated arrangements the easiest way to visualize the model is to plot the
 # predicted outcomes.
 df$fitted <- fit3$fitted.values
 with(df, points(stimulus, fitted, col="green"))
