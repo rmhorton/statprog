@@ -9,3 +9,30 @@ Principle Component Analysis
 * visualization (reduce to 2 or 3 dimensions)
 * feature selection / engineering
 * factor analysis
+
+
+Scaling a Matrix
+========================================================
+Put each column on a bell curve.
+
+```{r scale_matrix}
+M <- matrix(sample(1:100, 12), nrow=3)
+M_scaled <- scale(M)
+
+M_scaled
+
+colMeans(M) # "scaled:center"
+apply(M, 2, sd)# "scaled:scale"
+```
+
+Scaling a Matrix
+========================================================
+```{r scaling_by_hand}
+M_colMeans <- colMeans(M) # "scaled:center"
+M_sd <- apply(M, 2, sd)# "scaled:scale"
+
+s1 <- sweep(M, 2, M_colMeans, "-")
+s2 <- sweep(s1, 2, M_sd, "/")
+
+s2
+```
