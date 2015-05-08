@@ -1,0 +1,11 @@
+Links for Tidy Data
+
+"Tidy Data" by Hadley Wickham
+http://www.jstatsoft.org/v59/i10/paper
+
+Simpler R coding with pipes
+http://www.r-bloggers.com/simpler-r-coding-with-pipes-the-present-and-future-of-the-magrittr-package/
+
+RStudio blog post on Magrittr 1.5
+http://blog.rstudio.org/2014/12/01/magrittr-1-5/
+
