@@ -1,0 +1,13 @@
+## Analysis of residuals
+
+* Try a linear model on Lakshmi's simulation; residuals should be bimodal.
+
+## Weird points
+
+* outliers
+* high-leverage points
+
+## Overfitting
+
+## Cross-validation
+
