@@ -5,8 +5,8 @@ sim_cancer <- function(N){
 
 	carcinogens <- runif(N, min=0, max=100)
 	age <- sample(10:99, N, replace=T)
-	score <- 10^(-1) * (carcinogens - mean(carcinogens)) + 
-			10^(-2) * (age - mean(age)) - 2
+	score <- 0.1 * (carcinogens - mean(carcinogens)) + 
+			0.01 * (age - mean(age)) - 2
 	prob <- logistic(score)
 	cancer <- factor(ifelse(prob > runif(N), "Yes", "No"))
 	
@@ -47,7 +47,7 @@ with(roc_df, {
   auc <- sum(roc_df$sensitivity[-1] * diff(roc_df$specificity))
   plot(1 - specificity, sensitivity, 
         xlim=c(0,1), ylim=c(0,1), 
-        main=sprintf("AUC = %0.0f%%", 100 * auc),
+        main=sprintf("AUC = %0.2f%%", 100 * auc),
         type="s")
 })
 
