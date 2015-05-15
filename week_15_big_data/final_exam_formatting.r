@@ -46,7 +46,7 @@ get_question_lengths <- function(qlist){
 student_repos <- c(
 	catterbu = "catterbu/hs616/blob/master/final_exam_questions.Rmd",
 	cpkaur = "cpkaur/hs616/blob/master/final_exam_questions.Rmd",
-	vchaudhuri = "vchaudhuri/hs-616/blob/master/final_exam_questions.Rmd",
+	vchaudhuri = "vchaudhuri/hs-616/blob/master/MCQ_Week_8-16.Rmd",
 	tdenatale = "tdenatale/hs616/blob/master/final_exam_questions.Rmd",
 	johnedwardgreer = "johnedwardgreer/hs616/blob/master/final_exam_questions.Rmd",
 	nsh87 = "nsh87/hs616/blob/master/final_exam_questions.Rmd",
@@ -60,13 +60,13 @@ lapply(student_repos, function(stu_repo) stu_repo %>% parse_student_questions %>
 
 write_quiz <- function(qlist, file){
 	out <- file(file, open="wt")
-	cat("---\noutput: html\n---", file=out)
+	cat("---\noutput: pdf_document\n---\n", file=out)
 	for (q in qlist){
-		cat(sprintf("\n## Lecture %s\n\n", q$lecture), file=out)
+		cat(sprintf("\n## Lecture %s\n", q$lecture), file=out)
 		cat(q$question, "\n\n", file=out)
 		cat(paste0("* ", q$answers, "\n"), file=out)
 	}
 }
 
-write_quiz(qlist, "test_test.Rmd")
+write_quiz(qlist_local, "test_test3.Rmd")
 
