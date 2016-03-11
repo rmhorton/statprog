@@ -1,0 +1,68 @@
+---
+title: "Interactions between variables"
+author: "Bob Horton"
+date: "Tuesday, March 08, 2016"
+output: html_document
+---
+
+Here we look at some examples of interactions between variables in a regression analysis. We use simulated data so we can compare the results of the analysis to the known formulas used to generate the data.
+
+## Study of Foobium concentration over age
+
+We'll start by creating a set of independent variables, some numeric and some categorical. We use variable `N` to represent the sample size, so it will be easy to change.
+
+```{r independent_variables}
+N <- 200
+patient_data <- data.frame(
+  gender = sample(c('M', 'F'), N, replace=TRUE),
+  color = sample(c('red', 'green', 'blue'), N, replace=TRUE),
+  size = sample(c('S', 'M', 'L'), N, replace=TRUE),
+  age = round(rnorm(N, mean=60, sd=15))
+)
+```
+
+We'll add `foobium` as an outcome variable. Its value will be determined by some of the variables in the data frame (plus some noise). The code for determining foobium concentration is shown at the end of this section, you can look at it after you fit a model.
+
+```{r outcome_variable, ref.label="outcome_variable_calculation", eval=TRUE, echo=FALSE}
+
+```
+
+## Foobium vs. age
+
+If we just plot foobium against age, the slope of the regression line should be close to zero.
+
+```{r foobium_vs_age}
+with(patient_data, plot(foobium ~ age))
+fit1 <- lm(foobium ~ age, patient_data)
+abline(fit1, col="blue")
+summary(fit1)
+```
+
+```{r}
+with(patient_data, {
+  plot(foobium ~ age, col=gender, xlim=c(0, 110))
+  legend("bottom", legend=levels(gender), text.col=seq_along(levels(gender)), bty='n')
+})
+
+
+fit2 <- lm(foobium ~ age*gender, patient_data)
+points(patient_data$age, predict(fit2), col='yellow', pch=4)
+
+p <- coef(fit2)
+abline(p['(Intercept)'], p['age'])
+abline(p['(Intercept)'] + p['genderM'], p['age'] + p['age:genderM'], col="red")
+abline(v=0, lty=2)
+```
+
+```{r summary_fit2}
+summary(fit2)
+
+```
+
+## How foobium was calculated
+
+```{r outcome_variable_calculation, echo=TRUE, eval=FALSE}
+patient_data <- transform(patient_data, 
+                          foobium = 7 + (age - 35) * ifelse(gender=='M', 0.05, -0.05) + rnorm(length(gender)))
+```
+
